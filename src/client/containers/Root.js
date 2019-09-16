@@ -6,12 +6,23 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import DevTools from './DevTools';
 import Index from './front/Index';
 import history from '../config/initializers/history';
+import FancyRoute from '../components/utilities/FancyRoutes';
 
+
+const routes = [
+  {
+    title: 'Home',
+    path: '/',
+    exact: true,
+    component: Index,
+  },
+];
 const Root = ({ store }) => (
   <Provider store={store}>
     <Router history={history}>
       <Switch>
-        <Route path="/" component={Index} />
+        {/* eslint-disable-next-line react/no-array-index-key,react/jsx-props-no-spreading */}
+        {routes.map((route, i) => <FancyRoute key={i} {...route} />)}
         <DevTools />
         <Redirect path="*" to="/" />
       </Switch>

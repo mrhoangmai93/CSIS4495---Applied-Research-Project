@@ -9,7 +9,8 @@
     "react/jsx-uses-vars": 2,
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "space-before-function-paren": 0,
-    "generator-star-spacing": 0
+    "generator-star-spacing": 0,
+    "react/jsx-props-no-spreading": 0
   },
   "globals": {
     "alert": true,

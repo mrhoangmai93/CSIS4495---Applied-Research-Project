@@ -1,7 +1,11 @@
 import React from 'react';
 import Immutable from 'immutable';
 import ReactDOM from 'react-dom';
+// Bootstrap and nomalize.css
 import './client/scss/bootstrap.scss';
+import './client/scss/global.scss';
+import 'normalize.css';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { createLogger } from 'redux-logger';
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
