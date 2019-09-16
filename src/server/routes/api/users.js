@@ -3,6 +3,8 @@ const router = express.Router();
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const config = require("config");
+
 const { check, validationResult } = require("express-validator/check");
 
 // Load User model
@@ -12,7 +14,7 @@ const User = require("../../models/User");
 // @desc    Register user
 // @access  Public
 router.post(
-  "/register",
+  "/register/:userRole",
   [
     check("name", "Name is required")
       .not()
@@ -24,13 +26,18 @@ router.post(
     ).isLength({ min: 6 })
   ],
   async (req, res) => {
-    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
+
+    const role = req.params.userRole;
+
+    if (!(role == "user" || role == "seller")) {
+      return res.status(400).json({ errors: [{ msg: "Cannot complete" }] });
+    }
 
     try {
       let user = await User.findOne({ email });
@@ -59,7 +66,22 @@ router.post(
 
       await user.save();
 
-      res.send("user resgitered");
+      const payload = {
+        user: {
+          id: user.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"),
+        { expiresIn: 36000 },
+        (err, token) => {
+          if (err) throw err;
+
+          res.json({ token });
+        }
+      );
     } catch (err) {
       console.log(err.message);
       res.status(500).send("Server Error!");
