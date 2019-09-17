@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const UsersInfoSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "users"
+    ref: "user"
   },
   address: {
     address1: {
@@ -23,7 +23,7 @@ const UsersInfoSchema = new Schema({
       type: String,
       required: true
     },
-    zip: {
+    zipCode: {
       type: String,
       required: true
     },
@@ -96,15 +96,10 @@ const UsersInfoSchema = new Schema({
       }
     }
   ],
-  // orders: [
-  //   {
-  //     date: {}
-  //   }
-  // ]
   date: {
     type: Date,
     default: Date.now
   }
 });
 
-module.exports = UsersInfo = mongoose.model("usersinfo", UsersInfoSchema);
+module.exports = UsersInfo = mongoose.model("userinfo", UsersInfoSchema);
