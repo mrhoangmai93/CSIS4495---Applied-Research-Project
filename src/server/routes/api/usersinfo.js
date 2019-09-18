@@ -99,7 +99,7 @@ router.post(
   }
 );
 // @route   PUT api/userinfo/payment
-// @desc    Add payment method to profile
+// @desc    Add/update payment method
 // @access  Private
 router.put(
   "/payment",
@@ -128,7 +128,7 @@ router.put(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { cardnumber, nameoncard, expiredate, security } = req.body;
+    const { _id, cardnumber, nameoncard, expiredate, security } = req.body;
     //build userInfo object
     const newPayment = {
       cardnumber,
@@ -136,71 +136,85 @@ router.put(
       expiredate,
       security
     };
-    userInf.address = {};
-
-    userInf.user = req.user.id;
-
-    userInf.address.address1 = address1;
-    if (address2) userInf.address.address2 = address2;
-    userInf.address.city = city;
-    userInf.address.zipCode = zipCode;
-    userInf.address.state = state;
-    userInf.address.phone = phone;
-
     try {
       let userinfo = await UserInfo.findOne({ user: req.user.id });
 
       if (userinfo) {
-        // update
-        userinfo = await UserInfo.findOneAndUpdate(
-          { user: req.user.id },
-          { $set: userInf },
-          { new: true }
-        );
-        return res.json(userinfo);
+        //check if there is payment
+        if (userinfo.payments) {
+          //check if there is payment id passing in the body
+          // yes => update the existing payment
+          if (_id) {
+            const updateIndex = userinfo.payments
+              .map(pm => pm._id.toString())
+              .indexOf(_id);
+            if (updateIndex >= 0) {
+              userinfo.payments[updateIndex] = newPayment;
+            }
+          } else {
+            //add a new payment to array
+            userinfo.payments.unshift(newPayment);
+          }
+        } else {
+          //no previous payment added
+          userinfo.payments = [];
+          userinfo.payments.push(newPayment);
+        }
+      } else {
+        return res.status(400).json({ msg: "No information for this user" });
       }
-      userinfo = new UserInfo(userInf);
 
       await userinfo.save();
+
       res.json(userinfo);
     } catch (err) {
       console.log(err.message);
-
+      if (err.kind === "ObjectId") {
+        return res.status(404).json({ msg: "Payment not found" });
+      }
       res.status(500).send("Server Error!");
     }
-    UserProfile.findOne({ user: req.user.id }).then(uInfo => {
-      if (req.body._id) {
-        const updateIndex = uInfo.payment
-          .map(item => item._id.toString())
-          .indexOf(req.body._id);
-        if (updateIndex >= 0) {
-          const newPayment = {
-            _id: req.body._id,
-            cardnumber: req.body.cardnumber,
-            nameoncard: req.body.nameoncard,
-            expiredate: req.body.expiredate,
-            security: req.body.security
-          };
-          uInfo.payment[updateIndex] = newPayment;
-          uInfo.save().then(uInfo => res.json(uInfo));
-        }
-      } else {
-        const newPayment = {
-          cardnumber: req.body.cardnumber,
-          nameoncard: req.body.nameoncard,
-          expiredate: req.body.expiredate,
-          security: req.body.security
-        };
-        if (!isEmpty(uInfo.payment)) {
-          // Add to exp array
-          uInfo.payment.unshift(newPayment);
-        } else {
-          uInfo.payment = [];
-          uInfo.payment.push(newPayment);
-        }
-        uInfo.save().then(uInfo => res.json(uInfo));
-      }
-    });
   }
 );
+// @route   PUT api/userinfo/removepayment/:payment_id
+// @desc    Delete a Payment
+// @access  Private
+router.put("/removepayment/:payment_id", [auth], async (req, res) => {
+  const errors = validationResult(req);
+
+  try {
+    let userinfo = await UserInfo.findOne({ user: req.user.id });
+
+    if (userinfo) {
+      // Get remove index
+      const removeIndex = userinfo.payments
+        .map(pm => pm._id.toString())
+        .indexOf(req.params.payment_id);
+      if (removeIndex != -1) {
+        // Splice out of array
+        userinfo.payments.splice(removeIndex, 1);
+      } else {
+        return res.status(404).json({ msg: "Payment not found" });
+      }
+    } else {
+      return res.status(400).json({ msg: "No information for this user" });
+    }
+
+    await userinfo.save();
+
+    res.json(userinfo);
+  } catch (err) {
+    console.log(err.message);
+
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Payment not found" });
+    }
+    res.status(500).send("Server Error!");
+  }
+});
+
+// @route       DELETE api/userinfo
+// @Desc        Delete user and userinfo
+// @Access      Private
+
 module.exports = router;

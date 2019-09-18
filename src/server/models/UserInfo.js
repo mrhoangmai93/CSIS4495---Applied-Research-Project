@@ -75,7 +75,7 @@ const UsersInfoSchema = new Schema({
   //   }
   // },
 
-  payment: [
+  payments: [
     {
       cardnumber: {
         type: String,
