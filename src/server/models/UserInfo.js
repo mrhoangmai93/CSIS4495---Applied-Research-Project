@@ -26,11 +26,11 @@ const UsersInfoSchema = new Schema({
     zipCode: {
       type: String,
       required: true
-    },
-    phone: {
-      type: String,
-      required: true
     }
+  },
+  phone: {
+    type: String,
+    required: true
   },
   // shippingaddress: {
   //   add1: {
@@ -77,20 +77,20 @@ const UsersInfoSchema = new Schema({
 
   payments: [
     {
-      cardnumber: {
+      cardNumber: {
         type: String,
         required: true
       },
-      nameoncard: {
+      nameOnCard: {
         type: String,
         required: true
       },
 
-      expiredate: {
+      expireDate: {
         type: String,
         required: true
       },
-      security: {
+      securityNumber: {
         type: String,
         required: true
       }
