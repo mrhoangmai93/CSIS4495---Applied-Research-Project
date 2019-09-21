@@ -67,13 +67,12 @@ router.post(
     userInf.address = {};
 
     userInf.user = req.user.id;
-
+    userInf.phone = phone;
     userInf.address.address1 = address1;
     if (address2) userInf.address.address2 = address2;
     userInf.address.city = city;
     userInf.address.zipCode = zipCode;
     userInf.address.state = state;
-    userInf.address.phone = phone;
 
     try {
       let userinfo = await UserInfo.findOne({ user: req.user.id });
@@ -106,16 +105,16 @@ router.put(
   [
     auth,
     [
-      check("cardnumber", "Card Number is required")
+      check("cardNumber", "Card Number is required")
         .not()
         .isEmpty(),
-      check("nameoncard", "Name on card is required")
+      check("nameOnCard", "Name on card is required")
         .not()
         .isEmpty(),
-      check("expiredate", "Expire date is required")
+      check("expireDate", "Expire date is required")
         .not()
         .isEmpty(),
-      check("security", "Sercurity code is required")
+      check("securityNumber", "Sercurity Number code is required")
         .not()
         .isEmpty()
     ]
@@ -128,13 +127,19 @@ router.put(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { _id, cardnumber, nameoncard, expiredate, security } = req.body;
+    const {
+      _id,
+      cardNumber,
+      nameOnCard,
+      expireDate,
+      securityNumber
+    } = req.body;
     //build userInfo object
     const newPayment = {
-      cardnumber,
-      nameoncard,
-      expiredate,
-      security
+      cardNumber,
+      nameOnCard,
+      expireDate,
+      securityNumber
     };
     try {
       let userinfo = await UserInfo.findOne({ user: req.user.id });

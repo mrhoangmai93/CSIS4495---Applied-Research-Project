@@ -1,11 +1,6 @@
-import Immutable from 'immutable';
+import Immutable from "immutable";
 
-import {
-  REGISTER_SUCCESS,
-  REGISTER_FAILED,
-  USER_LOADED,
-  AUTH_ERROR,
-} from '../../actions/action.types';
+import * as ACTION from "../../actions/action.types";
 
 // const initialState = {
 //   token: localStorage.getItem("token"),
@@ -14,38 +9,38 @@ import {
 //   user: null
 // };
 const initialState = Immutable.fromJS({
-  token: localStorage.getItem('token'),
+  token: localStorage.getItem("token"),
   isAuthenticated: null,
   loading: true,
-  user: null,
+  user: null
 });
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case USER_LOADED:
-      return {
+    case ACTION.USER_LOADED:
+      return state.merge({
         ...state,
         isAuthenticated: true,
         loading: false,
-        user: payload,
-      };
-    case REGISTER_SUCCESS:
-      localStorage.setItem('token', payload.token);
-      return {
+        user: payload
+      });
+    case ACTION.REGISTER_SUCCESS:
+      localStorage.setItem("token", payload.token);
+      return state.merge({
         ...state,
         ...payload,
         isAuthenticated: true,
-        loading: false,
-      };
-    case REGISTER_FAILED:
-    case AUTH_ERROR:
-      localStorage.removeItem('token');
-      return {
+        loading: false
+      });
+    case ACTION.REGISTER_FAILED:
+    case ACTION.AUTH_ERROR:
+      localStorage.removeItem("token");
+      return state.merge({
         ...state,
         token: null,
         isAuthenticated: false,
-        loading: false,
-      };
+        loading: false
+      });
     default:
       return state;
   }
