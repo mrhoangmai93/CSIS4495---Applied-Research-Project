@@ -9,15 +9,6 @@
 // }
 // COLORS
 $color-primary: #ff8442;
-$color-primary-light: #ffb086;
-$color-primary-dark: #fd5800;
-
-$color-secondary: #4d9ec6;
-$color-secondary-light: #8dc1db;
-$color-secondary-dark: #2e7090;
-
-$color-tertiary-light: #58258e;
-$color-tertiary-dark: #26103d;
 
 $color-grey-light-1: #f7f7f7;
 $color-grey-light-2: #eee;
@@ -40,22 +31,12 @@ $gutter-horizontal: 6rem;
 
 .footer {
   background-color: $color-grey-dark-3;
-  padding: 10rem 0;
-  font-size: 1.4rem;
+  padding: 1rem 0;
+  font-size: 1rem;
   color: $color-grey-light-1;
-  font-family: titillium web, sans-serif;
-
-  // @include respond(tab-port) {
-  //   padding: 8rem 0;
-  // }
-
   &__logo-box {
     text-align: center;
     margin-bottom: 8rem;
-
-    // @include respond(tab-port) {
-    //   margin-bottom: 6rem;
-    // }
   }
 
   &__logo {
@@ -65,13 +46,6 @@ $gutter-horizontal: 6rem;
 
   &__navigation {
     border-top: 1px solid $color-grey-dark;
-    padding-top: 2rem;
-    display: inline-block;
-
-    // @include respond(tab-port) {
-    //   width: 100%;
-    //   text-align: center;
-    // }
   }
 
   &__list {
@@ -104,16 +78,7 @@ $gutter-horizontal: 6rem;
       transform: rotate(5deg) scale(1.3);
     }
   }
-
   &__copyright {
-    border-top: 1px solid $color-grey-dark;
-    padding-top: 2rem;
-    width: 80%;
-    float: right;
-
-    // @include respond(tab-port) {
-    //   width: 100%;
-    //   float: none;
-    // }
+    font-size: .9rem;
   }
 }

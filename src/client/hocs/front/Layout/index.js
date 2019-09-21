@@ -6,8 +6,10 @@ function withLayout(BaseComponent) {
   function Layout(props) {
     return (
       <>
-        <Header {...props} />
-        <BaseComponent {...props} />
+        <div className="content">
+          <Header {...props} />
+          <BaseComponent {...props} />
+        </div>
         <Footer {...props} />
       </>
     );
