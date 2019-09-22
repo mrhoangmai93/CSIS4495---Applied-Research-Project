@@ -5,6 +5,8 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import withLayout from '../../../hocs/front/Layout';
 import Banner from '../../../components/Banner';
+import ProductCard from '../../../components/ProductCard';
+
 // eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
   componentDidMount() {
@@ -15,8 +17,31 @@ class Index extends React.Component {
     return (
       <>
         <Banner appName="FoodByMe" />
-        <div className="container home-page">
-        </div>
+        <section className="container products mt-5">
+          <div className="row">
+            <div className="col-lg-4">
+              <ProductCard />
+            </div>
+            <div className="col-lg-4">
+              <ProductCard />
+            </div>
+            <div className="col-lg-4">
+              <ProductCard />
+            </div>
+            <div className="col-lg-4">
+              <ProductCard />
+            </div>
+            <div className="col-lg-4">
+              <ProductCard />
+            </div>
+            <div className="col-lg-4">
+              <ProductCard />
+            </div>
+            <div className="col-lg-4">
+              <ProductCard />
+            </div>
+          </div>
+        </section>
       </>
     );
   }
