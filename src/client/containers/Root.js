@@ -1,34 +1,34 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Provider } from "react-redux";
-import { Switch } from "react-router";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-import DevTools from "./DevTools";
-import Index from "./front/Index";
-import history from "../config/initializers/history";
-import FancyRoute from "../components/utilities/FancyRoutes";
-import Register from "./front/Register";
-import Login from "./front/Login";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
+import { Switch } from 'react-router';
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import DevTools from './DevTools';
+import Index from './front/Index';
+import history from '../config/initializers/history';
+import FancyRoute from '../components/utilities/FancyRoutes';
+import Register from './front/Register';
+import Login from './front/Login';
 
 const routes = [
   {
-    title: "Home",
-    path: "/",
+    title: 'Home',
+    path: '/',
     exact: true,
-    component: Index
+    component: Index,
   },
   {
-    title: "Register a new User",
-    path: "/register",
+    title: 'Register a new User',
+    path: '/register',
     exact: true,
-    component: Register
+    component: Register,
   },
   {
-    title: "Login",
-    path: "/login",
+    title: 'Login',
+    path: '/login',
     exact: true,
-    component: Login
-  }
+    component: Login,
+  },
 ];
 const Root = ({ store }) => (
   <Provider store={store}>
@@ -47,7 +47,7 @@ const Root = ({ store }) => (
 
 Root.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  store: PropTypes.object.isRequired
+  store: PropTypes.object.isRequired,
 };
 
 export default Root;
