@@ -1,22 +1,23 @@
-const express = require("express");
+const express = require('express');
+
 const router = express.Router();
-const { check, validationResult } = require("express-validator/check");
-const auth = require("../../middleware/auth");
+const { check, validationResult } = require('express-validator/check');
+const auth = require('../../middleware/auth');
 
 // Load models
-const Food = require("../../models/Food");
+const Food = require('../../models/Food');
 
 // @route   GET api/foods/all
 // @desc    Get all foods
 // @access  public
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     // TODO: sort to the closet location
     const foods = await Food.find();
     res.json(foods);
   } catch (err) {
     console.log(err.message);
-    res.status(500).send("Server Error!");
+    res.status(500).send('Server Error!');
   }
 });
 
@@ -24,56 +25,50 @@ router.get("/", async (req, res) => {
 // @desc    Get food by id
 // @access  public
 
-router.get("/:food_id", async (req, res) => {
+router.get('/:food_id', async (req, res) => {
   try {
     // TODO: sort to the closet location
     const food = await Food.findById(req.params.food_id);
     if (!food) {
-      return res.status(404).json({ msg: "Food not found" });
+      return res.status(404).json({ msg: 'Food not found' });
     }
 
     res.json(food);
   } catch (err) {
     console.log(err.message);
-    if (err.kind === "ObjectId") {
-      return res.status(404).json({ msg: "Food not found" });
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Food not found' });
     }
-    res.status(500).send("Server Error!");
+    res.status(500).send('Server Error!');
   }
 });
 // @route   POST api/foods/addfood
 // @desc    add a new food
 // @access  Private
 router.post(
-  "/addfood",
+  '/addfood',
   [
     auth,
     [
-      check("name", "Name is required")
+      check('title', 'Title is required')
         .not()
         .isEmpty(),
-      check("title", "Title is required")
+      check('description', 'Description is required')
         .not()
         .isEmpty(),
-      check("description", "Description is required")
+      check('price', 'Price is required')
         .not()
         .isEmpty(),
-      check("price", "Price is required")
+      check('quantity', 'Quantity is required')
         .not()
         .isEmpty(),
-      check("quantity", "Quantity is required")
+      check('images', 'Need at least one image')
         .not()
         .isEmpty(),
-      check("imageUrls", "Need at least one image")
+      check('pickingUpAddress', 'pickingUpAddress cannot be empty')
         .not()
         .isEmpty(),
-      check("categoryList", "Category cannot be empty")
-        .not()
-        .isEmpty(),
-      check("pickingUpAddress", "pickingUpAddress cannot be empty")
-        .not()
-        .isEmpty()
-    ]
+    ],
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -87,20 +82,19 @@ router.post(
       description,
       price,
       quantity,
-      imageUrls,
-      categoryList,
-      pickingUpAddress
+      images,
+      tags,
+      pickingUpAddress,
     } = req.body;
-    let images = [];
-    let categories = [];
+
     try {
       // Urls - Spilt into array
-      if (typeof imageUrls !== "undefined") {
-        images = imageUrls.split(",");
+      /*      if (typeof imageUrls !== 'undefined') {
+        images = imageUrls.split(',');
       }
-      if (typeof categoryList !== "undefined") {
-        categories = categoryList.split(",");
-      }
+      if (typeof categoryList !== 'undefined') {
+        categories = categoryList.split(',');
+      } */
 
       if (food_id) {
         // update the old one
@@ -116,20 +110,19 @@ router.post(
             price,
             quantity,
             images,
-            categories,
-            pickingUpAddress
+            tags,
+            pickingUpAddress,
           };
           food = await Food.findByIdAndUpdate(
             food_id,
             { $set: newFood },
-            { new: true }
+            { new: true },
           );
           return res.json(food);
-        } else {
-          return res.status(404).json({ msg: "Food not found" });
         }
+        return res.status(404).json({ msg: 'Food not found' });
       }
-      //create a new one
+      // create a new one
       const newFood = new Food({
         owner: req.user.id,
         name,
@@ -138,44 +131,44 @@ router.post(
         price,
         quantity,
         images,
-        categories,
-        pickingUpAddress
+        tags,
+        pickingUpAddress,
       });
       const food = await newFood.save();
       res.json(food);
     } catch (err) {
       console.log(err.message);
-      if (err.kind === "ObjectId") {
-        return res.status(404).json({ msg: "Food not found" });
+      if (err.kind === 'ObjectId') {
+        return res.status(404).json({ msg: 'Food not found' });
       }
-      res.status(500).send("Server Error!");
+      res.status(500).send('Server Error!');
     }
-  }
+  },
 );
 
 // @route       DELETE api/foods/delete/:food_id
 // @Desc        Delete a food
 // @Access      Private
 
-router.delete("/delete/:food_id", auth, async (req, res) => {
+router.delete('/delete/:food_id', auth, async (req, res) => {
   try {
     const food = await Food.findById(req.params.food_id);
 
     if (!food) {
-      return res.status(404).json({ msg: "Food not found" });
+      return res.status(404).json({ msg: 'Food not found' });
     }
 
     if (food.owner.toString() !== req.user.id) {
-      return res.status(401).json({ msg: "User not authorized" });
+      return res.status(401).json({ msg: 'User not authorized' });
     }
     await food.remove();
-    res.json({ msg: "Food removed!" });
+    res.json({ msg: 'Food removed!' });
   } catch (err) {
     console.log(err.message);
-    if (err.kind === "ObjectId") {
-      return res.status(404).json({ msg: "Food not found" });
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Food not found' });
     }
-    res.status(500).send("Server Error!");
+    res.status(500).send('Server Error!');
   }
 });
 
