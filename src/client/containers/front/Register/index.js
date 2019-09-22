@@ -1,103 +1,56 @@
 import React, { Fragment, useState } from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import withLayout from "../../../hocs/front/Layout";
+import InputWithHintEffect from "../../../components/utilities/inputs/InputWithHintEffect";
+import RippleButton from "../../../components/utilities/buttons/RippleButton";
 
-const Register = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    password2: ""
-  });
+import "./index.scss";
 
-  const { name, email, password, password2 } = formData;
+class Register extends React.Component {
+  componentDidMount() {
+    document.title = "Register new User";
+  }
 
-  const onChange = e =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  const onSubmit = e => {
-    e.preventDefault();
-    if (password !== password2) {
-    } else {
-    }
-  };
-  return (
-    <Fragment>
-      <div className="row">
-        <div className="register">
-          <div className="register__form">
-            <form className="form" onSubmit={e => onSubmit(e)}>
-              <div className="u-margin-bottom-medium">
-                <h2 className="heading-secondary">Register new account</h2>
-              </div>
+  render() {
+    // const [formData, setFormData] = useState({
+    //   name: "",
+    //   email: "",
+    //   password: "",
+    //   password2: ""
+    // });
 
-              <div className="form__group">
-                <input
-                  type="text"
-                  className="form__input"
-                  placeholder="Full name"
-                  id="name"
-                  name="name"
-                  value={name}
-                  onChange={e => onChange(e)}
-                  required
-                />
-                <label for="name" className="form__label">
-                  Full name
-                </label>
-              </div>
+    // const { name, email, password, password2 } = formData;
 
-              <div className="form__group">
-                <input
-                  type="email"
-                  className="form__input"
-                  placeholder="Email address"
-                  id="email"
-                  name="email"
-                  value={email}
-                  onChange={e => onChange(e)}
-                  required
-                />
-                <label for="email" className="form__label">
-                  Email address
-                </label>
-              </div>
-              <div className="form__group">
-                <input
-                  type="password"
-                  className="form__input"
-                  placeholder="Password"
-                  id="password"
-                  name="password"
-                  value={password}
-                  onChange={e => onChange(e)}
-                  required
-                />
-                <label for="password" className="form__label">
-                  Password
-                </label>
-              </div>
-              <div className="form__group">
-                <input
-                  type="password"
-                  className="form__input"
-                  placeholder="Confirm Password"
-                  id="password2"
-                  name="password2"
-                  value={password2}
-                  onChange={e => onChange(e)}
-                  required
-                />
-                <label for="password2" className="form__label">
-                  Confirm Password
-                </label>
-              </div>
-              <div className="form__group">
-                <button className="btn">Register</button>
-              </div>
-            </form>
+    // const onChange = e =>
+    //   setFormData({ ...formData, [e.target.name]: e.target.value });
+    // const onSubmit = e => {
+    //   e.preventDefault();
+    //   if (password !== password2) {
+    //   } else {
+    //   }
+    // };
+    return (
+      <Fragment>
+        <h1 className="mb-5 text-center banner-heading">Register a new User</h1>
+        <form className="form">
+          <InputWithHintEffect
+            placeholder="Full Name"
+            name="fullName"
+            size="big"
+          />
+          <div className="d-flex justify-content-center mt-3">
+            <RippleButton>Register</RippleButton>
           </div>
-        </div>
-      </div>
-    </Fragment>
-  );
-};
-
-export default Register;
+        </form>
+      </Fragment>
+    );
+  }
+}
+const mapStateToProps = (state, ownProps) => ({});
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {}
+  )(withLayout(Register))
+);
