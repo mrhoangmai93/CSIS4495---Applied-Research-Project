@@ -32,17 +32,36 @@ class Register extends React.Component {
     // };
     return (
       <Fragment>
-        <h1 className="mb-5 text-center banner-heading">Register a new User</h1>
-        <form className="form">
-          <InputWithHintEffect
-            placeholder="Full Name"
-            name="fullName"
-            size="big"
-          />
-          <div className="d-flex justify-content-center mt-3">
-            <RippleButton>Register</RippleButton>
-          </div>
-        </form>
+        <h1 className="mb-5 text-center banner-heading ">
+          Register a new User
+        </h1>
+        <div className="container mb-5">
+          <form className="form">
+            <InputWithHintEffect
+              placeholder="Full Name"
+              type="text"
+              name="fullName"
+            />
+            <InputWithHintEffect
+              placeholder="Email"
+              name="email"
+              type="email"
+            />
+            <InputWithHintEffect
+              placeholder="Password"
+              name="password1"
+              type="password"
+            />
+            <InputWithHintEffect
+              placeholder="Confirm Password"
+              type="password"
+              name="password2"
+            />
+            <div className="d-flex justify-content-center mt-3">
+              <RippleButton>Register</RippleButton>
+            </div>
+          </form>
+        </div>
       </Fragment>
     );
   }

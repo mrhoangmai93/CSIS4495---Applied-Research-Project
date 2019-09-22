@@ -27,12 +27,11 @@ class InputWithHintEffect extends React.Component {
           type={this.props.type || "text"}
           className="form__input"
           placeholder={this.props.placeholder}
-          className={this.props.size}
           id={this.props.name}
           name={this.props.name}
           //value={this.props.name}
         />
-        <label for="name" className="form__label">
+        <label for={this.props.name} className="form__label">
           {this.props.placeholder}
         </label>
       </div>

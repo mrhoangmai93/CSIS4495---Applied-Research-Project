@@ -2,19 +2,19 @@ $border-bottom-color: #2875c7;
 
 .form {
   &__group:not(:last-child) {
-    margin-bottom: 2rem;
+    margin-bottom: 0.5rem;
   }
 
   &__input {
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-family: inherit;
     color: inherit;
-    padding: 1.5rem 2rem;
+    padding: 1rem 2rem;
     border-radius: 2px;
     background-color: rgba(#fff, 0.5);
     border: none;
     border-bottom: 3px solid transparent;
-    width: 90%;
+    width: 50%;
     display: block;
     transition: all 0.3s;
 
@@ -34,8 +34,8 @@ $border-bottom-color: #2875c7;
   }
 
   &__label {
-    font-size: 1.2rem;
-    font-weight: 700;
+    font-size: 0.875rem;
+    font-weight: 300;
     margin-left: 2rem;
     margin-top: 0.7rem;
     display: block;
