@@ -19,25 +19,25 @@ class Index extends React.Component {
         <Banner appName="FoodByMe" />
         <section className="container products mt-5">
           <div className="row">
-            <div className="col-lg-4">
+            <div className="col-lg-4 col-md-6">
               <ProductCard />
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-4 col-md-6">
               <ProductCard />
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-4 col-md-6">
               <ProductCard />
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-4 col-md-6">
               <ProductCard />
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-4 col-md-6">
               <ProductCard />
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-4 col-md-6">
               <ProductCard />
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-4 col-md-6">
               <ProductCard />
             </div>
           </div>
