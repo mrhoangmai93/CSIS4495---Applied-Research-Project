@@ -7,7 +7,7 @@
   border-radius: 2px;
   font-size: 22px;
   background: #3f9921;
-  border-radius: 3px;
+  border-radius: 100px;
 
   /* Ripple magic */
   position: relative;
@@ -27,13 +27,13 @@
 }
 
 .button-ripple:after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
   width: 5px;
   height: 5px;
-  background: rgba(255, 255, 255, .5);
+  background: rgba(255, 255, 255, 0.5);
   opacity: 0;
   border-radius: 100%;
   transform: scale(1, 1) translate(-50%);

@@ -1,68 +1,64 @@
 import React, { Fragment, useState } from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import withLayout from "../../../hocs/front/Layout";
+import InputWithHintEffect from "../../../components/utilities/inputs/InputWithHintEffect";
+import RippleButton from "../../../components/utilities/buttons/RippleButton";
 
-const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: ""
-  });
+import "./index.scss";
+class Login extends React.Component {
+  componentDidMount() {
+    document.title = "Log into your account";
+  }
 
-  const { email, password } = formData;
+  render() {
+    // const [formData, setFormData] = useState({
+    //   name: "",
+    //   email: "",
+    //   password: "",
+    //   password2: ""
+    // });
 
-  const onChange = e =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  const onSubmit = e => {
-    e.preventDefault();
-  };
-  return (
-    <Fragment>
-      <div className="row">
-        <div className="login">
-          <div className="login__form">
-            <form className="form" onSubmit={e => onSubmit(e)}>
-              <div className="u-margin-bottom-medium">
-                <h2 className="heading-secondary">Log into an account</h2>
-              </div>
+    // const { name, email, password, password2 } = formData;
 
-              <div className="form__group">
-                <input
-                  type="email"
-                  className="form__input"
-                  placeholder="Email address"
-                  id="email"
-                  name="email"
-                  value={email}
-                  onChange={e => onChange(e)}
-                  required
-                />
-                <label for="email" className="form__label">
-                  Email address
-                </label>
-              </div>
-              <div className="form__group">
-                <input
-                  type="password"
-                  className="form__input"
-                  placeholder="Password"
-                  id="password"
-                  name="password"
-                  value={password}
-                  onChange={e => onChange(e)}
-                  required
-                />
-                <label for="password" className="form__label">
-                  Password
-                </label>
-              </div>
-
-              <div className="form__group">
-                <button className="btn">Login</button>
+    // const onChange = e =>
+    //   setFormData({ ...formData, [e.target.name]: e.target.value });
+    // const onSubmit = e => {
+    //   e.preventDefault();
+    //   if (password !== password2) {
+    //   } else {
+    //   }
+    // };
+    return (
+      <Fragment>
+        <section className="register">
+          <h1 className="mb-5 text-center">Log into you account</h1>
+          <div className="center_div">
+            <form className="form">
+              <InputWithHintEffect
+                placeholder="Email"
+                name="email"
+                type="email"
+              />
+              <InputWithHintEffect
+                placeholder="Password"
+                name="password"
+                type="password"
+              />
+              <div className="d-flex justify-content-left mt-3">
+                <RippleButton>Login</RippleButton>
               </div>
             </form>
           </div>
-        </div>
-      </div>
-    </Fragment>
-  );
-};
-
-export default Login;
+        </section>
+      </Fragment>
+    );
+  }
+}
+const mapStateToProps = (state, ownProps) => ({});
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {}
+  )(withLayout(Login))
+);

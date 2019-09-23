@@ -1,4 +1,5 @@
-$border-bottom-color: #2875c7;
+$color-invalid: #ff8442;
+$color-valid: #60b70a;
 
 .form {
   &__group:not(:last-child) {
@@ -14,18 +15,18 @@ $border-bottom-color: #2875c7;
     background-color: rgba(#fff, 0.5);
     border: none;
     border-bottom: 3px solid transparent;
-    width: 50%;
+    width: 100%;
     display: block;
     transition: all 0.3s;
 
     &:focus {
       outline: none;
       box-shadow: 0 1rem 2rem rgba(#000, 0.1);
-      border-bottom: 3px solid $border-bottom-color;
+      border-bottom: 3px solid $color-valid;
     }
 
     &:focus:invalid {
-      border-bottom: 3px solid #ff8442;
+      border-bottom: 3px solid $color-invalid;
     }
 
     &::-webkit-input-placeholder {

@@ -1,16 +1,16 @@
-import React from 'react';
-import './index.scss';
-import { Button } from 'react-bootstrap';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import withLayout from '../../../hocs/front/Layout';
-import Banner from '../../../components/Banner';
-import ProductCard from '../../../components/ProductCard';
-
+import React from "react";
+import "./index.scss";
+import { Button } from "react-bootstrap";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import withLayout from "../../../hocs/front/Layout";
+import Banner from "../../../components/Banner";
+import ProductCard from "../../../components/ProductCard";
+import HowItWorks from "../../../components/HowItWorks";
 // eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
   componentDidMount() {
-    document.title = 'FoodByMe - New way to enjoy your food';
+    document.title = "FoodByMe - New way to enjoy your food";
   }
 
   render() {
@@ -42,13 +42,16 @@ class Index extends React.Component {
             </div>
           </div>
         </section>
+        <HowItWorks />
       </>
     );
   }
 }
-const mapStateToProps = (state, ownProps) => ({
-});
+const mapStateToProps = (state, ownProps) => ({});
 
-
-export default withRouter(connect(mapStateToProps, {
-})(withLayout(Index)));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {}
+  )(withLayout(Index))
+);
