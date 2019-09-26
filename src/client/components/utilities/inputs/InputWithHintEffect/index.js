@@ -12,14 +12,6 @@ class InputWithHintEffect extends React.Component {
     };
   }
 
-  handleFocus = () => {
-    this.setState({ focused: true });
-  };
-
-  handleBlur = () => {
-    this.setState({ focused: false });
-  };
-
   render() {
     return (
       <div className="form__group">
@@ -30,6 +22,9 @@ class InputWithHintEffect extends React.Component {
           id={this.props.name}
           name={this.props.name}
           //value={this.props.name}
+          value={this.props.value}
+          onChange={this.props.onChange}
+          disabled={this.props.disabled}
         />
         <label for={this.props.name} className="form__label">
           {this.props.placeholder}

@@ -1,3 +1,6 @@
 # CSIS4495---Applied-Research-Project
+
+![Logo]()
 Final Project for CSIS4495
+
 # COOL AWESOME WEB APPLICATION ABOUT FOOD MARKETPLACE
