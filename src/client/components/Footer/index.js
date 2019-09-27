@@ -1,8 +1,8 @@
-import React from 'react';
-import './index.scss';
-import Logo from '../Logo';
+import React from "react";
+import "./index.scss";
+import Logo from "../Logo";
 
-const Footer = (props) => (
+const Footer = props => (
   <footer className="footer">
     <div className="container-fluid pl-5 pr-5">
       <div className="row">
@@ -50,25 +50,26 @@ const Footer = (props) => (
         <div className="col-12 footer__navigation pt-3 pb-3">
           <div className="d-flex flex-column justify-content-center align-items-center">
             <span className="footer__list mt-4 footer__copyright">
-                Built by
-              {' '}
+              Built by{" "}
               <a href="#" className="footer__link">
-                  Cuong Thinh Dao
+                Cuong Thinh Dao
               </a>
               <span>,</span>
               <a href="#" className="footer__link">
-                  Harmanjot Singh
+                Harmanjot Singh
               </a>
               <span>,</span>
               <a href="#" className="footer__link">
-                  Wanqi Zhao
+                Wanqi Zhao
               </a>
               <span>,</span>
               <a href="#" className="footer__link">
-                  Hoang Mai
+                Hoang Mai
               </a>
             </span>
-            <span className="mt-3 footer__copyright">Copyright &copy; 2019</span>
+            <span className="mt-3 footer__copyright">
+              Copyright &copy; 2019
+            </span>
           </div>
         </div>
       </div>

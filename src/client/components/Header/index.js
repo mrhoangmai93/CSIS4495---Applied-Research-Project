@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './index.scss';
-import Logo from '../Logo';
+import React from "react";
+import { Link } from "react-router-dom";
+import "./index.scss";
+import Logo from "../Logo";
 
-const Header = (props) => (
+const Header = props => (
   <nav className="navbar navbar-light">
     <div className="container">
       <Link to="/" className="navbar-brand">
@@ -12,18 +12,18 @@ const Header = (props) => (
       <ul className="nav pull-xs-right">
         <li className="nav-item">
           <Link to="/" className="nav-link">
-                        Home
+            Home
           </Link>
         </li>
         <li className="nav-item">
           <Link to="/login" className="nav-link">
-                        Sign in
+            Sign in
           </Link>
         </li>
 
         <li className="nav-item">
           <Link to="/register" className="nav-link">
-                        Sign up
+            Sign up
           </Link>
         </li>
       </ul>
