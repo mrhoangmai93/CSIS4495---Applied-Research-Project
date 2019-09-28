@@ -1,0 +1,9 @@
+.card{
+    text-align: center;
+}
+@media only screen and (max-width:900px)  {
+    .cardDeck{
+        display: flex;
+        flex-direction: column;
+    }   
+}

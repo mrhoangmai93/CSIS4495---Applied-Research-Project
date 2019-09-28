@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css?family=Lora:700|Roboto:400,500,700&display=swap');
+/**
+* * General styles
+**/
+html,#root {
+  height: 100%;
+}
+#root {
+  display: flex;
+  flex-direction: column;
+}
+body {
+  height: 100vh;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1, h2, h3, h4, h5 {
+  font-family: "Lora", serif;
+}
+
+/**
+* * Block: Inputs
+**/
+
+.content {
+  flex: 1 0 auto;
+}
+.footer {
+  flex-shrink: 0;
+}
