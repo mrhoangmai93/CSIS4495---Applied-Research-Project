@@ -9,11 +9,8 @@ import history from '../config/initializers/history';
 import FancyRoute from '../components/utilities/FancyRoutes';
 import Register from './front/Register';
 import Login from './front/Login';
-<<<<<<< HEAD
 import About from './front/About';
 import Contact from './front/Contact';
-=======
->>>>>>> 6499fa63b481c1d2a2c301d95cde7e7ac4add995
 
 const routes = [
   {
@@ -34,7 +31,6 @@ const routes = [
     exact: true,
     component: Login,
   },
-<<<<<<< HEAD
   {
     title: 'About Project',
     path: '/about',
@@ -47,8 +43,6 @@ const routes = [
     exact: true,
     component: Contact,
   }
-=======
->>>>>>> 6499fa63b481c1d2a2c301d95cde7e7ac4add995
 ];
 const Root = ({ store }) => (
   <Provider store={store}>

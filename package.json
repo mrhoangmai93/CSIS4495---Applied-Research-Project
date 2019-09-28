@@ -25,10 +25,6 @@
     "add": "^2.0.6",
     "axios": "^0.19.0",
     "bcryptjs": "^2.4.3",
-<<<<<<< HEAD
-=======
-    "bootstrap": "^4.3.1",
->>>>>>> 6499fa63b481c1d2a2c301d95cde7e7ac4add995
     "classnames": "^2.2.6",
     "config": "^3.2.2",
     "eslint": "^6.4.0",
