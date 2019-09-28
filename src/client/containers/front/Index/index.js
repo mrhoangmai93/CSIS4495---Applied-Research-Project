@@ -7,7 +7,11 @@ import withLayout from "../../../hocs/front/Layout";
 import Banner from "../../../components/Banner";
 import ProductCard from "../../../components/ProductCard";
 import HowItWorks from "../../../components/HowItWorks";
+<<<<<<< HEAD
 import Categories from "../../../components/Categories"
+=======
+import Testimonial from "../../../components/Testimonial";
+>>>>>>> 6499fa63b481c1d2a2c301d95cde7e7ac4add995
 // eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
   componentDidMount() {
@@ -43,9 +47,14 @@ class Index extends React.Component {
             </div>
           </div>
         </section>
+<<<<<<< HEAD
         <hr/>
         <Categories />
         <HowItWorks />
+=======
+        <HowItWorks />
+        <Testimonial />
+>>>>>>> 6499fa63b481c1d2a2c301d95cde7e7ac4add995
       </>
     );
   }
