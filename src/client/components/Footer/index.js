@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-import React from 'react';
-import './index.scss';
-import Logo from '../Logo';
-
-const Footer = (props) => (
-=======
 import React from "react";
 import "./index.scss";
 import Logo from "../Logo";
 
 const Footer = props => (
->>>>>>> 6499fa63b481c1d2a2c301d95cde7e7ac4add995
   <footer className="footer">
     <div className="container-fluid pl-5 pr-5">
       <div className="row">
@@ -19,20 +11,12 @@ const Footer = props => (
             <Logo theme="white" />
             <ul className="footer__list mt-3 pl-0">
               <li className="footer__item">
-<<<<<<< HEAD
-                <a href="/about" className="footer__link">
-=======
                 <a href="#" className="footer__link">
->>>>>>> 6499fa63b481c1d2a2c301d95cde7e7ac4add995
                   About Project
                 </a>
               </li>
               <li className="footer__item">
-<<<<<<< HEAD
-                <a href="/contact" className="footer__link">
-=======
                 <a href="#" className="footer__link">
->>>>>>> 6499fa63b481c1d2a2c301d95cde7e7ac4add995
                   Contact us
                 </a>
               </li>
@@ -66,27 +50,6 @@ const Footer = props => (
         <div className="col-12 footer__navigation pt-3 pb-3">
           <div className="d-flex flex-column justify-content-center align-items-center">
             <span className="footer__list mt-4 footer__copyright">
-<<<<<<< HEAD
-                Built by
-              {' '}
-              <a href="#" className="footer__link">
-                  Cuong Thinh Dao
-              </a>
-              <span>,</span>
-              <a href="#" className="footer__link">
-                  Harmanjot Singh
-              </a>
-              <span>,</span>
-              <a href="#" className="footer__link">
-                  Wanqi Zhao
-              </a>
-              <span>,</span>
-              <a href="#" className="footer__link">
-                  Hoang Mai
-              </a>
-            </span>
-            <span className="mt-3 footer__copyright">Copyright &copy; 2019</span>
-=======
               Built by{" "}
               <a href="#" className="footer__link">
                 Cuong Thinh Dao
@@ -107,7 +70,6 @@ const Footer = props => (
             <span className="mt-3 footer__copyright">
               Copyright &copy; 2019
             </span>
->>>>>>> 6499fa63b481c1d2a2c301d95cde7e7ac4add995
           </div>
         </div>
       </div>
