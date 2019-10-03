@@ -20,9 +20,30 @@ function* loadUser() {
     yield put({ type: ACTION.AUTH_ERROR });
   }
 }
-function* actionWatcher() {
-  yield takeLatest(ACTION.USER_LOADED, loadUser);
+function* loadUserWatcher() {
+  yield takeLatest(ACTION.LOAD_USER, loadUser);
 }
+
+function* registerUser({ name, email, password, role = "user" }) {
+  const config = {
+    header: {
+      "Content-type": "application/json"
+    }
+  };
+
+  const body = JSON.stringify({ name, email, password });
+  try {
+    const res = yield axios.post(`/api/users/register/${role}`, body, config);
+
+    yield put(registerUserSuccess(res));
+  } catch (err) {
+    yield put(registerUserError());
+  }
+}
+function* registerUserWatcher() {
+  yield takeEvery(ACTION.REGISTER_USER, registerUser);
+}
+
 export default function* rootSaga() {
-  yield all([actionWatcher()]);
+  yield all([loadUserWatcher()]);
 }
