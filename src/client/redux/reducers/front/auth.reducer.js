@@ -1,6 +1,6 @@
 import Immutable from "immutable";
 
-import * as ACTION from "../../actions/action.types";
+import * as ACTION from "../../actions/auth.action";
 
 // const initialState = {
 //   token: localStorage.getItem("token"),
@@ -19,16 +19,13 @@ export default function(state = initialState, action) {
   switch (type) {
     case ACTION.USER_LOADED:
       return state.merge({
-        ...state,
         isAuthenticated: true,
         loading: false,
         user: payload
       });
-    case ACTION.REGISTER_SUCCESS:
+    case ACTION.REGISTER_SUCCEEDED:
       localStorage.setItem("token", payload.token);
       return state.merge({
-        ...state,
-        ...payload,
         isAuthenticated: true,
         loading: false
       });
@@ -36,7 +33,6 @@ export default function(state = initialState, action) {
     case ACTION.AUTH_ERROR:
       localStorage.removeItem("token");
       return state.merge({
-        ...state,
         token: null,
         isAuthenticated: false,
         loading: false

@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import {
   all,
   takeEvery,
@@ -9,9 +7,9 @@ import {
   fork,
   select
 } from "redux-saga/effects";
-import * as ACTION from "../../actions/action.types";
-
-function* loadUser() {
+import * as ACTION from "../../actions/auth.action";
+import lib from '../../libs/auth.lib';
+/* function* loadUser() {
   try {
     const res = axios.get("/api/auth");
 
@@ -19,31 +17,21 @@ function* loadUser() {
   } catch (err) {
     yield put({ type: ACTION.AUTH_ERROR });
   }
-}
-function* loadUserWatcher() {
-  yield takeLatest(ACTION.LOAD_USER, loadUser);
-}
+} */
 
-function* registerUser({ name, email, password, role = "user" }) {
-  const config = {
-    header: {
-      "Content-type": "application/json"
-    }
-  };
+function* registerUser(payload) {
 
-  const body = JSON.stringify({ name, email, password });
   try {
-    const res = yield axios.post(`/api/users/register/${role}`, body, config);
+    const res = yield call(lib.register, payload);
 
-    yield put(registerUserSuccess(res));
+    yield put(ACTION.registerSuccess(res));
   } catch (err) {
-    yield put(registerUserError());
+    yield put(ACTION.registerFailed());
   }
-}
-function* registerUserWatcher() {
-  yield takeEvery(ACTION.REGISTER_USER, registerUser);
 }
 
 export default function* rootSaga() {
-  yield all([loadUserWatcher()]);
+  yield all([
+    takeEvery(ACTION.REGISTER_USER, registerUser),
+  ]);
 }
