@@ -1,5 +1,4 @@
-
-const DOCUMENT = 'AUTH_';
+const DOCUMENT = "AUTH_";
 //REgister User
 export const REGISTER_SUCCEEDED = Symbol(`${DOCUMENT}REGISTER_SUCCEEDED`);
 export const REGISTER_FAILED = Symbol(`${DOCUMENT}REGISTER_FAILED`);
@@ -11,18 +10,19 @@ export const USER_LOADED = Symbol(`${DOCUMENT}USER_LOADED`);
 //Authenticate User
 export const AUTH_ERROR = Symbol(`${DOCUMENT}AUTH_ERROR`);
 
-
-export const register = (payload) => ({
+export const register = payload => ({
   type: REGISTER_USER,
   payload
 });
-export const registerSuccess = (payload) => ({
+export const registerSuccess = payload => ({
   type: REGISTER_SUCCEEDED,
   payload
 });
-export const registerFailed = () => ({
-  type: REGISTER_FAILED
-})
+
+export const registerFailed = payload => ({
+  type: REGISTER_FAILED,
+  payload
+});
 /* // LOAD USER
 export const loadUser = () => {
   if (localStorage.token) {

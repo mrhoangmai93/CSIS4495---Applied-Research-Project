@@ -41,6 +41,7 @@ $color-valid: #60b70a;
     margin-top: 0.7rem;
     display: block;
     transition: all 0.3s;
+    color: $color-invalid;
   }
 
   &__input:placeholder-shown + &__label {

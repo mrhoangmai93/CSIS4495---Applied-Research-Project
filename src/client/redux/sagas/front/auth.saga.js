@@ -7,8 +7,10 @@ import {
   fork,
   select
 } from "redux-saga/effects";
-import * as ACTION from "../../actions/auth.action";
-import lib from '../../libs/auth.lib';
+import * as AUTH_ACTION from "../../actions/auth.action";
+import * as ALERT_ACTION from "../../actions/alert.action";
+
+import lib from "../../libs/auth.lib";
 /* function* loadUser() {
   try {
     const res = axios.get("/api/auth");
@@ -20,18 +22,26 @@ import lib from '../../libs/auth.lib';
 } */
 
 function* registerUser(payload) {
-
   try {
     const res = yield call(lib.register, payload);
 
-    yield put(ACTION.registerSuccess(res));
+    yield put(AUTH_ACTION.registerSuccess(res));
   } catch (err) {
-    yield put(ACTION.registerFailed());
+    const errors = yield err.response.data.errors;
+
+    yield errors.forEach(error => {
+      put(AUTH_ACTION.registerFailed(error.msg, "danger"));
+    });
   }
+}
+
+function* setAlert(data) {
+  yield put(ALERT_ACTION.setAlert(data));
 }
 
 export default function* rootSaga() {
   yield all([
-    takeEvery(ACTION.REGISTER_USER, registerUser),
+    takeLatest(AUTH_ACTION.REGISTER_USER, registerUser),
+    takeEvery(AUTH_ACTION.REGISTER_FAILED, setAlert)
   ]);
 }
