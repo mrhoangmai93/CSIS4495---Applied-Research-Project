@@ -22,11 +22,13 @@ import lib from "../../libs/auth.lib";
 } */
 
 function* registerUser(payload) {
+  console.log('yr');
   try {
     const res = yield call(lib.register, payload);
 
     yield put(AUTH_ACTION.registerSuccess(res));
   } catch (err) {
+    console.log(err);
     const errors = yield err.response.data.errors;
 
     yield errors.forEach(error => {
@@ -41,7 +43,7 @@ function* setAlert(data) {
 
 export default function* rootSaga() {
   yield all([
-    takeLatest(AUTH_ACTION.REGISTER_USER, registerUser),
-    takeEvery(AUTH_ACTION.REGISTER_FAILED, setAlert)
+    takeEvery(AUTH_ACTION.REGISTER_USER, registerUser),
+    takeLatest(AUTH_ACTION.REGISTER_FAILED, setAlert)
   ]);
 }

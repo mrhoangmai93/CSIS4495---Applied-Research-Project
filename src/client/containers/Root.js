@@ -53,7 +53,7 @@ const Root = ({ store }) => (
           <FancyRoute key={i} {...route} />
         ))}
         <DevTools />
-        <Redirect path="*" to="/" />
+        {/* <Redirect path="*" to="/" /> */}
       </Switch>
     </Router>
   </Provider>

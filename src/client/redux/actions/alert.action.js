@@ -1,11 +1,11 @@
 const DOCUMENT = "ALERT_";
 
 //Alert
-export const ALERT_SET = Symbol(`${DOCUMENT}SET`);
-export const ALERT_SET_DONE = Symbol(`${DOCUMENT}SET_DONE`);
+export const ALERT_SET = `${DOCUMENT}SET`;
+export const ALERT_SET_DONE = `${DOCUMENT}SET_DONE`;
 
-export const ALERT_REMOVE = Symbol(`${DOCUMENT}REMOVE`);
-export const ALERT_REMOVED = Symbol(`${DOCUMENT}REMOVED`);
+export const ALERT_REMOVE = `${DOCUMENT}REMOVE`;
+export const ALERT_REMOVED = `${DOCUMENT}REMOVED`;
 
 export const setAlert = payload => ({
   type: ALERT_SET,

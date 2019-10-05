@@ -2,7 +2,7 @@ const DOCUMENT = "AUTH_";
 //REgister User
 export const REGISTER_SUCCEEDED = Symbol(`${DOCUMENT}REGISTER_SUCCEEDED`);
 export const REGISTER_FAILED = Symbol(`${DOCUMENT}REGISTER_FAILED`);
-export const REGISTER_USER = Symbol(`${DOCUMENT}REGISTER_USER`);
+export const REGISTER_USER = `${DOCUMENT}REGISTER_USER`;
 
 //Load User Data
 export const USER_LOADED = Symbol(`${DOCUMENT}USER_LOADED`);
@@ -11,9 +11,10 @@ export const USER_LOADED = Symbol(`${DOCUMENT}USER_LOADED`);
 export const AUTH_ERROR = Symbol(`${DOCUMENT}AUTH_ERROR`);
 
 export const register = payload => ({
-  type: REGISTER_USER,
-  payload
-});
+      type: REGISTER_USER,
+      payload
+      });
+
 export const registerSuccess = payload => ({
   type: REGISTER_SUCCEEDED,
   payload

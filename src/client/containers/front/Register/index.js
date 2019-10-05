@@ -118,7 +118,10 @@ Register.propTypes = {
   setAlert: PropTypes.func.isRequired
 };
 
-const mapStateToProps = (state, ownProps) => ({});
+const mapStateToProps = (state, ownProps) => ({
+  auth: state.auth
+});
+
 export default withRouter(
   connect(
     mapStateToProps,

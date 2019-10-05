@@ -2,6 +2,12 @@ const express = require('express');
 const connectDB = require('./config/db');
 
 const app = express();
+var bodyParser = require("body-parser");
+const cors = require('cors');
+
+
+app.use(cors(),bodyParser.json(), bodyParser.urlencoded({ extended: true }));
+
 
 // connect to DB
 connectDB();
@@ -10,6 +16,10 @@ connectDB();
 app.use(express.json({ extended: false }));
 
 // Define Index
+app.get('/api', function(req, res) {
+    res.json('OK');
+});
+
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/userinfo', require('./routes/api/usersinfo'));
 app.use('/api/products', require('./routes/api/products'));

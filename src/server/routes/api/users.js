@@ -27,8 +27,10 @@ router.post(
     ).isLength({ min: 6 }),
   ],
   async (req, res) => {
+    try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log(errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -39,8 +41,6 @@ router.post(
     if (!(role === 'user' || role === 'seller')) {
       return res.status(400).json({ errors: [{ msg: 'Cannot complete' }] });
     }
-
-    try {
       let user = await User.findOne({ email });
 
       if (user) {
