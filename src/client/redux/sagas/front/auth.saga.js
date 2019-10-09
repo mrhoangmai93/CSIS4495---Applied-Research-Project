@@ -7,8 +7,8 @@ import {
   fork,
   select
 } from "redux-saga/effects";
-import * as AUTH_ACTION from "../../actions/auth.action";
 import * as ALERT_ACTION from "../../actions/alert.action";
+import * as AUTH_ACTION from "../../actions/auth.action";
 
 import lib from "../../libs/auth.lib";
 /* function* loadUser() {
@@ -22,28 +22,29 @@ import lib from "../../libs/auth.lib";
 } */
 
 function* registerUser(payload) {
-  console.log('yr');
   try {
-    const res = yield call(lib.register, payload);
-
+    const res = yield call(lib.register, payload.payload);
     yield put(AUTH_ACTION.registerSuccess(res));
   } catch (err) {
-    console.log(err);
     const errors = yield err.response.data.errors;
 
-    yield errors.forEach(error => {
-      put(AUTH_ACTION.registerFailed(error.msg, "danger"));
-    });
+    for (let i in errors) {
+      console.log(errors[i].msg);
+
+      yield put(
+        AUTH_ACTION.registerFailed({ msg: errors[i].msg, alertType: "danger" })
+      );
+    }
+    // errors.forEach(error => {
+
+    // });
   }
 }
 
-function* setAlert(data) {
-  yield put(ALERT_ACTION.setAlert(data));
-}
+// function* setAlert(data) {
+//   yield put(ALERT_ACTION.setAlert(data));
+// }
 
 export default function* rootSaga() {
-  yield all([
-    takeEvery(AUTH_ACTION.REGISTER_USER, registerUser),
-    takeLatest(AUTH_ACTION.REGISTER_FAILED, setAlert)
-  ]);
+  yield all([takeLatest(AUTH_ACTION.REGISTER_USER, registerUser)]);
 }
