@@ -26,6 +26,7 @@ export default function(state = initialState, action) {
     case ACTION.REGISTER_SUCCEEDED:
       localStorage.setItem("token", payload.token);
       return state.merge({
+        token: payload.token,
         isAuthenticated: true,
         loading: false
       });

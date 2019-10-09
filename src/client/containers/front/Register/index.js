@@ -5,10 +5,10 @@ import PropTypes from "prop-types";
 import withLayout from "../../../hocs/front/Layout";
 import InputWithHintEffect from "../../../components/utilities/inputs/InputWithHintEffect";
 import RippleButton from "../../../components/utilities/buttons/RippleButton";
-
 //actions
 import { setAlert } from "../../../redux/actions/alert.action";
 import { register } from "../../../redux/actions/auth.action";
+import Alert from "../../../components/utilities/Alert";
 
 import "./index.scss";
 
@@ -44,7 +44,10 @@ class Register extends React.Component {
     //   password2: this.state.password2
     // };
     if (password1 !== password2) {
-      this.props.setAlert("Password do not match!");
+      this.props.setAlert({
+        msg: "Password do not match!",
+        alertType: "danger"
+      });
     } else {
       this.props.register({ name, email, password: password1 });
     }
@@ -73,6 +76,8 @@ class Register extends React.Component {
         <section className="register">
           <h1 className="mb-5 text-center">Register a new User</h1>
           <div className="center_div">
+            <Alert />
+
             <form className="form" onSubmit={this.onSubmit}>
               <InputWithHintEffect
                 placeholder="Full Name"

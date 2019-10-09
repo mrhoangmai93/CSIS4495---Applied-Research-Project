@@ -13,8 +13,7 @@ import * as ALERT_ACTION from "../../actions/alert.action";
 import * as AUTH_ACTION from "../../actions/auth.action";
 
 function* alert(data) {
-  const { msg, alertType, timeout = 5000 } = yield data;
-  console.log(alertType);
+  const { msg, alertType, timeout = 5000 } = yield data.payload;
   const id = yield uuid.v4();
 
   yield put({
@@ -26,20 +25,20 @@ function* alert(data) {
     }
   });
 
-  yield put(removeAlert({ id, timeout }));
+  yield setTimeout(() => {
+    removeAlert(id);
+    //put({ type: ALERT_ACTION.ALERT_REMOVED, payload: id });
+  }, timeout);
 }
 
 function* removeAlert(data) {
-  const { id, timeout } = yield data;
-  yield setTimeout(
-    () => put({ type: ALERT_ACTION.ALERT_REMOVED, payload: id }),
-    timeout
-  );
+  console.log("remove");
 }
 
 export default function* rootSaga() {
   yield all([
-    takeEvery(ALERT_ACTION.ALERT_SET, alert),
-    takeEvery(AUTH_ACTION.REGISTER_FAILED, alert)
+    takeEvery(ALERT_ACTION.ALERT_SET, alert)
+    // takeEvery(AUTH_ACTION.REGISTER_FAILED, alert)
+    //   takeEvery(ALERT_ACTION.ALERT_REMOVED, removeAlert)
   ]);
 }
