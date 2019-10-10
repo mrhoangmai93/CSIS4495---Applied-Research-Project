@@ -11,19 +11,32 @@ import * as AUTH_ACTION from "../../actions/auth.action";
 import * as ALERT_ACTION from "../../actions/alert.action";
 
 import lib from "../../libs/auth.lib";
-/* function* loadUser() {
-  try {
-    const res = axios.get("/api/auth");
 
-    yield put({ type: ACTION.USER_LOADED, payload: res.data });
-  } catch (err) {
-    yield put({ type: ACTION.AUTH_ERROR });
+import setAuthToken from "../../../helpers/setAuthToken";
+
+/**
+ * Load User
+ */
+function* loadUser() {
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
   }
-} */
 
-function* registerUser(payload) {
   try {
-    const res = yield call(lib.register, payload.payload);
+    const res = yield call(lib.loadUser);
+
+    yield put({ type: AUTH_ACTION.USER_LOADED, payload: res.data });
+  } catch (err) {
+    yield put({ type: AUTH_ACTION.LOAD_ERROR });
+  }
+}
+/**
+ * Register a new user
+ * @param {name, email, password} data
+ */
+function* registerUser(data) {
+  try {
+    const res = yield call(lib.register, data.payload);
 
     yield put(AUTH_ACTION.registerSuccess(res.data));
   } catch (err) {
@@ -31,7 +44,11 @@ function* registerUser(payload) {
     yield put(AUTH_ACTION.registerFailed(errors));
   }
 }
-function* registerFail(data) {
+/**
+ * This function is called when an action is failed
+ * @param {*} data
+ */
+function* actionFail(data) {
   const errors = yield data.payload;
 
   for (let i in errors) {
@@ -40,13 +57,34 @@ function* registerFail(data) {
     );
   }
 }
-// function* setAlert(data) {
-//   yield put(ALERT_ACTION.setAlert(data));
-// }
+/**
+ * Login user
+ * @param {email, password} data
+ */
+function* loginUser(data) {
+  try {
+    const res = yield call(lib.login, data.payload);
+
+    yield put(AUTH_ACTION.loginSuccess(res.data));
+  } catch (err) {
+    const errors = yield err.response.data.errors;
+    yield put(AUTH_ACTION.loginFailed(errors));
+  }
+}
+/**
+ * Log out function
+ */
+function* logout() {}
 
 export default function* rootSaga() {
   yield all([
     takeLatest(AUTH_ACTION.REGISTER_USER, registerUser),
-    takeEvery(AUTH_ACTION.REGISTER_FAILED, registerFail)
+    takeEvery(AUTH_ACTION.REGISTER_FAILED, actionFail),
+    takeEvery(AUTH_ACTION.REGISTER_SUCCEEDED, loadUser),
+    takeEvery(AUTH_ACTION.LOGIN_SUCCEEDED, loadUser),
+    takeEvery(AUTH_ACTION.LOAD_USER, loadUser),
+    takeEvery(AUTH_ACTION.LOGIN_FAILED, actionFail),
+    takeLatest(AUTH_ACTION.LOGIN_USER, loginUser),
+    takeLatest(AUTH_ACTION.LOGOUT_USER, logout)
   ]);
 }

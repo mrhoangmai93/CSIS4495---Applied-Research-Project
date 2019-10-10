@@ -5,13 +5,16 @@ export const ALERT_SET = `${DOCUMENT}SET`;
 export const ALERT_SET_DONE = `${DOCUMENT}SET_DONE`;
 
 export const ALERT_REMOVE = `${DOCUMENT}REMOVE`;
+export const ALERT_REMOVE_ALL = `${DOCUMENT}REMOVE_ALL`;
 export const ALERT_REMOVED = `${DOCUMENT}REMOVED`;
 
 export const setAlert = payload => ({
   type: ALERT_SET,
   payload
 });
-
+export const removeAllAlert = () => ({
+  type: ALERT_REMOVE_ALL
+});
 // export const alertRemove = payload => ({
 //   type: ALERT_REMOVE,
 //   payload

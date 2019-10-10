@@ -11,10 +11,10 @@ const { check, validationResult } = require("express-validator");
 // Load User model
 const User = require("../../models/User");
 // @access  Public
-router.get("/", (req, res) => {
-  console.log(req.body);
-  res.json({ msg: "hello" });
-});
+// router.get("/", (req, res) => {
+//  // console.log(req.body);
+//   res.json({ msg: "hello" });
+// });
 // @route   POST api/users/register
 // @desc    Register user
 // @access  Public

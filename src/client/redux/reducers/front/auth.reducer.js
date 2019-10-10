@@ -24,6 +24,7 @@ export default function(state = initialState, action) {
         user: payload
       });
     case ACTION.REGISTER_SUCCEEDED:
+    case ACTION.LOGIN_SUCCEEDED:
       localStorage.setItem("token", payload.token);
       return state.merge({
         token: payload.token,
@@ -31,7 +32,10 @@ export default function(state = initialState, action) {
         loading: false
       });
     case ACTION.REGISTER_FAILED:
+    case ACTION.LOGIN_FAILED:
     case ACTION.AUTH_ERROR:
+    case ACTION.LOAD_ERROR:
+    case ACTION.LOGOUT_USER:
       localStorage.removeItem("token");
       return state.merge({
         token: null,

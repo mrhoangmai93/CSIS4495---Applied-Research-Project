@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from "react";
-import { withRouter } from "react-router-dom";
+import React, { Fragment } from "react";
+import { withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import withLayout from "../../../hocs/front/Layout";
@@ -71,6 +71,11 @@ class Register extends React.Component {
     //   } else {
     //   }
     // };
+    const { isAuthenticated } = this.props;
+
+    if (isAuthenticated) {
+      return <Redirect to="/" />;
+    }
     return (
       <Fragment>
         <section className="register">
@@ -120,11 +125,12 @@ class Register extends React.Component {
 
 Register.propTypes = {
   register: PropTypes.func.isRequired,
-  setAlert: PropTypes.func.isRequired
+  setAlert: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  auth: state.auth
+  isAuthenticated: state.auth.get("isAuthenticated")
 });
 
 export default withRouter(
