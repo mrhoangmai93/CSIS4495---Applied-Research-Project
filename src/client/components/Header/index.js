@@ -6,10 +6,11 @@ import { logout } from "../../redux/actions/auth.action";
 import "./index.scss";
 import Logo from "../Logo";
 
-const Header = ({ auth, logout }) => {
+const Header = ({ auth, cart, logout }) => {
   const isAuthenticated = auth.get("isAuthenticated");
   const loading = auth.get("loading");
   const userName = auth.getIn(["user", "name"]);
+  const foods = cart.get("foods") ? cart.get("foods") : [];
   //const user = auth
   const authLink = (
     <ul className="header__icon__list ">
@@ -24,7 +25,7 @@ const Header = ({ auth, logout }) => {
           className="header__icon__link"
           // onClick={this.handleCart.bind(this)}
         >
-          <i className="fa fa-shopping-cart" /> Cart (0{/*cart.length*/})
+          <i className="fa fa-shopping-cart" /> Cart ({foods.length})
         </Link>
       </li>
       <li className="header__icon__item">
@@ -72,11 +73,13 @@ const Header = ({ auth, logout }) => {
 };
 Header.propTypes = {
   logout: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  cart: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  cart: state.cart
 });
 
 export default connect(

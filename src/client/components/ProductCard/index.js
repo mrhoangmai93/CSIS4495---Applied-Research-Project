@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import SellerLinkWithReviews from "../SellerLinkWithReviews";
 import "./index.scss";
 import ButtonWithOnclick from "../utilities/buttons/ButtonWithOnclick";
-const ProductCard = ({ food }) => {
-  console.log(food);
+const ProductCard = props => {
+  const { food } = props;
   const tagList = food.tags.map(tag => (
     <li className="list-inline-item">{tag}</li>
   ));
@@ -36,14 +36,11 @@ const ProductCard = ({ food }) => {
         </div>
       </div>
       <div className="product-card-button center-block">
-        {/* <button
-        className="btn"
-        // onClick={() => props.addToCart(product._id, 1)}
-      >
-        Add to cart
-      </button> */}
-
-        <ButtonWithOnclick>Add to cart</ButtonWithOnclick>
+        <ButtonWithOnclick
+          onClick={() => props.addToCart({ foodId: food._id, quantity: 1 })}
+        >
+          Add to cart
+        </ButtonWithOnclick>
       </div>
     </div>
   );

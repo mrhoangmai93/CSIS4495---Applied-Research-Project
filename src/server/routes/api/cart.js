@@ -66,17 +66,15 @@ router.post("/add/:foodId/:quantity", auth, async (req, res) => {
     }
     // check if there are enough quantity to add to cart
     if (parseInt(food.quantity) > req.params.quantity) {
-      const cart = await Cart.findOne({ user: req.user.id }).populate(
-        "foods.foodId",
-        ["name", "title", "price"]
-      );
+      const cart = await Cart.findOne({ user: req.user.id });
       if (!cart) {
         return res.status(404).json({ msg: "Cart not found" });
       }
       // Check to see if item exists
       if (
-        cart.foods.filter(item => item.foodId.toString() === req.params.item)
-          .length === 0
+        cart.foods.filter(
+          item => item.foodId._id.toString() === req.params.foodId
+        ).length === 0
       ) {
         const newItem = {
           foodId: req.params.foodId,
@@ -119,10 +117,7 @@ router.post("/add/:foodId/:quantity", auth, async (req, res) => {
 router.delete("/delete/:foodId", auth, async (req, res) => {
   try {
     //const food = await Food.findOne({ _id: req.params.foodId });
-    const cart = await Cart.findOne({ user: req.user.id }).populate(
-      "foods.foodId",
-      ["name", "title", "price"]
-    );
+    const cart = await Cart.findOne({ user: req.user.id });
     if (!cart) {
       return res.status(404).json({ msg: "No cart found" });
     }

@@ -13,6 +13,7 @@ import About from "./front/About";
 import Contact from "./front/Contact";
 import setAuthToken from "../helpers/setAuthToken";
 import { loadUser } from "../redux/actions/auth.action";
+// import { loadCart } from "../redux/actions/cart.action";
 
 const routes = [
   {
@@ -54,6 +55,7 @@ if (localStorage.token) {
 const Root = ({ store }) => {
   useEffect(() => {
     store.dispatch(loadUser());
+    // store.dispatch(loadCart());
   }, []);
 
   return (

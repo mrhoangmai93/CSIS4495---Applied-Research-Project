@@ -11,12 +11,14 @@ import HowItWorks from "../../../components/HowItWorks";
 import Categories from "../../../components/Categories";
 import Testimonial from "../../../components/Testimonial";
 import { loadAllFoods } from "../../../redux/actions/food.action";
+import { loadCart, addToCart } from "../../../redux/actions/cart.action";
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Index extends React.Component {
   constructor(props) {
     super(props);
     this.props.loadAllFoods();
+    this.props.loadCart();
   }
   // useEffect(() => {
   //   store.dispatch(loadUser());
@@ -31,7 +33,7 @@ class Index extends React.Component {
 
     displayProducts = foods.valueSeq().map(food => (
       <div className="col-lg-4 col-md-6">
-        <ProductCard food={food} />
+        <ProductCard food={food} addToCart={this.props.addToCart} />
       </div>
     ));
 
@@ -39,30 +41,7 @@ class Index extends React.Component {
       <>
         <Banner appName="FoodByMe" />
         <section className="container products mt-5">
-          <div className="row">
-            {/* <div className="col-lg-4 col-md-6">
-              <ProductCard />
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <ProductCard />
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <ProductCard />
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <ProductCard />
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <ProductCard />
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <ProductCard />
-            </div>
-            <div className="col-lg-4 col-md-6">
-              <ProductCard />
-            </div> */}
-            {displayProducts}
-          </div>
+          <div className="row">{displayProducts}</div>
         </section>
         <HowItWorks />
         <Testimonial />
@@ -72,6 +51,8 @@ class Index extends React.Component {
 }
 Index.propTypes = {
   loadAllFoods: PropTypes.func.isRequired,
+  loadCart: PropTypes.func.isRequired,
+  addToCart: PropTypes.func.isRequired,
   foods: PropTypes.array
 };
 
@@ -82,6 +63,6 @@ const mapStateToProps = (state, ownProps) => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { loadAllFoods }
+    { loadAllFoods, loadCart, addToCart }
   )(withLayout(Index))
 );
