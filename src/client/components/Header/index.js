@@ -9,11 +9,26 @@ import Logo from "../Logo";
 const Header = ({ auth, logout }) => {
   const isAuthenticated = auth.get("isAuthenticated");
   const loading = auth.get("loading");
-
+  const userName = auth.getIn(["user", "name"]);
+  //const user = auth
   const authLink = (
-    <ul className="nav pull-xs-right">
-      <li className="nav-item">
-        <a onClick={logout} href="#!">
+    <ul className="header__icon__list ">
+      <li className="header__icon__item">
+        <Link className="header__icon__link" to="/account">
+          <i className="fa fa-user" /> {userName}
+        </Link>
+      </li>
+      <li className="header__icon__item">
+        <Link
+          to="/"
+          className="header__icon__link"
+          // onClick={this.handleCart.bind(this)}
+        >
+          <i className="fa fa-shopping-cart" /> Cart (0{/*cart.length*/})
+        </Link>
+      </li>
+      <li className="header__icon__item">
+        <a onClick={logout} href="#!" className="header__icon__link">
           <i className="fas fa-sign-out-alt"></i>{" "}
           <span className="hide-sm">Logout</span>
         </a>

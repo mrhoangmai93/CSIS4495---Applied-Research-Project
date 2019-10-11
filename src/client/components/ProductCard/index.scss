@@ -1,20 +1,25 @@
 .product-card-container {
   .pc-list-tags .list-inline-item {
-    font-size: .8rem;
+    font-size: 0.8rem;
     &:before {
-      content: '•';
-      margin-right: .2rem;
+      content: "•";
+      margin-right: 0.2rem;
     }
   }
   a {
     color: #000000;
     &:hover {
       text-decoration: none;
-      opacity: .6;
+      opacity: 0.6;
     }
   }
   &:hover {
-    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px 0px, rgba(23, 32, 38, 0.06) 0px 2px 4px 0px;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 8px 0px,
+      rgba(23, 32, 38, 0.06) 0px 2px 4px 0px;
   }
   border-radius: 3px;
+}
+
+.product-card-button {
+  margin: 1rem auto;
 }
