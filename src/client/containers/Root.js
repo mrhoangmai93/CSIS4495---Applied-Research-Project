@@ -13,6 +13,7 @@ import Login from "./front/Login";
 import About from "./front/About";
 import Contact from "./front/Contact";
 import Cart from "./cart";
+import UserProfile from "./userProfile";
 //helpers
 import setAuthToken from "../helpers/setAuthToken";
 //actions
@@ -55,6 +56,12 @@ const routes = [
     path: "/cart",
     exact: true,
     component: Cart
+  },
+  {
+    title: "User Account",
+    path: "/account",
+    exact: true,
+    component: UserProfile
   }
 ];
 

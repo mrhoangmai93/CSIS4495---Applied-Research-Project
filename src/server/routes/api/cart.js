@@ -8,11 +8,11 @@ const User = require("../../models/User");
 const Cart = require("../../models/Cart");
 const Food = require("../../models/Food");
 
+const Helper = require("../../helper/calculation");
 // @route   GET api/cart
 // @desc    Get cart of current user
 // @access  Private
 router.get("/", auth, async (req, res) => {
-  let subTotal = 0;
   try {
     const cart = await Cart.findOne({ user: req.user.id }).populate(
       "foods.foodId",
@@ -20,14 +20,12 @@ router.get("/", auth, async (req, res) => {
     );
     if (!cart) {
       // Create a new one
-      const newCart = new Cart({ user: req.user.id, subTotal });
+      const newCart = new Cart({ user: req.user.id, subTotal: 0 });
       await newCart.save();
       return res.json(newCart);
     }
-    cart.foods.forEach(food => {
-      subTotal += food.foodId.price * food.quantity;
-    });
-    cart.subTotal = subTotal;
+
+    cart.subTotal = Helper.calculateSubTotal(cart.foods);
     await cart.save();
     res.json(cart);
   } catch (err) {
@@ -100,6 +98,7 @@ router.post("/add/:foodId/:quantity", auth, async (req, res) => {
           parseInt(cart.foods[updateIndex].quantity) +
           parseInt(req.params.quantity);
         cart.foods[updateIndex].quantity = totalItem;
+
         // Save
         await cart.save();
         res.json(cart);
@@ -145,7 +144,7 @@ router.delete("/delete/:foodId", auth, async (req, res) => {
 
       // Splice out of array
       cart.foods.splice(removeIndex, 1);
-
+      cart.subTotal = Helper.calculateSubTotal(cart.foods);
       // Save
       await cart.save();
       res.json(cart);
