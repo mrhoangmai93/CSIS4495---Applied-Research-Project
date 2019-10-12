@@ -21,7 +21,7 @@ const Header = ({ auth, cart, logout }) => {
       </li>
       <li className="header__icon__item">
         <Link
-          to="/"
+          to="/cart"
           className="header__icon__link"
           // onClick={this.handleCart.bind(this)}
         >

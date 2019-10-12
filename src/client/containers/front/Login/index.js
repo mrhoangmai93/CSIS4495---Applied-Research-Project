@@ -8,9 +8,9 @@ import RippleButton from "../../../components/utilities/buttons/RippleButton";
 //actions
 import { setAlert } from "../../../redux/actions/alert.action";
 import { login } from "../../../redux/actions/auth.action";
+
 import Alert from "../../../components/utilities/Alert";
-import ImmutablePropTypes from "react-immutable-proptypes";
-import { Map, fromJS, List } from "immutable";
+
 import "./index.scss";
 
 class Login extends React.Component {

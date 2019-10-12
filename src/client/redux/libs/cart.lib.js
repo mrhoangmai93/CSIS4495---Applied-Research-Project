@@ -11,6 +11,11 @@ const lib = {
     const path = `/cart/add/${foodId}/${quantity}`;
     const res = await axios.post(path);
     return res;
+  },
+  async deleteFromCart({ foodId }) {
+    const path = `/cart/delete/${foodId}`;
+    const res = await axios.delete(path);
+    return res;
   }
 };
 

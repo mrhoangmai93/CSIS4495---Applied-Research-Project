@@ -12,17 +12,23 @@ const Food = require("../../models/Food");
 // @desc    Get cart of current user
 // @access  Private
 router.get("/", auth, async (req, res) => {
+  let subTotal = 0;
   try {
     const cart = await Cart.findOne({ user: req.user.id }).populate(
       "foods.foodId",
-      ["name", "title", "price"]
+      ["name", "title", "price", "images", "tags", "description"]
     );
     if (!cart) {
       // Create a new one
-      const newCart = new Cart({ user: req.user.id });
+      const newCart = new Cart({ user: req.user.id, subTotal });
       await newCart.save();
       return res.json(newCart);
     }
+    cart.foods.forEach(food => {
+      subTotal += food.foodId.price * food.quantity;
+    });
+    cart.subTotal = subTotal;
+    await cart.save();
     res.json(cart);
   } catch (err) {
     console.log(err.message);
@@ -117,24 +123,28 @@ router.post("/add/:foodId/:quantity", auth, async (req, res) => {
 router.delete("/delete/:foodId", auth, async (req, res) => {
   try {
     //const food = await Food.findOne({ _id: req.params.foodId });
-    const cart = await Cart.findOne({ user: req.user.id });
+    const cart = await Cart.findOne({ user: req.user.id }).populate(
+      "foods.foodId",
+      ["name", "title", "price", "images", "tags", "description"]
+    );
     if (!cart) {
       return res.status(404).json({ msg: "No cart found" });
     }
 
     // Check to see if item exists
     if (
-      cart.items.filter(item => item.foodId.toString() === req.params.foodId)
-        .length === 0
+      cart.foods.filter(
+        item => item.foodId._id.toString() === req.params.foodId
+      ).length === 0
     ) {
       return res.status(404).json({ msg: "No Food found" });
     } else {
-      const removeIndex = cart.items
-        .map(item => item.foodId.toString())
+      const removeIndex = cart.foods
+        .map(item => item.foodId._id.toString())
         .indexOf(req.params.foodId);
 
       // Splice out of array
-      cart.items.splice(removeIndex, 1);
+      cart.foods.splice(removeIndex, 1);
 
       // Save
       await cart.save();

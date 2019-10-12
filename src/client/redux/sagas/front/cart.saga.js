@@ -27,7 +27,6 @@ function* loadCart() {
  * Add to Cart
  */
 function* addToCart(data) {
-  console.log(data);
   try {
     const res = yield call(lib.addToCart, data.payload);
 
@@ -36,9 +35,24 @@ function* addToCart(data) {
     yield put({ type: CART_ACTION.ADD_ERROR });
   }
 }
+
+/**
+ * Add to Cart
+ */
+function* deleteFromCart(data) {
+  console.log(data);
+  try {
+    const res = yield call(lib.deleteFromCart, data.payload);
+
+    yield put({ type: CART_ACTION.DELETED_ITEM, payload: res.data });
+  } catch (err) {
+    yield put({ type: CART_ACTION.DELETE_ERROR });
+  }
+}
 export default function* rootSaga() {
   yield all([
     takeEvery(CART_ACTION.LOAD, loadCart),
-    takeEvery(CART_ACTION.ADD, addToCart)
+    takeEvery(CART_ACTION.ADD, addToCart),
+    takeEvery(CART_ACTION.DELETE_ITEM, deleteFromCart)
   ]);
 }

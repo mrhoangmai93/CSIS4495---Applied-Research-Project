@@ -1,0 +1,27 @@
+$color-grey-dark: #777;
+$color-grey-dark-2: #999;
+$color-grey-dark-3: #333;
+$color-grey-light-1: #f7f7f7;
+$color-grey-light-2: #eee;
+$color-white: #fff;
+
+.cart-section {
+  background-color: $color-grey-light-2;
+}
+.cart_table {
+  margin: 3rem auto;
+  background-color: $color-white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+}
+.cart_summary {
+  margin: 3rem auto;
+  background-color: $color-white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.button_checkout {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 1rem;
+}

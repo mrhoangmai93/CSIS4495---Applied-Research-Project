@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Provider } from "react-redux";
 import { Switch } from "react-router";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+//components
 import DevTools from "./DevTools";
 import Index from "./front/Index";
 import history from "../config/initializers/history";
@@ -11,7 +12,10 @@ import Register from "./front/Register";
 import Login from "./front/Login";
 import About from "./front/About";
 import Contact from "./front/Contact";
+import Cart from "./cart";
+//helpers
 import setAuthToken from "../helpers/setAuthToken";
+//actions
 import { loadUser } from "../redux/actions/auth.action";
 // import { loadCart } from "../redux/actions/cart.action";
 
@@ -45,6 +49,12 @@ const routes = [
     path: "/contact",
     exact: true,
     component: Contact
+  },
+  {
+    title: "Cart",
+    path: "/cart",
+    exact: true,
+    component: Cart
   }
 ];
 

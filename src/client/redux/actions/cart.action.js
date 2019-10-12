@@ -8,6 +8,10 @@ export const LOAD_ERROR = `${DOCUMENT}LOAD_ERROR`;
 export const ADD = `${DOCUMENT}ADD`;
 export const ADDED = `${DOCUMENT}ADDED`;
 export const ADD_ERROR = `${DOCUMENT}ADD_ERROR`;
+//
+export const DELETE_ITEM = `${DOCUMENT}DELETE_ITEM`;
+export const DELETED_ITEM = `${DOCUMENT}DELETED_ITEM`;
+export const DELETE_ERROR = `${DOCUMENT}DELETE_ERROR`;
 
 //Load cart
 export const loadCart = () => ({
@@ -17,5 +21,11 @@ export const loadCart = () => ({
 //Load cart
 export const addToCart = payload => ({
   type: ADD,
+  payload
+});
+
+//Delete from cart
+export const deleteFromCart = payload => ({
+  type: DELETE_ITEM,
   payload
 });

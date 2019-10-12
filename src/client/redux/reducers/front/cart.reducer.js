@@ -8,6 +8,7 @@ export default function(state = initialState, action) {
   switch (type) {
     case ACTION.LOADED:
     case ACTION.ADDED:
+    case ACTION.DELETED_ITEM:
       return state.merge(payload);
 
     case ACTION.LOAD_ERROR:
