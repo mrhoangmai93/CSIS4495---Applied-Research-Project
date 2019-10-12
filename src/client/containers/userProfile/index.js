@@ -1,15 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import classnames from "classnames";
-//import { getProfile, deletePayment } from "../../actions/profileActions";
+import withLayout from "../../hocs/front/Layout";
+
+import { loadProfile } from "../../redux/actions/userProfile.action";
 import AddressContent from "../../components/UserProfile/AddressContent";
 //import { getOrder } from "../../actions/orderActions";
 import OrderContent from "../../components/UserProfile/OrderContent";
 import PaymentContent from "../../components/UserProfile/PaymentContent";
 import SettingContent from "../../components/UserProfile/SettingContent";
 import isEmpty from "../../../validation/is-empty";
+import ButtonWithOnClick from "../../components/utilities/buttons/ButtonWithOnclick";
+
+import "./index.scss";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -21,6 +26,7 @@ class UserProfile extends Component {
       displayOrder: false,
       active: true
     };
+    this.props.loadProfile();
 
     // this.onChange = this.onChange.bind(this);
     // this.onSubmit = this.onSubmit.bind(this);
@@ -31,8 +37,17 @@ class UserProfile extends Component {
   }
 
   render() {
-    const { auth, orders } = this.props;
-    const { profile, loading } = this.props.profile;
+    const { auth } = this.props;
+    const { profile } = this.props;
+    const address = profile.get("address");
+    const user = profile.get("user");
+    const payments = profile.get("payments");
+
+    console.log(profile);
+    //const profile = {};
+    const orders = {};
+
+    const loading = false;
     //console.log(orders);
     const {
       displayAddress,
@@ -47,15 +62,19 @@ class UserProfile extends Component {
     let securityContent;
     //console.log(auth);
     if (displayAddress) {
-      if (Object.keys(profile.address).length > 0) {
+      if (!isEmpty(address)) {
         addressContent = <AddressContent address={profile.address} />;
       } else {
         addressContent = (
           <div>
-            <p className="lead text-muted">Welcome {auth.user.name}</p>
-            <p>You have not yet setup your address,please add some info</p>
+            <p className="lead text-muted">Welcome {user.name}</p>
+            <p>
+              You have not yet setup your address, please add some information!
+            </p>
             <Link to="edit-address">
-              <button className="btn btn-default">Create Address</button>
+              <ButtonWithOnClick className="btn btn-default">
+                Create Address
+              </ButtonWithOnClick>
             </Link>
           </div>
         );
@@ -67,34 +86,38 @@ class UserProfile extends Component {
       } else {
         orderContent = (
           <div>
-            <p className="lead text-muted">Welcome {auth.user.name}</p>
+            <p className="lead text-muted">Welcome {user.name}</p>
             <p>You do not have any order</p>
           </div>
         );
       }
     }
     if (displayPayment) {
-      if (!isEmpty(profile.payment)) {
+      if (!isEmpty(payments)) {
         paymentContent = (
           <PaymentContent
-            payments={profile.payment}
+            payments={payments}
             deletePayment={this.props.deletePayment}
           />
         );
       } else {
         paymentContent = (
           <div>
-            <p className="lead text-muted">Welcome {auth.user.name}</p>
-            <p>You have not yet setup your Payments, please add some info</p>
+            <p className="lead text-muted">Welcome {user.name}</p>
+            <p>
+              You have not yet setup your Payments, please add some information
+            </p>
             <Link to="edit-payment">
-              <button className="btn btn-default">Create Payment</button>
+              <ButtonWithOnClick className="btn btn-default">
+                Create Payment
+              </ButtonWithOnClick>
             </Link>
           </div>
         );
       }
     }
 
-    securityContent = displaySecurity ? <SettingContent auth={auth} /> : "";
+    securityContent = displaySecurity ? <SettingContent auth={user} /> : "";
 
     let profileContent;
 
@@ -104,18 +127,16 @@ class UserProfile extends Component {
       profileContent = (
         <div>
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-6">
               <div className="row">
-                <Link to="/">Home</Link>
-                &nbsp;>&nbsp;
-                <div className="special-color"> My Account</div>
+                <h1>My Account</h1>
               </div>
             </div>
-            <div className="col-md-6" />
+            <div className="col-6" />
           </div>
           <div className="row">
-            <div className="col-md-3" />
-            <div className="col-md-3">
+            <div className="col-3" />
+            <div className="col-3">
               <div
                 className={classnames(
                   " account-setting d-flex justify-content-center",
@@ -137,7 +158,7 @@ class UserProfile extends Component {
                 &nbsp;My Addresses
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-3">
               <div
                 className={classnames(
                   " account-setting d-flex justify-content-center",
@@ -161,8 +182,8 @@ class UserProfile extends Component {
             </div>
           </div>
           <div className="row">
-            <div className="col-md-3" />
-            <div className="col-md-3">
+            <div className="col-3" />
+            <div className="col-3">
               <div
                 className={classnames(
                   " account-setting d-flex justify-content-center",
@@ -184,7 +205,7 @@ class UserProfile extends Component {
                 &nbsp;Login & Security
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-3">
               <div
                 className={classnames(
                   " account-setting d-flex justify-content-center",
@@ -212,14 +233,14 @@ class UserProfile extends Component {
     }
 
     return (
-      <div className="profile">
+      <section className="profile">
         <div className="container">
           <div className="row">
-            <div className="col-md-12">{profileContent}</div>
+            <div className="col-12">{profileContent}</div>
           </div>
           <div className="row">
-            <div className="col-md-3" />
-            <div className="col-md-9">
+            <div className="col-3" />
+            <div className="col-9">
               {" "}
               {addressContent}
               {orderContent}
@@ -228,14 +249,14 @@ class UserProfile extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     );
   }
 }
 
 UserProfile.propTypes = {
   //   getOrder: PropTypes.func.isRequired,
-  //   getProfile: PropTypes.func.isRequired,
+  loadProfile: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
   orders: PropTypes.object.isRequired
@@ -243,11 +264,13 @@ UserProfile.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  profile: state.profile,
+  profile: state.userProfile,
   orders: state.orders
 });
 
-export default connect(
-  mapStateToProps,
-  {}
-)(UserProfile);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { loadProfile }
+  )(withLayout(UserProfile))
+);

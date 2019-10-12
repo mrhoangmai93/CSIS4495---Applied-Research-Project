@@ -69,7 +69,7 @@ class Cart extends Component {
       <section className="cart-section">
         <div className="container">
           <div className="row">
-            <div className="col-9">
+            <div className="col-12 col-lg-9">
               <div className="cart_table">
                 <div className="breadcrumb">
                   <ol className="breadcrumb">
@@ -82,7 +82,7 @@ class Cart extends Component {
                 </ButtonWithOnclick>
               </div>
             </div>
-            <div className="col-3 cart_summary">
+            <div className="col-12 col-lg-3 cart_summary">
               <CartSummary subTotal={subTotal} />
             </div>
           </div>

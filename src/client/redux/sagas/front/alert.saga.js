@@ -5,12 +5,12 @@ import {
   put,
   call,
   fork,
+  delay,
   select
 } from "redux-saga/effects";
 import uuid from "uuid";
 
 import * as ALERT_ACTION from "../../actions/alert.action";
-import * as AUTH_ACTION from "../../actions/auth.action";
 
 function* alert(data) {
   const { msg, alertType, timeout = 5000 } = yield data.payload;
@@ -24,11 +24,11 @@ function* alert(data) {
       id
     }
   });
-
-  yield setTimeout(() => {
-    removeAlert(id);
-    //put({ type: ALERT_ACTION.ALERT_REMOVED, payload: id });
-  }, timeout);
+  console.log("tesst1 ");
+  yield delay(timeout);
+  console.log("tesst2 ");
+  removeAlert(id);
+  yield put({ type: ALERT_ACTION.ALERT_REMOVED, payload: id });
 }
 
 function* removeAlert(data) {

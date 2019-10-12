@@ -14,6 +14,7 @@ import About from "./front/About";
 import Contact from "./front/Contact";
 import Cart from "./cart";
 import UserProfile from "./userProfile";
+import EditAddress from "./front/edit-account/EditAddress";
 //helpers
 import setAuthToken from "../helpers/setAuthToken";
 //actions
@@ -62,6 +63,12 @@ const routes = [
     path: "/account",
     exact: true,
     component: UserProfile
+  },
+  {
+    title: "Edit Your Address",
+    path: "/edit-address",
+    exact: true,
+    component: EditAddress
   }
 ];
 

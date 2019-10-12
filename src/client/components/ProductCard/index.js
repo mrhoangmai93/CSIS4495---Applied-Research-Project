@@ -6,6 +6,7 @@ import "./index.scss";
 import ButtonWithOnclick from "../utilities/buttons/ButtonWithOnclick";
 const ProductCard = props => {
   const { food } = props;
+  console.log(food);
   const tagList = food.tags.map(tag => (
     <li className="list-inline-item">{tag}</li>
   ));

@@ -30,10 +30,35 @@ router.get("/", auth, async (req, res) => {
   }
 });
 // @route   POST api/userinfo
+// @desc    CREATE user information
+// @access  Private
+router.post("/", [auth], async (req, res) => {
+  try {
+    let userinfo = await UserInfo.findOne({ user: req.user.id });
+
+    if (userinfo) {
+      return res.json(userinfo);
+    }
+    //build userInfo object
+    const userInf = {};
+
+    userInf.user = req.user.id;
+    userInf.address = {};
+    userInf.payments = [];
+    userinfo = new UserInfo(userInf);
+
+    await userinfo.save();
+    res.json(userinfo);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server Error!");
+  }
+});
+// @route   POST api/userinfo/address
 // @desc    CREATE or UPDATE user information
 // @access  Private
 router.post(
-  "/",
+  "/address",
   [
     auth,
     [

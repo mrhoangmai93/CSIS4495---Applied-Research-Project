@@ -1,0 +1,28 @@
+$color-grey-light-1: #f7f7f7;
+.profile {
+  padding: 2rem;
+  margin: 0 auto;
+  background-color: $color-grey-light-1;
+}
+
+.account-setting {
+  color: black;
+  font-size: 18px;
+  width: 200px;
+  height: 80px;
+  align-items: center;
+  -webkit-align-items: center;
+  border: #999 1px solid;
+  border-radius: 10px;
+  margin: 20px;
+  background: #e8fdd4;
+}
+.account-setting a {
+  color: black;
+}
+.account-setting:hover {
+  background: #ffe7db;
+}
+.special-color {
+  color: #44cc00;
+}

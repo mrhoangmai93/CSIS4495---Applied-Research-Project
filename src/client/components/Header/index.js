@@ -11,6 +11,9 @@ const Header = ({ auth, cart, logout }) => {
   const loading = auth.get("loading");
   const userName = auth.getIn(["user", "name"]);
   const foods = cart.get("foods") ? cart.get("foods") : [];
+
+  let numberItem = 0;
+  foods.forEach(f => (numberItem += f.quantity));
   //const user = auth
   const authLink = (
     <ul className="header__icon__list ">
@@ -25,7 +28,7 @@ const Header = ({ auth, cart, logout }) => {
           className="header__icon__link"
           // onClick={this.handleCart.bind(this)}
         >
-          <i className="fa fa-shopping-cart" /> Cart ({foods.length})
+          <i className="fa fa-shopping-cart" /> Cart ({numberItem})
         </Link>
       </li>
       <li className="header__icon__item">

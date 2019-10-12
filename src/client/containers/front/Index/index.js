@@ -28,10 +28,11 @@ class Index extends React.Component {
   }
 
   render() {
-    const foods = this.props.foods ? this.props.foods : [];
+    const foods = this.props.foods ? this.props.foods : {};
     let displayProducts;
+    console.log(foods.get("list"));
 
-    displayProducts = foods.valueSeq().map(food => (
+    displayProducts = foods.get("list").map(food => (
       <div className="col-lg-4 col-md-6">
         <ProductCard food={food} addToCart={this.props.addToCart} />
       </div>

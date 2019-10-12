@@ -9,28 +9,23 @@ const UsersInfoSchema = new Schema({
   },
   address: {
     address1: {
-      type: String,
-      required: true
+      type: String
     },
     address2: {
       type: String
     },
     city: {
-      type: String,
-      required: true
+      type: String
     },
     state: {
-      type: String,
-      required: true
+      type: String
     },
     zipCode: {
-      type: String,
-      required: true
+      type: String
     }
   },
   phone: {
-    type: String,
-    required: true
+    type: String
   },
   // shippingaddress: {
   //   add1: {
