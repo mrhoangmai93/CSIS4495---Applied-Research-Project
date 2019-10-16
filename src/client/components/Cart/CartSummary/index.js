@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 // import "./index.scss";
-import ButtonWithOnclick from "../../../components/utilities/buttons/ButtonWithOnclick";
+import ButtonDefault from "../../utilities/buttons/ButtonDefault";
 
 const CartSummary = props => {
   const { subTotal } = props;
@@ -31,9 +31,7 @@ const CartSummary = props => {
       </div>
       <div className="button_checkout center-block">
         <Link to="/checkout">
-          <ButtonWithOnclick className="float-right">
-            Check out
-          </ButtonWithOnclick>
+          <ButtonDefault className="float-right">Check out</ButtonDefault>
         </Link>
       </div>
     </div>

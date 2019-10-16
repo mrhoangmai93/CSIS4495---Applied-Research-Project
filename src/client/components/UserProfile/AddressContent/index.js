@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-
+import ButtonDefault from "../../utilities/buttons/ButtonDefault";
+import "./index.scss";
 const AddressContent = props => {
-  const { address } = props;
-
+  const { address, phone } = props;
   return (
-    <div>
+    <section className="address-section">
       <h5 className="display-5 text-center">Your Address</h5>
       <table className="table table-hover ">
         <tbody>
@@ -32,7 +32,7 @@ const AddressContent = props => {
             <td>
               <strong>Zip Code</strong>
             </td>
-            <td>{address.zip} </td>
+            <td>{address.zipCode} </td>
           </tr>
           <tr>
             <td>
@@ -44,22 +44,23 @@ const AddressContent = props => {
             <td>
               <strong>Phone</strong>
             </td>
-            <td> {address.phone}</td>
+            <td> {phone}</td>
           </tr>
         </tbody>
       </table>
       <div className="btn-group mb-4" role="group">
-        <Link to="edit-address">
-          <button className="btn btn-default">
+        <Link to={{ pathname: "/account/edit-address", address, phone }}>
+          <ButtonDefault>
             <i className="fas fa-map-marker-alt mr-1" />
             Edit Address
-          </button>
+          </ButtonDefault>
         </Link>
       </div>
-    </div>
+    </section>
   );
 };
 AddressContent.propTypes = {
-  address: PropTypes.object.isRequired
+  address: PropTypes.object.isRequired,
+  phone: PropTypes.string
 };
 export default AddressContent;

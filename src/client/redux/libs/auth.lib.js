@@ -22,6 +22,13 @@ const lib = {
     const res = await axios.get(path);
 
     return res;
+  },
+  async changePassword(data) {
+    const path = `/users/changepassword`;
+    const { oldPassword, password } = data;
+    const res = await axios.post(path, { oldPassword, password });
+
+    return res;
   }
 };
 

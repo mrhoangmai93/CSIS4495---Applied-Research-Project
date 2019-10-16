@@ -12,7 +12,12 @@ export default function(state = initialState, action) {
       });
     // return [...state, payload];
     case ACTION.ALERT_REMOVED:
-      return state.filter(alert => alert.id !== payload);
+      return state.filter(alert => {
+        console.log(alert);
+        // return true;
+        return alert.payload.id !== payload;
+      });
+    // return state.merge(newarr);
     default:
       return state;
   }

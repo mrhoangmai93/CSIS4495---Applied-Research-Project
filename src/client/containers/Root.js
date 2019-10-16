@@ -14,7 +14,10 @@ import About from "./front/About";
 import Contact from "./front/Contact";
 import Cart from "./cart";
 import UserProfile from "./userProfile";
-import EditAddress from "./front/edit-account/EditAddress";
+import EditAddress from "./userProfile/edit-account/EditAddress";
+import EditPayment from "./userProfile/edit-account/EditPayment";
+import ChangePassword from "./userProfile/edit-account/ChangePassword";
+
 //helpers
 import setAuthToken from "../helpers/setAuthToken";
 //actions
@@ -66,9 +69,21 @@ const routes = [
   },
   {
     title: "Edit Your Address",
-    path: "/edit-address",
+    path: "/account/edit-address",
     exact: true,
     component: EditAddress
+  },
+  {
+    title: "Edit Your Payment",
+    path: "/account/edit-payment",
+    exact: true,
+    component: EditPayment
+  },
+  {
+    title: "Change Password",
+    path: "/account/change-password",
+    exact: true,
+    component: ChangePassword
   }
 ];
 

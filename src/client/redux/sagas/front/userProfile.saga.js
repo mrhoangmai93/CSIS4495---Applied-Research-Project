@@ -8,6 +8,7 @@ import {
   select
 } from "redux-saga/effects";
 import * as USER_PROFILE_ACTION from "../../actions/userProfile.action";
+import * as ALERT_ACTION from "../../actions/alert.action";
 
 import lib from "../../libs/userProfile.lib";
 
@@ -21,38 +22,62 @@ function* loadProfile() {
     yield put({ type: USER_PROFILE_ACTION.LOADED, payload: res.data });
   } catch (err) {
     yield put({ type: USER_PROFILE_ACTION.LOAD_ERROR });
+    const error = yield err.response.data;
+
+    yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
   }
 }
-//   /**
-//    * Add to Cart
-//    */
-//   function* addToCart(data) {
-//     try {
-//       const res = yield call(lib.addToCart, data.payload);
+/**
+ * Edit user Address
+ */
+function* editAddress(data) {
+  try {
+    const res = yield call(lib.editAddress, data.payload);
 
-//       yield put({ type: USER_PROFILE_ACTION.ADDED, payload: res.data });
-//     } catch (err) {
-//       yield put({ type: USER_PROFILE_ACTION.ADD_ERROR });
-//     }
-//   }
+    yield put({ type: USER_PROFILE_ACTION.EDITED_ADDRESS, payload: res.data });
+  } catch (err) {
+    yield put({ type: USER_PROFILE_ACTION.EDIT_ADDRESS_ERROR });
+    const error = yield err.response.data;
 
-//   /**
-//    * Add to Cart
-//    */
-//   function* deleteFromCart(data) {
-//     console.log(data);
-//     try {
-//       const res = yield call(lib.deleteFromCart, data.payload);
+    yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
+  }
+}
+/**
+ * Edit user Address
+ */
+function* editPayment(data) {
+  try {
+    const res = yield call(lib.editPayment, data.payload);
 
-//       yield put({ type: USER_PROFILE_ACTION.DELETED_ITEM, payload: res.data });
-//     } catch (err) {
-//       yield put({ type: USER_PROFILE_ACTION.DELETE_ERROR });
-//     }
-//   }
+    yield put({ type: USER_PROFILE_ACTION.EDITED_PAYMENT, payload: res.data });
+  } catch (err) {
+    yield put({ type: USER_PROFILE_ACTION.EDIT_PAYMENT_ERROR });
+    const error = yield err.response.data;
+
+    yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
+  }
+}
+/**
+ * Delete a Payment
+ * @param {paymentId} data
+ */
+function* deletePayment(data) {
+  try {
+    const res = yield call(lib.deletePayment, data.payload);
+
+    yield put({ type: USER_PROFILE_ACTION.DELETED_PAYMENT, payload: res.data });
+  } catch (err) {
+    yield put({ type: USER_PROFILE_ACTION.DELETE_PAYMENT_ERROR });
+    const error = yield err.response.data;
+
+    yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
+  }
+}
 export default function* rootSaga() {
   yield all([
-    takeEvery(USER_PROFILE_ACTION.LOAD, loadProfile)
-    //   takeEvery(USER_PROFILE_ACTION.ADD, addToCart),
-    //   takeEvery(USER_PROFILE_ACTION.DELETE_ITEM, deleteFromCart)
+    takeEvery(USER_PROFILE_ACTION.LOAD, loadProfile),
+    takeLatest(USER_PROFILE_ACTION.EDIT_ADDRESS, editAddress),
+    takeLatest(USER_PROFILE_ACTION.EDIT_PAYMENT, editPayment),
+    takeEvery(USER_PROFILE_ACTION.DELETE_PAYMENT, deletePayment)
   ]);
 }

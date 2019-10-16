@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import PaymentCard from "./PaymentCard";
-
+import ButtonDefault from "../../utilities/buttons/ButtonDefault";
 class PaymentContent extends Component {
   render() {
     const { payments } = this.props;
@@ -12,7 +12,7 @@ class PaymentContent extends Component {
         <td>
           <PaymentCard
             payment={payment}
-            deletePayment={this.props.deletePayment}
+            callbackHandler={this.props.callbackHandler}
           />
         </td>
       </tr>
@@ -22,8 +22,10 @@ class PaymentContent extends Component {
         <h5 className="display-5 text-center">Your Payment</h5>
         <table className="table table-hover ">{content}</table>
         <div className="btn-group mb-4" role="group">
-          <Link to="edit-payment">
-            <button className="btn btn-default">Add payment</button>
+          <Link to="/account/edit-payment">
+            <ButtonDefault className="btn btn-default">
+              Add payment
+            </ButtonDefault>
           </Link>
         </div>
       </div>
@@ -31,7 +33,7 @@ class PaymentContent extends Component {
   }
 }
 PaymentContent.propTypes = {
-  deletePayment: PropTypes.func.isRequired,
+  callbackHandler: PropTypes.func.isRequired,
   payments: PropTypes.object.isRequired
 };
 export default PaymentContent;

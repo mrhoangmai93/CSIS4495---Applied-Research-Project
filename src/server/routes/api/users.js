@@ -7,14 +7,10 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 
 const { check, validationResult } = require("express-validator");
-
+const auth = require("../../middleware/auth");
 // Load User model
 const User = require("../../models/User");
-// @access  Public
-// router.get("/", (req, res) => {
-//  // console.log(req.body);
-//   res.json({ msg: "hello" });
-// });
+
 // @route   POST api/users/register
 // @desc    Register user
 // @access  Public
@@ -93,5 +89,49 @@ router.post(
     }
   }
 );
+// @route   POST api/users/changepassword
+// @desc    Change password
+// @access  Private
+router.post(
+  "/changepassword",
+  [
+    auth,
+    [
+      check("oldPassword", "Old Password is required")
+        .not()
+        .isEmpty(),
+      check("password", "Password is required")
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    // Check Validation
+    if (!errors.isEmpty()) {
+      console.log(errors);
 
+      return res.status(400).json({ errors: errors.array() });
+    }
+    // Check Validation
+
+    const password = req.body.password;
+    const oldPassword = req.body.oldPassword;
+    // Find user by id
+    const user = await User.findOne({ _id: req.user.id });
+
+    // Check Password
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (isMatch) {
+      // User Matched
+      const salt = await bcrypt.genSalt(10);
+
+      user.password = await bcrypt.hash(password, salt);
+      await user.save();
+      return res.status(200).json({ msg: "Success Change Password" });
+    } else {
+      res.status(400).json({ errors: [{ msg: "Password incorrect!" }] });
+    }
+  }
+);
 module.exports = router;

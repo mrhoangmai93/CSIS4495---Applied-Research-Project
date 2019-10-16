@@ -8,24 +8,34 @@ export const LOAD_ERROR = `${DOCUMENT}LOAD_ERROR`;
 export const ADD = `${DOCUMENT}ADD`;
 export const ADDED = `${DOCUMENT}ADDED`;
 export const ADD_ERROR = `${DOCUMENT}ADD_ERROR`;
-//
-export const DELETE = `${DOCUMENT}DELETE_ITEM`;
-export const DELETED = `${DOCUMENT}DELETED_ITEM`;
-export const DELETE_ERROR = `${DOCUMENT}DELETE_ERROR`;
 
+// Edit Address
+export const EDIT_ADDRESS = `${DOCUMENT}EDIT_ADDRESS`;
+export const EDITED_ADDRESS = `${DOCUMENT}EDITED_ADDRESS`;
+export const EDIT_ADDRESS_ERROR = `${DOCUMENT}EDIT_ADDRESS_ERROR`;
+// Edit Payment
+export const EDIT_PAYMENT = `${DOCUMENT}EDIT_PAYMENT`;
+export const EDITED_PAYMENT = `${DOCUMENT}EDITED_PAYMENT`;
+export const EDIT_PAYMENT_ERROR = `${DOCUMENT}EDIT_PAYMENT_ERROR`;
+// delete Payment
+export const DELETE_PAYMENT = `${DOCUMENT}DELETE_PAYMENT`;
+export const DELETED_PAYMENT = `${DOCUMENT}DELETED_PAYMENT`;
+export const DELETE_PAYMENT_ERROR = `${DOCUMENT}DELETE_PAYMENT_ERROR`;
 //Load cart
 export const loadProfile = () => ({
   type: LOAD
 });
 
-// //Load cart
-// export const addToCart = payload => ({
-//   type: ADD,
-//   payload
-// });
-
-// //Delete from cart
-// export const deleteFromCart = payload => ({
-//   type: DELETE_ITEM,
-//   payload
-// });
+//
+export const editAddress = payload => ({
+  type: EDIT_ADDRESS,
+  payload
+});
+export const editPayment = payload => ({
+  type: EDIT_PAYMENT,
+  payload
+});
+export const deletePayment = payload => ({
+  type: DELETE_PAYMENT,
+  payload
+});

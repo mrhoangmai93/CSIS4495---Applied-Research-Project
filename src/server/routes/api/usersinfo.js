@@ -34,7 +34,10 @@ router.get("/", auth, async (req, res) => {
 // @access  Private
 router.post("/", [auth], async (req, res) => {
   try {
-    let userinfo = await UserInfo.findOne({ user: req.user.id });
+    let userinfo = await UserInfo.findOne({ user: req.user.id }).populate(
+      "user",
+      ["name", "avatar"]
+    );
 
     if (userinfo) {
       return res.json(userinfo);
@@ -89,18 +92,23 @@ router.post(
 
     //build userInfo object
     const userInf = {};
-    userInf.address = {};
+    let address = {};
 
     userInf.user = req.user.id;
     userInf.phone = phone;
-    userInf.address.address1 = address1;
-    if (address2) userInf.address.address2 = address2;
-    userInf.address.city = city;
-    userInf.address.zipCode = zipCode;
-    userInf.address.state = state;
+    address.address1 = address1;
+    if (address2) address.address2 = address2;
+    address.city = city;
+    address.zipCode = zipCode;
+    address.state = state;
+
+    userInf.address = address;
 
     try {
-      let userinfo = await UserInfo.findOne({ user: req.user.id });
+      let userinfo = await UserInfo.findOne({ user: req.user.id }).populate(
+        "user",
+        ["name", "avatar"]
+      );
 
       if (userinfo) {
         // update
@@ -146,9 +154,10 @@ router.put(
   ],
   async (req, res) => {
     const errors = validationResult(req);
-
     // Check Validation
     if (!errors.isEmpty()) {
+      console.log(errors);
+
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -167,7 +176,10 @@ router.put(
       securityNumber
     };
     try {
-      let userinfo = await UserInfo.findOne({ user: req.user.id });
+      let userinfo = await UserInfo.findOne({ user: req.user.id }).populate(
+        "user",
+        ["name", "avatar"]
+      );
 
       if (userinfo) {
         //check if there is payment
@@ -210,10 +222,11 @@ router.put(
 // @desc    Delete a Payment
 // @access  Private
 router.put("/removepayment/:payment_id", [auth], async (req, res) => {
-  const errors = validationResult(req);
-
   try {
-    let userinfo = await UserInfo.findOne({ user: req.user.id });
+    let userinfo = await UserInfo.findOne({ user: req.user.id }).populate(
+      "user",
+      ["name", "avatar"]
+    );
 
     if (userinfo) {
       // Get remove index

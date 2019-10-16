@@ -1,29 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-
+import ButtonDefault from "../../utilities/buttons/ButtonDefault";
 const SettingContent = props => {
-  const { auth } = props;
+  const { user } = props;
 
   return (
     <div>
       <h1>Setting</h1>
       <h5>
-        Hi <strong>{auth.user.name}</strong>
+        Hi <strong>{user.name}</strong>
       </h5>
       <h6>
         Your email address: &nbsp;
-        {auth.user.email}
+        {user.email}
       </h6>
       <div className="btn-group mb-4" role="group">
-        <Link to="change-password">
-          <button className="btn btn-default">Change Password</button>
+        <Link to="/account/change-password">
+          <ButtonDefault>Change Password</ButtonDefault>
         </Link>
       </div>
     </div>
   );
 };
 SettingContent.propTypes = {
-  auth: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired
 };
 export default SettingContent;

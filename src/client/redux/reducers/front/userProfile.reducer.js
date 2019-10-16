@@ -2,12 +2,16 @@ import Immutable from "immutable";
 
 import * as ACTION from "../../actions/userProfile.action";
 
-const initialState = Immutable.fromJS({});
+const initialState = Immutable.fromJS({
+  payments: []
+});
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case ACTION.LOADED:
-      // case ACTION.ADDED:
+    case ACTION.EDITED_ADDRESS:
+    case ACTION.EDITED_PAYMENT:
+    case ACTION.DELETED_PAYMENT:
       // case ACTION.DELETED_ITEM:
       return state.merge(payload);
 

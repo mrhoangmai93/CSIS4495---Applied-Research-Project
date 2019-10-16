@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import SellerLinkWithReviews from "../SellerLinkWithReviews";
 import "./index.scss";
-import ButtonWithOnclick from "../utilities/buttons/ButtonWithOnclick";
+import ButtonDefault from "../utilities/buttons/ButtonDefault";
 const ProductCard = props => {
   const { food } = props;
-  console.log(food);
   const tagList = food.tags.map(tag => (
     <li className="list-inline-item">{tag}</li>
   ));
@@ -37,11 +36,11 @@ const ProductCard = props => {
         </div>
       </div>
       <div className="product-card-button center-block">
-        <ButtonWithOnclick
+        <ButtonDefault
           onClick={() => props.addToCart({ foodId: food._id, quantity: 1 })}
         >
           Add to cart
-        </ButtonWithOnclick>
+        </ButtonDefault>
       </div>
     </div>
   );

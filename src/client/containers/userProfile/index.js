@@ -4,16 +4,20 @@ import PropTypes from "prop-types";
 import { withRouter, Link } from "react-router-dom";
 import classnames from "classnames";
 import withLayout from "../../hocs/front/Layout";
+import withAuth from "../../hocs/withAuth";
 
-import { loadProfile } from "../../redux/actions/userProfile.action";
+import {
+  loadProfile,
+  deletePayment
+} from "../../redux/actions/userProfile.action";
 import AddressContent from "../../components/UserProfile/AddressContent";
 //import { getOrder } from "../../actions/orderActions";
 import OrderContent from "../../components/UserProfile/OrderContent";
 import PaymentContent from "../../components/UserProfile/PaymentContent";
 import SettingContent from "../../components/UserProfile/SettingContent";
 import isEmpty from "../../../validation/is-empty";
-import ButtonWithOnClick from "../../components/utilities/buttons/ButtonWithOnclick";
-
+import ButtonDefault from "../../components/utilities/buttons/ButtonDefault";
+import { VIEW_STATUSES } from "../../components/UserProfile/PaymentContent/PaymentCard";
 import "./index.scss";
 
 class UserProfile extends Component {
@@ -35,20 +39,25 @@ class UserProfile extends Component {
     // this.props.getProfile();
     // this.props.getOrder();
   }
+  callbackHandler = (type, data) => {
+    switch (type) {
+      case VIEW_STATUSES.DELETE_CARD:
+        this.props.deletePayment({ paymentId: data.paymentId });
+        break;
+      default:
+        break;
+    }
+  };
 
   render() {
-    const { auth } = this.props;
+    const { user } = this.props;
     const { profile } = this.props;
     const address = profile.get("address");
-    const user = profile.get("user");
     const payments = profile.get("payments");
 
-    console.log(profile);
-    //const profile = {};
     const orders = {};
 
     const loading = false;
-    //console.log(orders);
     const {
       displayAddress,
       displayOrder,
@@ -60,10 +69,12 @@ class UserProfile extends Component {
     let orderContent;
     let paymentContent;
     let securityContent;
-    //console.log(auth);
+
     if (displayAddress) {
       if (!isEmpty(address)) {
-        addressContent = <AddressContent address={profile.address} />;
+        addressContent = (
+          <AddressContent address={address} phone={profile.get("phone")} />
+        );
       } else {
         addressContent = (
           <div>
@@ -71,10 +82,10 @@ class UserProfile extends Component {
             <p>
               You have not yet setup your address, please add some information!
             </p>
-            <Link to="edit-address">
-              <ButtonWithOnClick className="btn btn-default">
+            <Link to="/account/edit-address">
+              <ButtonDefault className="btn btn-default">
                 Create Address
-              </ButtonWithOnClick>
+              </ButtonDefault>
             </Link>
           </div>
         );
@@ -97,7 +108,7 @@ class UserProfile extends Component {
         paymentContent = (
           <PaymentContent
             payments={payments}
-            deletePayment={this.props.deletePayment}
+            callbackHandler={this.callbackHandler}
           />
         );
       } else {
@@ -107,17 +118,15 @@ class UserProfile extends Component {
             <p>
               You have not yet setup your Payments, please add some information
             </p>
-            <Link to="edit-payment">
-              <ButtonWithOnClick className="btn btn-default">
-                Create Payment
-              </ButtonWithOnClick>
+            <Link to="/account/edit-payment">
+              <ButtonDefault>Create Payment</ButtonDefault>
             </Link>
           </div>
         );
       }
     }
 
-    securityContent = displaySecurity ? <SettingContent auth={user} /> : "";
+    securityContent = displaySecurity ? <SettingContent user={user} /> : "";
 
     let profileContent;
 
@@ -239,8 +248,8 @@ class UserProfile extends Component {
             <div className="col-12">{profileContent}</div>
           </div>
           <div className="row">
-            <div className="col-3" />
-            <div className="col-9">
+            <div className="col-2" />
+            <div className="col-8">
               {" "}
               {addressContent}
               {orderContent}
@@ -255,15 +264,15 @@ class UserProfile extends Component {
 }
 
 UserProfile.propTypes = {
-  //   getOrder: PropTypes.func.isRequired,
+  deletePayment: PropTypes.func.isRequired,
   loadProfile: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
   orders: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  user: state.auth.get("user"),
   profile: state.userProfile,
   orders: state.orders
 });
@@ -271,6 +280,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { loadProfile }
-  )(withLayout(UserProfile))
+    { loadProfile, deletePayment }
+  )(withAuth(withLayout(UserProfile)))
 );

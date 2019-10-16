@@ -68,45 +68,112 @@ router.post("/add/:foodId/:quantity", auth, async (req, res) => {
     if (!food) {
       return res.status(404).json({ msg: "Food not found" });
     }
-    // check if there are enough quantity to add to cart
-    if (parseInt(food.quantity) > req.params.quantity) {
-      const cart = await Cart.findOne({ user: req.user.id });
-      if (!cart) {
-        return res.status(404).json({ msg: "Cart not found" });
-      }
-      // Check to see if item exists
-      if (
-        cart.foods.filter(
-          item => item.foodId._id.toString() === req.params.foodId
-        ).length === 0
-      ) {
-        const newItem = {
-          foodId: req.params.foodId,
-          quantity: req.params.quantity
-        };
-        // Add item to cart
-        cart.foods.unshift(newItem);
+    const cart = await Cart.findOne({ user: req.user.id }).populate(
+      "foods.foodId",
+      ["name", "title", "price", "images", "tags", "description"]
+    );
+    if (!cart) {
+      return res.status(404).json({ msg: "Cart not found" });
+    }
+    // Check to see if item exists
+    if (
+      cart.foods.filter(
+        item => item.foodId._id.toString() === req.params.foodId
+      ).length === 0
+    ) {
+      const newItem = {
+        foodId: req.params.foodId,
+        quantity: req.params.quantity
+      };
+      // Add item to cart
+      cart.foods.unshift(newItem);
+
+      // Save
+      await cart.save();
+      const newCart = await Cart.findOne({ user: req.user.id }).populate(
+        "foods.foodId",
+        ["name", "title", "price", "images", "tags", "description"]
+      );
+      newCart.subTotal = Helper.calculateSubTotal(newCart.foods);
+
+      res.json(newCart);
+    } else {
+      const updateIndex = cart.foods
+        .map(item => item.foodId._id.toString())
+        .indexOf(req.params.foodId);
+      const totalQuantity =
+        parseInt(cart.foods[updateIndex].quantity) +
+        parseInt(req.params.quantity);
+      // check if there are enough quantity to add to cart
+      if (parseInt(food.quantity) > totalQuantity) {
+        cart.foods[updateIndex].quantity = totalQuantity;
 
         // Save
         await cart.save();
         res.json(cart);
       } else {
-        const updateIndex = cart.foods
-          .map(item => item.foodId.toString())
-          .indexOf(req.params.foodId);
-        const totalItem =
-          parseInt(cart.foods[updateIndex].quantity) +
-          parseInt(req.params.quantity);
-        cart.foods[updateIndex].quantity = totalItem;
+        res.status(400).json({
+          msg: "This product is out of stock or not enough products"
+        });
+      }
+    }
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Food not found" });
+    }
+    res.status(500).send("Server Error!");
+  }
+});
+// @route   POST api/cart/update/:foodId/:quantity
+// @desc    update Food quantity
+// @param    foodId id of food in cart
+// @param    quantity quantity of food want to update
+// @access  Private
+router.post("/update/:foodId/:quantity", auth, async (req, res) => {
+  try {
+    const food = await Food.findOne({ _id: req.params.foodId });
+    if (!food) {
+      return res.status(404).json({ msg: "Food not found" });
+    }
+    const cart = await Cart.findOne({ user: req.user.id }).populate(
+      "foods.foodId",
+      ["name", "title", "price", "images", "tags", "description"]
+    );
+    if (!cart) {
+      return res.status(404).json({ errors: [{ msg: "Cart not found" }] });
+    }
+    // Check to see if item exists
+    if (
+      cart.foods.filter(
+        item => item.foodId._id.toString() === req.params.foodId
+      ).length === 0
+    ) {
+      return res.status(404).json({ errors: [{ msg: "Food not found" }] });
+    } else {
+      const updateIndex = cart.foods
+        .map(item => item.foodId._id.toString())
+        .indexOf(req.params.foodId);
+
+      // check if there are enough quantity to add to cart
+      if (parseInt(food.quantity) > req.params.quantity) {
+        cart.foods[updateIndex].quantity = req.params.quantity;
+
+        // recalculate subtotal
+        cart.subTotal = Helper.calculateSubTotal(cart.foods);
 
         // Save
         await cart.save();
         res.json(cart);
+      } else {
+        res.status(400).json({
+          errors: [
+            {
+              msg: "This product is out of stock or not enough products"
+            }
+          ]
+        });
       }
-    } else {
-      res.status(400).json({
-        msg: "This product is out of stock or not enough products"
-      });
     }
   } catch (err) {
     console.log(err.message);

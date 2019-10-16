@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
+
 import PropTypes from "prop-types";
-import TextFieldGroup from "../common/TextFieldGroup";
-import { changePassword } from "../../actions/authActions";
+import withLayout from "../../../hocs/front/Layout";
+import withAuth from "../../../hocs/withAuth";
+import InputWithHintEffect from "../../../components/utilities/inputs/InputWithHintEffect";
+import { changePassword } from "../../../redux/actions/auth.action";
+import ButtonDefault from "../../../components/utilities/buttons/ButtonDefault";
+import Alert from "../../../components/utilities/Alert";
+import { setAlert } from "../../../redux/actions/alert.action";
 
 class ChangePassword extends Component {
   constructor(props) {
@@ -11,30 +17,35 @@ class ChangePassword extends Component {
     this.state = {
       oldPassword: "",
       password: "",
-      password2: "",
-      errors: {}
+      password2: ""
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors.response.data });
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.errors) {
+  //     this.setState({ errors: nextProps.errors.response.data });
+  //   }
+  // }
 
   onSubmit(e) {
     e.preventDefault();
+    const { password, password2 } = this.state;
+    if (password !== password2) {
+      this.props.setAlert({
+        msg: "Password do not match!",
+        alertType: "danger"
+      });
+    } else {
+      const passwordData = {
+        oldPassword: this.state.oldPassword,
+        password
+      };
 
-    const passwordData = {
-      oldPassword: this.state.oldPassword,
-      password: this.state.password,
-      password2: this.state.password2
-    };
-
-    this.props.changePassword(passwordData, this.props.history);
+      this.props.changePassword(passwordData, this.props.history);
+    }
   }
 
   onChange(e) {
@@ -42,57 +53,53 @@ class ChangePassword extends Component {
   }
 
   render() {
-    const { errors } = this.state;
     return (
-      <div className="create-profile">
+      <div className="change-password">
         <div className="container">
+          <Alert />
           <div className="row">
             <div className="col-sm-3" />
             <div className="col-sm-6">
               <div className="signup-form">
                 <Link to="/account">
-                  <button className="btn btn-default">Go Back</button>
+                  <ButtonDefault className="btn btn-default">
+                    Go Back
+                  </ButtonDefault>
                 </Link>
                 <h5 className="display-5 text-center">Change Your Password</h5>
 
                 <form onSubmit={this.onSubmit}>
                   <div className="row">
-                    <TextFieldGroup
+                    <InputWithHintEffect
                       placeholder="Old Password"
                       type="password"
                       name="oldPassword"
                       value={this.state.oldPassword}
                       onChange={this.onChange}
-                      error={errors.oldPassword}
-                      info="Enter your current password"
                     />
                   </div>
                   <div className="row">
-                    <TextFieldGroup
+                    <InputWithHintEffect
                       placeholder="New Password"
                       type="password"
                       name="password"
                       value={this.state.password}
                       onChange={this.onChange}
-                      error={errors.password}
-                      info="Enter your new password"
                     />
                   </div>
                   <div className="row">
-                    <TextFieldGroup
+                    <InputWithHintEffect
                       placeholder="Confirm Password"
                       type="password"
                       name="password2"
                       value={this.state.password2}
                       onChange={this.onChange}
-                      error={errors.password2}
-                      info="Confirm your new password"
                     />
                   </div>
                   <div className="row">
-                    <button type="submit" className="btn btn-default">
+                    <ButtonDefault type="submit" className="btn btn-default">
                       Submit
-                    </button>
+                    </ButtonDefault>
                   </div>
                 </form>
               </div>
@@ -105,15 +112,11 @@ class ChangePassword extends Component {
 }
 
 ChangePassword.propTypes = {
-  changePassword: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired
+  setAlert: PropTypes.func.isRequired,
+  changePassword: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  errors: state.errors
-});
-
 export default connect(
-  mapStateToProps,
-  { changePassword }
-)(withRouter(ChangePassword));
+  null,
+  { changePassword, setAlert }
+)(withAuth(withLayout(ChangePassword)));

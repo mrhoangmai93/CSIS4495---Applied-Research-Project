@@ -17,6 +17,10 @@ export const LOAD_USER = `${DOCUMENT}LOAD_USER`;
 export const USER_LOADED = `${DOCUMENT}USER_LOADED`;
 export const LOAD_ERROR = `${DOCUMENT}LOAD_ERROR`;
 
+//change password
+export const CHANGE_PASSWORD = `${DOCUMENT}CHANGE_PASSWORD`;
+export const CHANGED_PASSWORD = `${DOCUMENT}CHANGED_PASSWORD`;
+export const CHANGE_PASSWORD_ERROR = `${DOCUMENT}CHANGE_PASSWORD_ERROR`;
 //Authenticate User
 export const AUTH_ERROR = `${DOCUMENT}_ERROR`;
 
@@ -58,6 +62,11 @@ export const loginFailed = payload => ({
 //Login
 export const logout = () => ({
   type: LOGOUT_USER
+});
+
+export const changePassword = payload => ({
+  type: CHANGE_PASSWORD,
+  payload
 });
 /* // LOAD USER
 export const loadUser = () => {

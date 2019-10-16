@@ -2,59 +2,31 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-//import { deleteFromCart, updateCart } from "../../actions/cartActions";
 import "./index.scss";
-
+const VIEW_STATUSES = {
+  UPDATE_QUANTITY: "UPDATE_QUANTITY",
+  DELETE_ITEM: "DELETE_ITEM"
+};
 class CartItem extends Component {
   constructor(props) {
     super(props);
     //console.log(props);
     this.state = {
-      quantity: this.props.quantity,
-      change: false
+      quantity: this.props.quantity
     };
-
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.quantity) {
-      this.setState({ quantity: nextProps.quantity });
-    }
-  }
-  onSubmit(e) {
-    e.preventDefault();
-    const id = this.props.item._id;
-    const quantity = this.state.quantity;
-    this.props.updateCart(id, quantity);
-  }
-  onChange(e) {
-    if (!isNaN(e.target.value)) {
-      this.setState({ [e.target.name]: e.target.value });
-      this.setState({ change: true });
-    }
-  }
+  onDeleteHandler = (itemId, event) => {
+    this.props.callbackHandler(VIEW_STATUSES.DELETE_ITEM, { itemId });
+  };
+  onQualityChangeHandler = (itemId, event) => {
+    this.props.callbackHandler(VIEW_STATUSES.UPDATE_QUANTITY, {
+      itemId,
+      qty: event.target.value
+    });
+  };
 
   render() {
-    const { item } = this.props;
-    const { quantity, change } = this.state;
-    let updateButton;
-    updateButton = !change ? (
-      ""
-    ) : (
-      <button
-        type="button"
-        className="btn btn-default edit-card"
-        // onClick={() =>
-        //   this.state.quantity === "0"
-        //     ? deleteFromCart(item._id)
-        //     : updateCart(item._id, this.state.quantity)
-        // }
-      >
-        Update
-      </button>
-    );
+    const { item, quantity } = this.props;
     return (
       <tr>
         <td className="cart_product">
@@ -85,12 +57,11 @@ class CartItem extends Component {
                 className="cart_quantity_input"
                 type="text"
                 name="quantity"
-                value={this.state.quantity}
-                onChange={this.onChange}
+                value={quantity}
+                onChange={this.onQualityChangeHandler.bind(this, item._id)}
                 size="2"
                 display="none"
-              />{" "}
-              {updateButton}
+              />
             </div>
           </div>
         </td>
@@ -99,7 +70,7 @@ class CartItem extends Component {
         </td>
         <td>
           <button
-            onClick={() => this.props.deleteFromCart({ foodId: item._id })}
+            onClick={this.onDeleteHandler.bind(this, item._id)}
             type="button"
             className="btn btn-default btn-danger"
           >
@@ -111,8 +82,6 @@ class CartItem extends Component {
   }
 }
 CartItem.propTypes = {
-  deleteFromCart: PropTypes.func.isRequired,
-  //   updateCart: PropTypes.func.isRequired,
   item: PropTypes.object.isRequired,
   quantity: PropTypes.object.isRequired
 };
@@ -121,3 +90,4 @@ export default connect(
   null,
   {}
 )(CartItem);
+export { VIEW_STATUSES };

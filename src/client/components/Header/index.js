@@ -13,7 +13,7 @@ const Header = ({ auth, cart, logout }) => {
   const foods = cart.get("foods") ? cart.get("foods") : [];
 
   let numberItem = 0;
-  foods.forEach(f => (numberItem += f.quantity));
+  foods.forEach(food => (numberItem += food.quantity));
   //const user = auth
   const authLink = (
     <ul className="header__icon__list ">

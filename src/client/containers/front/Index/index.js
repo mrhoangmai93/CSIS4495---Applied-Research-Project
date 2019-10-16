@@ -8,7 +8,6 @@ import withLayout from "../../../hocs/front/Layout";
 import Banner from "../../../components/Banner";
 import ProductCard from "../../../components/ProductCard";
 import HowItWorks from "../../../components/HowItWorks";
-import Categories from "../../../components/Categories";
 import Testimonial from "../../../components/Testimonial";
 import { loadAllFoods } from "../../../redux/actions/food.action";
 import { loadCart, addToCart } from "../../../redux/actions/cart.action";
@@ -30,7 +29,7 @@ class Index extends React.Component {
   render() {
     const foods = this.props.foods ? this.props.foods : {};
     let displayProducts;
-    console.log(foods.get("list"));
+    //console.log(foods.get("list"));
 
     displayProducts = foods.get("list").map(food => (
       <div className="col-lg-4 col-md-6">

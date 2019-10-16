@@ -24,10 +24,8 @@ function* alert(data) {
       id
     }
   });
-  console.log("tesst1 ");
   yield delay(timeout);
-  console.log("tesst2 ");
-  removeAlert(id);
+  //removeAlert(id);
   yield put({ type: ALERT_ACTION.ALERT_REMOVED, payload: id });
 }
 

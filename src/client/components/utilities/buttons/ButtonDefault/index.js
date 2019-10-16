@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.scss";
 import { Button } from "react-bootstrap";
 
-const ButtonWithOnclick = props => (
+const ButtonDefault = props => (
   <button
     className="btn btn--green"
     onClick={props.onClick ? props.onClick : null}
@@ -11,4 +11,4 @@ const ButtonWithOnclick = props => (
     {props.children}
   </button>
 );
-export default ButtonWithOnclick;
+export default ButtonDefault;

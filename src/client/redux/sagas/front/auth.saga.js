@@ -71,6 +71,27 @@ function* loginUser(data) {
     yield put(AUTH_ACTION.loginFailed(errors));
   }
 }
+
+function* changePassword(data) {
+  try {
+    const res = yield call(lib.changePassword, data.payload);
+
+    yield put({ type: AUTH_ACTION.CHANGED_PASSWORD });
+    yield put(
+      ALERT_ACTION.setAlert({ msg: res.data.msg, alertType: "success" })
+    );
+  } catch (err) {
+    const errors = yield err.response.data.errors;
+    yield put({ type: AUTH_ACTION.CHANGE_PASSWORD_ERROR });
+
+    for (let i in errors) {
+      yield put(
+        ALERT_ACTION.setAlert({ msg: errors[i].msg, alertType: "danger" })
+      );
+    }
+    //yield put(AUTH_ACTION.loginFailed(errors));
+  }
+}
 /**
  * Log out function
  */
@@ -85,6 +106,7 @@ export default function* rootSaga() {
     takeEvery(AUTH_ACTION.LOAD_USER, loadUser),
     takeEvery(AUTH_ACTION.LOGIN_FAILED, actionFail),
     takeLatest(AUTH_ACTION.LOGIN_USER, loginUser),
-    takeLatest(AUTH_ACTION.LOGOUT_USER, logout)
+    takeLatest(AUTH_ACTION.LOGOUT_USER, logout),
+    takeLatest(AUTH_ACTION.CHANGE_PASSWORD, changePassword)
   ]);
 }
