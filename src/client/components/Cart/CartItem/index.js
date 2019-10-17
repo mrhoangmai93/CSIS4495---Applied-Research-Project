@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import "./index.scss";
-const VIEW_STATUSES = {
+const CART_ITEM_STATUSES = {
   UPDATE_QUANTITY: "UPDATE_QUANTITY",
   DELETE_ITEM: "DELETE_ITEM"
 };
@@ -16,10 +16,10 @@ class CartItem extends Component {
     };
   }
   onDeleteHandler = (itemId, event) => {
-    this.props.callbackHandler(VIEW_STATUSES.DELETE_ITEM, { itemId });
+    this.props.callbackHandler(CART_ITEM_STATUSES.DELETE_ITEM, { itemId });
   };
   onQualityChangeHandler = (itemId, event) => {
-    this.props.callbackHandler(VIEW_STATUSES.UPDATE_QUANTITY, {
+    this.props.callbackHandler(CART_ITEM_STATUSES.UPDATE_QUANTITY, {
       itemId,
       qty: event.target.value
     });
@@ -90,4 +90,4 @@ export default connect(
   null,
   {}
 )(CartItem);
-export { VIEW_STATUSES };
+export { CART_ITEM_STATUSES };

@@ -1,0 +1,21 @@
+$color-grey: #777;
+
+.checkout .total_area {
+  padding-bottom: 18px !important;
+}
+
+.checkout .total_area,
+.checkout .chose_area {
+  border: 1px solid #e6e4df;
+  color: #696763;
+  padding: 30px 25px 30px 25px;
+  margin-bottom: 10px;
+}
+.checkout {
+  margin-bottom: 50px;
+  background-color: $color-grey;
+}
+.order_details {
+  background-color: #696763;
+  border-radius: 20px;
+}

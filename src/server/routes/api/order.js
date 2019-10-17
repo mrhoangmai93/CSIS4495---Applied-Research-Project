@@ -20,8 +20,8 @@ router.get("/test", (req, res) => res.json({ msg: "Order Works" }));
 router.get("/", auth, async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user.id }).populate(
-      "orderDetail.items.itemId",
-      ["name", "title", "price"]
+      "orderDetail.foods.foodId",
+      ["title", "price"]
     );
     res.json(orders);
   } catch (err) {
@@ -61,11 +61,13 @@ router.post(
       check("paymentMethod", "Payment methos is required")
         .not()
         .isEmpty(),
-      check("orderTotal", "Order total is required").isNumeric(),
+      check("totalSummary", "Order total is required")
+        .not()
+        .isEmpty(),
       check("shippingAddress", "Shipping address cannot be empty")
         .not()
         .isJSON(),
-      check("items", "Order Details cannot be empty").isArray()
+      check("foods", "Order Details cannot be empty").isArray()
     ]
   ],
   async (req, res) => {
@@ -74,10 +76,10 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     const orderStatus = "pending";
-    const { paymentMethod, orderTotal, shippingAddress, items } = req.body;
-    const orderDetail = {
-      items,
-      orderTotal
+    const { paymentMethod, totalSummary, shippingAddress, foods } = req.body;
+    const orderDetails = {
+      foods,
+      totalSummary
     };
 
     try {
@@ -87,7 +89,7 @@ router.post(
         paymentMethod,
         shippingAddress,
         orderStatus,
-        orderDetail
+        orderDetails
       });
       const order = await newOrder.save();
 

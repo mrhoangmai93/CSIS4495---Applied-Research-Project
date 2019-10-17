@@ -4,6 +4,10 @@ import PropTypes from "prop-types";
 import SellerLinkWithReviews from "../SellerLinkWithReviews";
 import "./index.scss";
 import ButtonDefault from "../utilities/buttons/ButtonDefault";
+
+const VIEW_STATUSES = {
+  ADD_TO_CART: "ADD_TO_CART"
+};
 const ProductCard = props => {
   const { food } = props;
   const tagList = food.tags.map(tag => (
@@ -13,12 +17,12 @@ const ProductCard = props => {
   return (
     <div className="product-card-container d-flex flex-column mb-3">
       <div className="pc-image">
-        <Link to="/">
+        <Link to={`/food/${food._id}`}>
           <img
             className="img-fluid"
             src="/images/placeholders/food.jpg"
             alt="product"
-          />
+          />{" "}
         </Link>
       </div>
       <div className="pc-info-container p-2">
@@ -37,7 +41,11 @@ const ProductCard = props => {
       </div>
       <div className="product-card-button center-block">
         <ButtonDefault
-          onClick={() => props.addToCart({ foodId: food._id, quantity: 1 })}
+          onClick={() =>
+            props.callbackHandler(VIEW_STATUSES.ADD_TO_CART, {
+              foodId: food._id
+            })
+          }
         >
           Add to cart
         </ButtonDefault>
@@ -50,3 +58,4 @@ ProductCard.propTypes = {
   addToCart: PropTypes.func.isRequired
 };
 export default ProductCard;
+export { VIEW_STATUSES };

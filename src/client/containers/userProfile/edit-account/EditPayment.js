@@ -93,10 +93,9 @@ class EditPayment extends Component {
     } else {
       if (!isNaN(e.target.value)) {
         this.setState({ [e.target.name]: e.target.value });
+      } else {
+        this.setState({ [e.target.name]: "" });
       }
-      // else {
-      //   this.setState({ [e.target.name]: "" });
-      // }
     }
   }
 
@@ -151,7 +150,7 @@ class EditPayment extends Component {
                         name="cardNumber"
                         value={this.state.cardNumber}
                         onChange={this.onChange}
-                        // onfocus={() => this.setState({ cardNumber: "" })}
+                        //onFocus={() => this.setState({ cardNumber: "" })}
                       />
                     </div>
                   </div>

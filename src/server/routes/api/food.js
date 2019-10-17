@@ -13,7 +13,11 @@ const Food = require("../../models/Food");
 router.get("/", async (req, res) => {
   try {
     // TODO: sort to the closet location
-    const foods = await Food.find();
+    const foods = await Food.find().populate("owner", [
+      "name",
+      "avatar",
+      "email"
+    ]);
     res.json(foods);
   } catch (err) {
     console.log(err.message);

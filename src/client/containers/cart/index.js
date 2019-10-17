@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import withLayout from "../../hocs/front/Layout";
 import withAuth from "../../hocs/withAuth";
@@ -11,14 +11,18 @@ import {
   deleteFromCart,
   updateCart
 } from "../../redux/actions/cart.action";
+import { createOrder } from "../../redux/actions/currentOrder.action";
 import "./index.scss";
 
-import CartSummary from "../../components/Cart/CartSummary";
+import CartSummary, {
+  CART_SUMMARY_STATUSES
+} from "../../components/Cart/CartSummary";
 import isEmpty from "../../../validation/is-empty";
 
-import CartItem, { VIEW_STATUSES } from "../../components/Cart/CartItem";
+import CartItem, { CART_ITEM_STATUSES } from "../../components/Cart/CartItem";
 import ButtonDefault from "../../components/utilities/buttons/ButtonDefault";
 import Alert from "../../components/utilities/Alert";
+import { setAlert } from "../../redux/actions/alert.action";
 class Cart extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +37,7 @@ class Cart extends Component {
   }
   callbackHandler = (type, data) => {
     switch (type) {
-      case VIEW_STATUSES.UPDATE_QUANTITY:
+      case CART_ITEM_STATUSES.UPDATE_QUANTITY:
         let newQuantity;
         if (data.qty === "") {
           newQuantity = 0;
@@ -42,8 +46,23 @@ class Cart extends Component {
         }
         this.props.updateCart({ foodId: data.itemId, quantity: newQuantity });
         break;
-      case VIEW_STATUSES.DELETE_ITEM:
+      case CART_ITEM_STATUSES.DELETE_ITEM:
         this.props.deleteFromCart({ foodId: data.itemId });
+        break;
+      case CART_SUMMARY_STATUSES.CHECK_OUT:
+        if (!isEmpty(this.props.foods)) {
+          this.props.createOrder({
+            foods: this.props.foods,
+            orderSummary: data.orderSummary
+          });
+          return <Redirect to="/checkout" />;
+        } else {
+          this.props.setAlert({
+            msg: "Cart is Empty!",
+            alertType: "danger"
+          });
+        }
+
         break;
       default:
         break;
@@ -106,7 +125,10 @@ class Cart extends Component {
               </div>
             </div>
             <div className="col-12 col-lg-3 cart_summary">
-              <CartSummary subTotal={subTotal} />
+              <CartSummary
+                subTotal={subTotal}
+                callbackHandler={this.callbackHandler}
+              />
             </div>
           </div>
         </div>
@@ -116,6 +138,8 @@ class Cart extends Component {
 }
 
 Cart.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  createOrder: PropTypes.func.isRequired,
   loadCart: PropTypes.func.isRequired,
   deleteFromCart: PropTypes.func.isRequired,
   updateCart: PropTypes.func.isRequired,
@@ -131,6 +155,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { loadCart, deleteFromCart, updateCart }
+    { loadCart, deleteFromCart, updateCart, createOrder, setAlert }
   )(withAuth(withLayout(Cart)))
 );

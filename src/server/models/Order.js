@@ -7,10 +7,10 @@ const OrderSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "user"
   },
-  orderDetail: {
-    items: [
+  orderDetails: {
+    foods: [
       {
-        itemId: {
+        foodId: {
           type: Schema.Types.ObjectId,
           ref: "food"
         },
@@ -20,9 +20,19 @@ const OrderSchema = new Schema({
         }
       }
     ],
-    orderTotal: {
-      type: Number,
-      required: true
+    totalSummary: {
+      subTotal: {
+        type: Number,
+        require: true
+      },
+      tax: {
+        type: Number,
+        require: true
+      },
+      total: {
+        type: Number,
+        require: true
+      }
     }
   },
   shippingAddress: {
@@ -46,8 +56,7 @@ const OrderSchema = new Schema({
       required: true
     },
     phone: {
-      type: String,
-      required: true
+      type: String
     }
   },
 

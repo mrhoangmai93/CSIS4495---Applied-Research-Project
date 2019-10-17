@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import withLayout from "../../../hocs/front/Layout";
 import Banner from "../../../components/Banner";
-import ProductCard from "../../../components/ProductCard";
+import ProductCard, { VIEW_STATUSES } from "../../../components/ProductCard";
 import HowItWorks from "../../../components/HowItWorks";
 import Testimonial from "../../../components/Testimonial";
 import { loadAllFoods } from "../../../redux/actions/food.action";
@@ -25,7 +25,15 @@ class Index extends React.Component {
   componentDidMount() {
     document.title = "FoodByMe - New way to enjoy your food";
   }
-
+  callbackHandler = (type, data) => {
+    switch (type) {
+      case VIEW_STATUSES.ADD_TO_CART:
+        this.props.addToCart({ foodId: data.foodId, quantity: 1 });
+        break;
+      default:
+        break;
+    }
+  };
   render() {
     const foods = this.props.foods ? this.props.foods : {};
     let displayProducts;
@@ -33,7 +41,7 @@ class Index extends React.Component {
 
     displayProducts = foods.get("list").map(food => (
       <div className="col-lg-4 col-md-6">
-        <ProductCard food={food} addToCart={this.props.addToCart} />
+        <ProductCard food={food} callbackHandler={this.callbackHandler} />
       </div>
     ));
 

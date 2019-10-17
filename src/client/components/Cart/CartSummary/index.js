@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 // import "./index.scss";
 import ButtonDefault from "../../utilities/buttons/ButtonDefault";
-
+const CART_SUMMARY_STATUSES = {
+  CHECK_OUT: "CHECK_OUT"
+};
 const CartSummary = props => {
   const { subTotal } = props;
   const tax = (subTotal * 0.15).toFixed(2);
@@ -31,7 +33,20 @@ const CartSummary = props => {
       </div>
       <div className="button_checkout center-block">
         <Link to="/checkout">
-          <ButtonDefault className="float-right">Check out</ButtonDefault>
+          <ButtonDefault
+            className="float-right"
+            onClick={() =>
+              props.callbackHandler(CART_SUMMARY_STATUSES.CHECK_OUT, {
+                orderSummary: {
+                  subTotal,
+                  tax,
+                  total
+                }
+              })
+            }
+          >
+            Check out
+          </ButtonDefault>
         </Link>
       </div>
     </div>
@@ -42,3 +57,4 @@ CartSummary.propTypes = {
   toCheckout: PropTypes.func.isRequired
 };
 export default CartSummary;
+export { CART_SUMMARY_STATUSES };

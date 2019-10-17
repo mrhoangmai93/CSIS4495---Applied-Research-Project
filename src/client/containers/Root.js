@@ -17,6 +17,8 @@ import UserProfile from "./userProfile";
 import EditAddress from "./userProfile/edit-account/EditAddress";
 import EditPayment from "./userProfile/edit-account/EditPayment";
 import ChangePassword from "./userProfile/edit-account/ChangePassword";
+import FoodDetails from "../containers/food/FoodDetails";
+import Checkout from "../containers/checkout";
 
 //helpers
 import setAuthToken from "../helpers/setAuthToken";
@@ -84,6 +86,18 @@ const routes = [
     path: "/account/change-password",
     exact: true,
     component: ChangePassword
+  },
+  {
+    title: "Food Details",
+    path: "/food/:id",
+    exact: true,
+    component: FoodDetails
+  },
+  {
+    title: "Check out",
+    path: "/checkout",
+    exact: true,
+    component: Checkout
   }
 ];
 
