@@ -100,7 +100,7 @@ class EditPayment extends Component {
   }
 
   render() {
-    const options1 = [
+    const months = [
       { label: "01", value: "01" },
       { label: "02", value: "02" },
       { label: "03", value: "03" },
@@ -114,7 +114,7 @@ class EditPayment extends Component {
       { label: "11", value: "11" },
       { label: "12", value: "12" }
     ];
-    const options2 = [
+    const years = [
       { label: "2019", value: "2019" },
       { label: "2020", value: "2020" },
       { label: "2021", value: "2021" },
@@ -171,14 +171,14 @@ class EditPayment extends Component {
                       name="month"
                       value={this.state.month}
                       onChange={this.onChange}
-                      options={options1}
+                      options={months}
                     />
                     <SelectList
                       placeholder="Year"
                       name="year"
                       value={this.state.year}
                       onChange={this.onChange}
-                      options={options2}
+                      options={years}
                     />
                   </div>
                   <div className="row">

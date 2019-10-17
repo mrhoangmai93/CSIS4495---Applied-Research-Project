@@ -5,6 +5,7 @@ import foodSagas from "./front/food.saga";
 import cartSagas from "./front/cart.saga";
 import profileSagas from "./front/userProfile.saga";
 import currentOrderSagas from "./front/currentOrder.saga";
+import orderSagas from "./front/order.saga";
 
 export default function* rootSaga(getState) {
   yield all([
@@ -13,6 +14,7 @@ export default function* rootSaga(getState) {
     foodSagas(),
     cartSagas(),
     profileSagas(),
-    currentOrderSagas()
+    currentOrderSagas(),
+    orderSagas()
   ]);
 }

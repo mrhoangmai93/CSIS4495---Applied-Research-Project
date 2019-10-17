@@ -5,7 +5,7 @@ import { withRouter, Link } from "react-router-dom";
 import classnames from "classnames";
 import withLayout from "../../hocs/front/Layout";
 import withAuth from "../../hocs/withAuth";
-
+import { loadOrders } from "../../redux/actions/order.action";
 import {
   loadProfile,
   deletePayment
@@ -31,6 +31,7 @@ class UserProfile extends Component {
       active: true
     };
     this.props.loadProfile();
+    this.props.loadOrders();
 
     // this.onChange = this.onChange.bind(this);
     // this.onSubmit = this.onSubmit.bind(this);
@@ -55,8 +56,9 @@ class UserProfile extends Component {
     const address = profile.get("address");
     const payments = profile.get("payments");
 
-    const orders = {};
-
+    const orders = this.props.orders.get("list");
+    console.log(orders);
+    console.log(orders, this.props.orders);
     const loading = false;
     const {
       displayAddress,
@@ -92,8 +94,8 @@ class UserProfile extends Component {
       }
     }
     if (displayOrder) {
-      if (!isEmpty(orders.orders)) {
-        orderContent = <OrderContent orders={orders.orders} />;
+      if (!isEmpty(orders)) {
+        orderContent = <OrderContent orders={orders} />;
       } else {
         orderContent = (
           <div>
@@ -264,6 +266,7 @@ class UserProfile extends Component {
 }
 
 UserProfile.propTypes = {
+  loadOrders: PropTypes.func.isRequired,
   deletePayment: PropTypes.func.isRequired,
   loadProfile: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
@@ -280,6 +283,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { loadProfile, deletePayment }
+    { loadProfile, deletePayment, loadOrders }
   )(withAuth(withLayout(UserProfile)))
 );

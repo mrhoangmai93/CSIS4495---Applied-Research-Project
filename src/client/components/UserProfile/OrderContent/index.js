@@ -13,34 +13,35 @@ const OrderContent = props => {
   const { orders } = props;
   console.log(orders);
   let orderContent;
-  orderContent = isEmpty(orders.orders)
+  orderContent = isEmpty(orders)
     ? ""
-    : orders.orders.map(order => (
+    : orders.map(order => (
         <div className="chose_area">
           <div className="row">Date: {order.date}</div>
 
           <div className="row">
-            Order Total : <strong>&nbsp; {order.orderdetail.ordertotal}</strong>
+            Order Total :{" "}
+            <strong>&nbsp; {order.orderDetails.totalSummary.total}</strong>
           </div>
           <table className="table">
             <tbody>
-              {order.orderdetail.items.map(item => (
+              {order.orderDetails.foods.map(item => (
                 <tr className="cart-item d-flex justify-content-around">
                   <td>
                     <img
-                      className="product-image"
+                      className="food-image"
                       src="/images/placeholders/food.jpg"
-                      alt="product"
+                      alt="food"
                     />
                   </td>
                   <td>
-                    <div className="product-info">
-                      <p className="product-name">{item.itemId.name}</p>
-                      <p className="product-price">{item.itemId.price}</p>
+                    <div className="food-info">
+                      <p className="food-name">{item.foodId.name}</p>
+                      <p className="food-price">{item.foodId.price}</p>
                     </div>
                   </td>
                   <td>
-                    <div className="product-total">
+                    <div className="food-total">
                       <p className="quantity">
                         Quantity: &nbsp;
                         {item.quantity}{" "}

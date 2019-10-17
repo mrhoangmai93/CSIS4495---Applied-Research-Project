@@ -183,6 +183,26 @@ router.post("/update/:foodId/:quantity", auth, async (req, res) => {
     res.status(500).send("Server Error!");
   }
 });
+// @route   POST api/cart/clear
+// @desc    Clear all Foods in cart
+// @access  Private
+router.post("/clear", auth, async (req, res) => {
+  try {
+    const cart = await Cart.findOne({ user: req.user.id });
+    if (!cart) {
+      return res.status(404).json({ errors: [{ msg: "Cart not found" }] });
+    }
+    cart.foods = [];
+    await cart.save();
+    res.json(cart);
+  } catch (err) {
+    console.log(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Food not found" });
+    }
+    res.status(500).send("Server Error!");
+  }
+});
 // @route   Delete api/cart/delete/:item
 // @desc    delete a food in cart
 // @access  Private

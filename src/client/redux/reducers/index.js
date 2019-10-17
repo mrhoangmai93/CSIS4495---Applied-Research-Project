@@ -5,6 +5,7 @@ import foods from "./front/food.reducer";
 import cart from "./front/cart.reducer";
 import userProfile from "./front/userProfile.reducer";
 import currentOrder from "./front/currentOrder.reducer";
+import orders from "./front/order.reducer";
 
 export default combineReducers({
   alert,
@@ -12,5 +13,6 @@ export default combineReducers({
   foods,
   cart,
   userProfile,
-  currentOrder
+  currentOrder,
+  orders
 });

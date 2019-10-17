@@ -28,6 +28,21 @@ function* loadCart() {
   }
 }
 /**
+ * Clear Cart
+ */
+function* clearCart() {
+  try {
+    const res = yield call(lib.clearCart);
+
+    yield put({ type: CART_ACTION.CLEARED, payload: res.data });
+  } catch (err) {
+    yield put({ type: CART_ACTION.LOAD_ERROR });
+    const error = yield err.response.data;
+
+    yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
+  }
+}
+/**
  *
  * @param {foodId, quantity} data
  */
@@ -66,7 +81,7 @@ function* deleteFromCart(data) {
  * @param {foodId, quantity} data
  */
 function* updateCart(data) {
-  console.log(data);
+  // console.log(data);
   try {
     const res = yield call(lib.updateCart, data.payload);
 
@@ -83,6 +98,7 @@ export default function* rootSaga() {
     takeEvery(CART_ACTION.LOAD, loadCart),
     takeEvery(CART_ACTION.ADD, addToCart),
     takeEvery(CART_ACTION.DELETE_ITEM, deleteFromCart),
-    takeEvery(CART_ACTION.UPDATE, updateCart)
+    takeEvery(CART_ACTION.UPDATE, updateCart),
+    takeLatest(CART_ACTION.CLEAR, clearCart)
   ]);
 }

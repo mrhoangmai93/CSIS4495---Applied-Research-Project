@@ -16,12 +16,20 @@ export const DELETE_ERROR = `${DOCUMENT}DELETE_ERROR`;
 export const UPDATE = `${DOCUMENT}UPDATE`;
 export const UPDATED = `${DOCUMENT}UPDATED`;
 export const UPDATE_ERROR = `${DOCUMENT}UPDATE_ERROR`;
+
+//clear cart
+export const CLEAR = `${DOCUMENT}CLEAR`;
+export const CLEARED = `${DOCUMENT}CLEARED`;
+export const CLEAR_ERROR = `${DOCUMENT}CLEAR_ERROR`;
 //Load cart
 export const loadCart = () => ({
   type: LOAD
 });
-
-//Load cart
+//Clear cart
+export const clearCart = () => ({
+  type: CLEAR
+});
+//ADd to cart
 export const addToCart = payload => ({
   type: ADD,
   payload

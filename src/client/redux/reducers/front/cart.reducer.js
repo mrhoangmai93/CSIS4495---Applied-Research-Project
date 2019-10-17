@@ -10,6 +10,7 @@ export default function(state = initialState, action) {
     case ACTION.ADDED:
     case ACTION.UPDATED:
     case ACTION.DELETED_ITEM:
+    case ACTION.CLEARED:
       return state.merge(payload);
 
     case ACTION.LOAD_ERROR:

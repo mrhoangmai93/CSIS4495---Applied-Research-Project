@@ -8,6 +8,7 @@ import withAuth from "../../hocs/withAuth";
 
 import { loadProfile } from "../../redux/actions/userProfile.action";
 import { placeOrder } from "../../redux/actions/currentOrder.action";
+import { clearCart } from "../../redux/actions/cart.action";
 import CheckShippingInfo from "../../components/Checkout/CheckShippingInfo";
 import CheckoutCardInfo from "../../components/Checkout/CheckoutCardInfo";
 import CheckOrderTotal, {
@@ -31,9 +32,9 @@ class Checkout extends Component {
         : this.props.profile.profile.payment.shift(),
       shippingAddress: isEmpty(this.props.profile.profile)
         ? {}
-        : this.props.profile.profile.address
+        : this.props.profile.profile.address,
+      orderStatus: this.props.currentOrder.get("orderStatus")
     };
-    this.onSubmitOrder = this.onSubmitOrder.bind(this);
   }
   callbackHandler = (type, data) => {
     switch (type) {
@@ -51,57 +52,19 @@ class Checkout extends Component {
           foods,
           totalSummary
         };
-        console.log(newOrder);
         this.props.placeOrder(newOrder);
         break;
       default:
         break;
     }
   };
-  // componentWillReceiveProps(nextProps) {
-  //   //console.log(nextProps);
-  //   let total = 0;
-  //   let items = [];
-  //   let index = 0;
-  //   let pm = {};
-
-  //   if (!isEmpty(nextProps.cart.cart.items)) {
-  //     nextProps.cart.cart.items.forEach(item => {
-  //       total += item.quantity * item.productId.price;
-  //       items[index] = { itemId: item.productId._id, quantity: item.quantity };
-  //       index++;
-  //     });
-  //     total = total + total * 0.12;
-  //     this.setState({ orderdetail: { total: total, items: items } });
-  //   }
-  //   if (!isEmpty(nextProps.profile.profile.payment)) {
-  //     pm = nextProps.profile.profile.payment.shift();
-  //     console.log(pm);
-
-  //     this.setState({
-  //       paymentmethod: pm
-  //     });
-  //   }
-  //   if (!isEmpty(nextProps.profile.profile.address)) {
-  //     this.setState({ shippingaddress: this.props.profile.profile.address });
-  //   }
-  // }
-
-  // componentDidMount() {
-  //   this.props.loadProfile();
-  //   // this.props.getCart();
-  // }
-  onSubmitOrder() {
-    const orderData = {
-      orderdetail: this.state.orderdetail,
-      shippingAddress: this.state.shippingAddress,
-      paymentMethod: this.state.paymentMethod
-    };
-    console.log(orderData);
-    this.props.placeOrder(orderData);
+  componentWillReceiveProps(nextProps) {
+    this.setState({ orderStatus: nextProps.currentOrder.get("orderStatus") });
   }
+
   render() {
     const { user, profile, currentOrder } = this.props;
+    let orderStatus = this.state.orderStatus;
     if (!user) {
       return <Redirect to="/" />;
     }
@@ -109,7 +72,6 @@ class Checkout extends Component {
     const payments = profile.get("payments");
 
     const foods = currentOrder.get("foods");
-    const it = this.state.orderdetail;
 
     let itemContent;
 
@@ -129,7 +91,15 @@ class Checkout extends Component {
       <CheckoutCardInfo payments={payments} />
     );
     let showContent;
-    if (profile === null || address === null) {
+    if (orderStatus) {
+      // call clear cart action
+      this.props.clearCart();
+      // change the display content
+      showContent = (
+        <div className="text-center">
+          <h2>Congratulation! You have placed your order.</h2>
+        </div>
+      );
     } else {
       showContent = (
         <div className="container">
@@ -163,6 +133,7 @@ class Checkout extends Component {
   }
 }
 Checkout.propTypes = {
+  clearCart: PropTypes.func.isRequired,
   placeOrder: PropTypes.func.isRequired,
   loadProfile: PropTypes.func.isRequired,
   getCart: PropTypes.func.isRequired,
@@ -179,6 +150,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { loadProfile, placeOrder }
+    { loadProfile, placeOrder, clearCart }
   )(withLayout(Checkout))
 );

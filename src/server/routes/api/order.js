@@ -20,8 +20,8 @@ router.get("/test", (req, res) => res.json({ msg: "Order Works" }));
 router.get("/", auth, async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user.id }).populate(
-      "orderDetail.foods.foodId",
-      ["title", "price"]
+      "orderDetails.foods.foodId",
+      ["title", "price", "images", "tags", "description"]
     );
     res.json(orders);
   } catch (err) {
