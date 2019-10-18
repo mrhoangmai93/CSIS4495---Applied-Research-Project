@@ -6,6 +6,7 @@ import cart from "./front/cart.reducer";
 import userProfile from "./front/userProfile.reducer";
 import currentOrder from "./front/currentOrder.reducer";
 import orders from "./front/order.reducer";
+import sellerProfile from "./seller/sellerProfile.reducer";
 
 export default combineReducers({
   alert,
@@ -14,5 +15,6 @@ export default combineReducers({
   cart,
   userProfile,
   currentOrder,
-  orders
+  orders,
+  sellerProfile
 });

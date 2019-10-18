@@ -6,7 +6,7 @@ export const LOADED = `${DOCUMENT}LOADED`;
 export const LOAD_ERROR = `${DOCUMENT}LOAD_ERROR`;
 //add to
 export const CREATE = `${DOCUMENT}CREATE`;
-export const CREATEED = `${DOCUMENT}CREATEED`;
+export const CREATED = `${DOCUMENT}CREATED`;
 export const CREATE_ERROR = `${DOCUMENT}CREATE_ERROR`;
 
 // Edit Address
@@ -22,7 +22,7 @@ export const DELETE_PAYMENT = `${DOCUMENT}DELETE_PAYMENT`;
 export const DELETED_PAYMENT = `${DOCUMENT}DELETED_PAYMENT`;
 export const DELETE_PAYMENT_ERROR = `${DOCUMENT}DELETE_PAYMENT_ERROR`;
 //Load cart
-export const loadProfile = () => ({
+export const loadSellerProfile = () => ({
   type: LOAD
 });
 

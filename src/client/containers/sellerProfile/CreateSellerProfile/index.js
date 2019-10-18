@@ -8,27 +8,36 @@ import TextField from "../../../components/utilities/inputs/TextField";
 import TextAreaField from "../../../components/utilities/inputs/TextAreaField";
 import InputWithHintEffect from "../../../components/utilities/inputs/InputWithHintEffect";
 import ButtonDefault from "../../../components/utilities/buttons/ButtonDefault";
+import ImageUpload from "../../../components/ImageUpload";
 // import SelectListGroup from '../common/SelectListGroup';
 import { createSellerProfile } from "../../../redux/actions/seller/sellerProfile.action";
+import isEmpty from "../../../../validation/is-empty";
 import "./index.scss";
 
 class CreateSellerProfile extends Component {
   constructor(props) {
     super(props);
+    const { profile } = this.props.location;
+    const socials = profile.get("socials");
+    const website = profile.get("website");
+    const bio = profile.get("bio");
+    const userName = profile.get("userName");
     this.state = {
-      displaySocialInputs: false,
-      userName: "",
-      company: "",
-      website: "",
-      bio: "",
-      twitter: "",
-      facebook: "",
-      youtube: "",
-      instagram: ""
+      displaySocialInputs: isEmpty(socials) ? false : true,
+      userName: isEmpty(userName) ? "" : userName,
+      website: isEmpty(website) ? "" : website,
+      bio: isEmpty(bio) ? "" : bio,
+      twitter: socials && socials.twitter ? socials.twitter : "",
+      facebook: socials && socials.facebook ? socials.facebook : "",
+      youtube: socials && socials.youtube ? socials.youtube : "",
+      instagram: socials && socials.instagram ? socials.instagram : "",
+      file: "",
+      imagePreviewUrl: ""
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.handleImageChange = this.handleImageChange.bind(this);
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -56,7 +65,20 @@ class CreateSellerProfile extends Component {
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
+  handleImageChange(e) {
+    e.preventDefault();
 
+    let reader = new FileReader();
+    let file = e.target.files[0];
+
+    reader.onloadend = () =>
+      this.setState({
+        file: file,
+        imagePreviewUrl: reader.result
+      });
+
+    reader.readAsDataURL(file);
+  }
   render() {
     const { displaySocialInputs } = this.state;
 
@@ -68,7 +90,6 @@ class CreateSellerProfile extends Component {
           <InputWithHintEffect
             placeholder="Twitter Profile URL"
             name="twitter"
-            icon="fab fa-twitter"
             value={this.state.twitter}
             onChange={this.onChange}
           />
@@ -76,23 +97,13 @@ class CreateSellerProfile extends Component {
           <InputWithHintEffect
             placeholder="Facebook Page URL"
             name="facebook"
-            icon="fab fa-facebook"
             value={this.state.facebook}
-            onChange={this.onChange}
-          />
-
-          <InputWithHintEffect
-            placeholder="Linkedin Profile URL"
-            name="linkedin"
-            icon="fab fa-linkedin"
-            value={this.state.linkedin}
             onChange={this.onChange}
           />
 
           <InputWithHintEffect
             placeholder="YouTube Channel URL"
             name="youtube"
-            icon="fab fa-youtube"
             value={this.state.youtube}
             onChange={this.onChange}
           />
@@ -100,7 +111,6 @@ class CreateSellerProfile extends Component {
           <InputWithHintEffect
             placeholder="Instagram Page URL"
             name="instagram"
-            icon="fab fa-instagram"
             value={this.state.instagram}
             onChange={this.onChange}
           />
@@ -119,6 +129,11 @@ class CreateSellerProfile extends Component {
               </p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
+                <ImageUpload
+                  imagePreviewUrl={this.state.imagePreviewUrl}
+                  handleImageChange={this.handleImageChange}
+                />
+
                 <TextField
                   placeholder="* Profile User Name"
                   name="userName"

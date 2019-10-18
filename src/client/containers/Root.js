@@ -21,6 +21,7 @@ import ChangePassword from "./userProfile/edit-account/ChangePassword";
 import FoodDetails from "./food/FoodDetails";
 import Checkout from "./checkout";
 import CreateSellerProfile from "./sellerProfile/CreateSellerProfile";
+import SellerPage from "./sellerProfile/SellerPage";
 //helpers
 import setAuthToken from "../helpers/setAuthToken";
 //actions
@@ -111,6 +112,12 @@ const routes = [
     path: "/seller/create-profile",
     exact: true,
     component: CreateSellerProfile
+  },
+  {
+    title: "Your Profile",
+    path: "/seller/your-page",
+    exact: true,
+    component: SellerPage
   }
 ];
 

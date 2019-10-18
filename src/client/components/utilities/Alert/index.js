@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./index.scss";
-import Immutable from "immutable";
 
 const Alert = ({ alerts }) =>
   // alerts !== null &&

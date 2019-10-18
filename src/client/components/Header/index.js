@@ -18,8 +18,8 @@ const Header = ({ auth, cart, logout }) => {
   if (auth.get("user") && auth.get("user").role === "seller") {
     sellerLink = (
       <li className="header__icon__item">
-        <Link className="header__icon__link" to="/seller/create-profile">
-          Create Profile
+        <Link className="header__icon__link" to="/seller/your-page">
+          My Profile
         </Link>
       </li>
       // <li className="header__icon__item">
