@@ -8,7 +8,7 @@ const CheckCardInfo = props => {
   const payments = !isEmpty(props.payments) ? props.payments : [];
   console.log(props.payments);
   return (
-    <div className="col-6">
+    <div>
       <h6>Payment Method</h6>
       <Link to="/">
         <small>Change</small>

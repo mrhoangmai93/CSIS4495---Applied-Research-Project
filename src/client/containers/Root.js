@@ -9,6 +9,7 @@ import Index from "./front/Index";
 import history from "../config/initializers/history";
 import FancyRoute from "../components/utilities/FancyRoutes";
 import Register from "./front/Register";
+import RegisterSeller from "./front/RegisterSeller";
 import Login from "./front/Login";
 import About from "./front/About";
 import Contact from "./front/Contact";
@@ -17,9 +18,9 @@ import UserProfile from "./userProfile";
 import EditAddress from "./userProfile/edit-account/EditAddress";
 import EditPayment from "./userProfile/edit-account/EditPayment";
 import ChangePassword from "./userProfile/edit-account/ChangePassword";
-import FoodDetails from "../containers/food/FoodDetails";
-import Checkout from "../containers/checkout";
-
+import FoodDetails from "./food/FoodDetails";
+import Checkout from "./checkout";
+import CreateSellerProfile from "./sellerProfile/CreateSellerProfile";
 //helpers
 import setAuthToken from "../helpers/setAuthToken";
 //actions
@@ -38,6 +39,12 @@ const routes = [
     path: "/register",
     exact: true,
     component: Register
+  },
+  {
+    title: "Register a new Seller",
+    path: "/register/seller",
+    exact: true,
+    component: RegisterSeller
   },
   {
     title: "Login",
@@ -98,6 +105,12 @@ const routes = [
     path: "/checkout",
     exact: true,
     component: Checkout
+  },
+  {
+    title: "Create Seller Profile",
+    path: "/seller/create-profile",
+    exact: true,
+    component: CreateSellerProfile
   }
 ];
 

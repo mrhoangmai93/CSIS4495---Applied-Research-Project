@@ -9,6 +9,7 @@ import Banner from "../../../components/Banner";
 import ProductCard, { VIEW_STATUSES } from "../../../components/ProductCard";
 import HowItWorks from "../../../components/HowItWorks";
 import Testimonial from "../../../components/Testimonial";
+import Spinner from "../../../components/utilities/Spinner";
 import { loadAllFoods } from "../../../redux/actions/food.action";
 import { loadCart, addToCart } from "../../../redux/actions/cart.action";
 
@@ -17,7 +18,9 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     this.props.loadAllFoods();
-    this.props.loadCart();
+    if (props.auth.get("user")) {
+      this.props.loadCart();
+    }
   }
   // useEffect(() => {
   //   store.dispatch(loadUser());
@@ -35,15 +38,19 @@ class Index extends React.Component {
     }
   };
   render() {
-    const foods = this.props.foods ? this.props.foods : {};
+    const foods = this.props.foods;
+    const loading = foods.get("loading");
     let displayProducts;
     //console.log(foods.get("list"));
-
-    displayProducts = foods.get("list").map(food => (
-      <div className="col-lg-4 col-md-6">
-        <ProductCard food={food} callbackHandler={this.callbackHandler} />
-      </div>
-    ));
+    if (loading) {
+      displayProducts = <Spinner />;
+    } else {
+      displayProducts = foods.get("list").map(food => (
+        <div className="col-lg-4 col-md-6">
+          <ProductCard food={food} callbackHandler={this.callbackHandler} />
+        </div>
+      ));
+    }
 
     return (
       <>
@@ -61,11 +68,13 @@ Index.propTypes = {
   loadAllFoods: PropTypes.func.isRequired,
   loadCart: PropTypes.func.isRequired,
   addToCart: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
   foods: PropTypes.array
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  foods: state.foods
+  foods: state.foods,
+  auth: state.auth
 });
 
 export default withRouter(

@@ -41,7 +41,7 @@ class EditAddress extends Component {
       state: this.state.state,
       phone: this.state.phone
     };
-    this.props.editAddress(profileData);
+    this.props.editAddress(profileData, this.props.history);
   }
 
   onChange(e) {

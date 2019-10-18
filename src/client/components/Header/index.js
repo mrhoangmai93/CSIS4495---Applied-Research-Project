@@ -14,9 +14,25 @@ const Header = ({ auth, cart, logout }) => {
 
   let numberItem = 0;
   foods.forEach(food => (numberItem += food.quantity));
+  let sellerLink;
+  if (auth.get("user") && auth.get("user").role === "seller") {
+    sellerLink = (
+      <li className="header__icon__item">
+        <Link className="header__icon__link" to="/seller/create-profile">
+          Create Profile
+        </Link>
+      </li>
+      // <li className="header__icon__item">
+      //   <Link className="header__icon__link" to="/dashboard">
+      //     Dashboard
+      //   </Link>
+      // </li>
+    );
+  }
   //const user = auth
   const authLink = (
     <ul className="header__icon__list ">
+      {sellerLink}
       <li className="header__icon__item">
         <Link className="header__icon__link" to="/account">
           <i className="fa fa-user" /> {userName}
@@ -43,8 +59,8 @@ const Header = ({ auth, cart, logout }) => {
   const guestLink = (
     <ul className="nav pull-xs-right">
       <li className="nav-item">
-        <Link to="/" className="nav-link">
-          Home
+        <Link to="/register/seller" className="nav-link">
+          Become a Cook
         </Link>
       </li>
       <li className="nav-item">

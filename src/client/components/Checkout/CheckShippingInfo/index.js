@@ -5,7 +5,7 @@ import "./index.scss";
 const CheckShippingInfo = props => {
   const { user, address } = props;
   return (
-    <div className="col-sm-6">
+    <div>
       <h6>Shipping Address:</h6>
       <Link to="/">
         <small>Change</small>

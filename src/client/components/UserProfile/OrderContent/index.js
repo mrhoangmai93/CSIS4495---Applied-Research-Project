@@ -11,7 +11,6 @@ import isEmpty from "../../../../validation/is-empty";
 
 const OrderContent = props => {
   const { orders } = props;
-  console.log(orders);
   let orderContent;
   orderContent = isEmpty(orders)
     ? ""
@@ -54,52 +53,7 @@ const OrderContent = props => {
           </table>
         </div>
       ));
-  //   let itemContent;
-  //   itemContent = isEmpty(items)
-  //   ? ""
-  //   : items.map(item => (
-  //       <CheckItems
-  //         key={item._id}
-  //         product={item.productId}
-  //         quantity={item.quantity}
-  //       />
-  //     ));
-  // let paymentContent;
-  // paymentContent = isEmpty(payment) ? (
-  //   "No card Found"
-  // ) : (
-  //   <CheckCardInfo payment={payment} />
-  // );
-  // let showContent;
-  // if (profile === null || cart === null) {
-  //   showContent = <Spinner />;
-  // } else {
-  //   showContent = (
-  //     <div className="container">
-  //       <div className="heading">
-  //         <h3>Review Your Order</h3>
-  //       </div>
-  //       <div className="row">
-  //         <div className="col-sm-8">
-  //           <div className="chose_area">
-  //             <div className="row">
-  //               <CheckShippingInfo auth={auth} address={address} />
-  //               {paymentContent}
-  //             </div>
-  //           </div>
-  //           <div className="chose_area">
-  //             <ul className="user_info">{itemContent}</ul>
-  //           </div>
-  //         </div>
-  //         <div className="col-sm-4">
-  //           <CheckOrderTotal
-  //             items={items}
-  //             onSubmitOrder={this.onSubmitOrder}
-  //           />
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
+
   return <tr>{orderContent}</tr>;
 };
 OrderContent.propTypes = {

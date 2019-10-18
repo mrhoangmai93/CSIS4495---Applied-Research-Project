@@ -1,5 +1,5 @@
 import React from "react";
-import spinner from "../../../../../public/images/spinner/light_progress2.gif";
+import spinner from "../../../../images/spinner/light_progress2.gif";
 
 export default () => {
   return (

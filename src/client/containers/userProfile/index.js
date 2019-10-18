@@ -57,8 +57,7 @@ class UserProfile extends Component {
     const payments = profile.get("payments");
 
     const orders = this.props.orders.get("list");
-    console.log(orders);
-    console.log(orders, this.props.orders);
+
     const loading = false;
     const {
       displayAddress,

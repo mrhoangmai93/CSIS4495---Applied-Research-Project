@@ -3,20 +3,24 @@ import Immutable from "immutable";
 import * as ACTION from "../../actions/food.action";
 
 const initialState = Immutable.fromJS({
+  loading: true,
+
   list: []
 });
 export default function(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case ACTION.LOADED_ALL:
-      return state.set("list", payload);
+      return state.set("list", payload).set("loading", false);
 
     case ACTION.LOAD_ERROR:
-    //   return state.merge({
-    //     token: null,
-    //     isAuthenticated: false,
-    //     loading: false
-    //   });
+      //   return state.merge({
+      //     token: null,
+      //     isAuthenticated: false,
+      //     loading: false
+      //   });
+
+      return state.set("loading", false);
     default:
       return state;
   }

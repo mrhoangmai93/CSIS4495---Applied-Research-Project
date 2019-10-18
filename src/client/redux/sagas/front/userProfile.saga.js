@@ -35,6 +35,7 @@ function* editAddress(data) {
     const res = yield call(lib.editAddress, data.payload);
 
     yield put({ type: USER_PROFILE_ACTION.EDITED_ADDRESS, payload: res.data });
+    yield data.history.push("/account");
   } catch (err) {
     yield put({ type: USER_PROFILE_ACTION.EDIT_ADDRESS_ERROR });
     const error = yield err.response.data;
@@ -50,6 +51,7 @@ function* editPayment(data) {
     const res = yield call(lib.editPayment, data.payload);
 
     yield put({ type: USER_PROFILE_ACTION.EDITED_PAYMENT, payload: res.data });
+    yield data.history.push("/account");
   } catch (err) {
     yield put({ type: USER_PROFILE_ACTION.EDIT_PAYMENT_ERROR });
     const error = yield err.response.data;

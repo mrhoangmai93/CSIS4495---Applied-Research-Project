@@ -9,30 +9,30 @@ const CheckoutItems = props => {
   const quantity = !isEmpty(props.quantity) ? props.quantity : {};
 
   return (
-    <div className="order-food-item">
-      <tr className="cart-item d-flex justify-content-around" key={food.name}>
-        <td>
+    <div className="order_food_item">
+      <div className="row" key={food.name}>
+        <div className="col-3">
           <img
             className="food-image"
             src="/images/placeholders/food.jpg"
             alt="food"
           />
-        </td>
-        <td>
+        </div>
+        <div className="col-6">
           <div className="food-info">
             <p className="food-name">{food.title}</p>
             <p className="food-price">{food.price}</p>
           </div>
-        </td>
-        <td>
+        </div>
+        <div className="col-3">
           <div className="food-total">
             <p className="quantity">
               {quantity} {quantity > 1 ? "Nos." : "No."}{" "}
             </p>
             <p className="amount">${quantity * food.price}</p>
           </div>
-        </td>
-      </tr>
+        </div>
+      </div>
     </div>
   );
 };

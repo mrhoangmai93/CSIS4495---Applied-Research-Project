@@ -1,13 +1,13 @@
-const DOCUMENT = "PROFILE_";
+const DOCUMENT = "SELLER_PROFILE_";
 
 //Load cart Data
 export const LOAD = `${DOCUMENT}LOAD`;
 export const LOADED = `${DOCUMENT}LOADED`;
 export const LOAD_ERROR = `${DOCUMENT}LOAD_ERROR`;
 //add to
-export const ADD = `${DOCUMENT}ADD`;
-export const ADDED = `${DOCUMENT}ADDED`;
-export const ADD_ERROR = `${DOCUMENT}ADD_ERROR`;
+export const CREATE = `${DOCUMENT}CREATE`;
+export const CREATEED = `${DOCUMENT}CREATEED`;
+export const CREATE_ERROR = `${DOCUMENT}CREATE_ERROR`;
 
 // Edit Address
 export const EDIT_ADDRESS = `${DOCUMENT}EDIT_ADDRESS`;
@@ -27,8 +27,8 @@ export const loadProfile = () => ({
 });
 
 //
-export const editAddress = (payload, history) => ({
-  type: EDIT_ADDRESS,
+export const createSellerProfile = (payload, history) => ({
+  type: CREATE,
   payload,
   history
 });
