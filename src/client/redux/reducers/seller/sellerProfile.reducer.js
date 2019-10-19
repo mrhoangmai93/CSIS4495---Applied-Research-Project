@@ -13,9 +13,8 @@ export default function(state = initialState, action) {
     case ACTION.CREATED:
     case ACTION.LOADED:
     case ACTION.ADDED_FEEDBACK:
-      // case ACTION.DELETED_ITEM:
+    case ACTION.DELETED_FEEDBACK:
       payload.loading = false;
-
       return state.merge(payload);
 
     case ACTION.LOAD_ERROR:

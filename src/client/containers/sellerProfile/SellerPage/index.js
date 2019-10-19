@@ -5,7 +5,8 @@ import { connect } from "react-redux";
 import withLayout from "../../../hocs/front/Layout";
 import {
   loadSellerProfile,
-  addFeedback
+  addFeedback,
+  deleteFeedback
 } from "../../../redux/actions/seller/sellerProfile.action";
 import Spinner from "../../../components/utilities/Spinner";
 // import ProfileActions from "./ProfileActions";
@@ -18,7 +19,7 @@ import FeedbackForm, {
 import FeedbackItem, {
   FEEDBACK_ITEM_STATUSES
 } from "../../../components/Feedback/FeedbackItem";
-
+import NoResults from "../../../components/utilities/empty-states/Noresults";
 class SellerPage extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +35,7 @@ class SellerPage extends Component {
         this.props.addFeedback(data);
         break;
       case FEEDBACK_ITEM_STATUSES.DELETE_FEEDBACK:
-        //this.props.deleteFromCart({ foodId: data.itemId });
+        this.props.deleteFeedback(this.props.match.params.id);
         break;
 
       default:
@@ -51,57 +52,39 @@ class SellerPage extends Component {
     let feedbackContent;
 
     if (profile === null || loading) {
-      pageContent = <Spinner />;
+      if (profile.get("user") && sellerId !== profile.get("user")._id) {
+        pageContent = <Spinner />;
+      }
     } else {
-      //redirect if nothing in profile
-      if (!profile.get("bio") || sellerId !== profile.get("user")._id) {
-        return <Redirect to="/" />;
+      if (!profile.get("bio")) {
+        pageContent = <NoResults message="No profile for this user" />;
       } else {
         feedbackContent = feedbacks.map(fb => (
           <FeedbackItem
             feedback={fb}
             auth={this.props.auth}
+            sellerId={sellerId}
             callbackHandler={this.callbackHandler}
           />
         ));
         // Check if logged in user has profile data
-        if (Object.keys(profile).length > 0) {
-          pageContent = (
-            <div>
-              <p className="lead text-muted"></p>
-              <ProfileHeader profile={profile} />
-              <ProfileBio profile={profile} />
-              <div style={{ marginBottom: "60px" }} />
-              {/* {user && user._id === sellerId ? (
-                <Link to={{ pathname: "/seller/create-profile", profile }}>
-                  <DefaultButton> Edit Profile</DefaultButton>
-                </Link>
-              ) : null}
+        pageContent = (
+          <div>
+            <p className="lead text-muted"></p>
+            <ProfileHeader profile={profile} />
+            <ProfileBio profile={profile} />
+            <div style={{ marginBottom: "60px" }} />
 
-              <div style={{ marginBottom: "3rem" }} /> */}
-
-              {user && user._id ? (
-                <FeedbackForm
-                  user={user}
-                  sellerId={sellerId}
-                  callbackHandler={this.callbackHandler}
-                />
-              ) : null}
-              {feedbackContent}
-            </div>
-          );
-        } else {
-          // User is logged in but has no profile
-          pageContent = (
-            <div>
-              <p className="lead text-muted">Welcome {user.name}</p>
-              <p>You have not yet setup a profile, please add some info</p>
-              <Link to="/seller/create-profile">
-                <DefaultButton> Create Profile</DefaultButton>
-              </Link>
-            </div>
-          );
-        }
+            {user && user._id ? (
+              <FeedbackForm
+                user={user}
+                sellerId={sellerId}
+                callbackHandler={this.callbackHandler}
+              />
+            ) : null}
+            {feedbackContent}
+          </div>
+        );
       }
     }
 
@@ -116,6 +99,7 @@ class SellerPage extends Component {
 }
 
 SellerPage.propTypes = {
+  deleteFeedback: PropTypes.func.isRequired,
   addFeedback: PropTypes.func.isRequired,
   loadSellerProfile: PropTypes.func.isRequired,
   deleteAccount: PropTypes.func.isRequired,
@@ -131,6 +115,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { loadSellerProfile, addFeedback }
+    { loadSellerProfile, addFeedback, deleteFeedback }
   )(withLayout(SellerPage))
 );

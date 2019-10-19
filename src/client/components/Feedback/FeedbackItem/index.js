@@ -30,10 +30,7 @@ class FeedbackItem extends Component {
                     <button
                       onClick={() =>
                         this.props.callbackHandler(
-                          FEEDBACK_ITEM_STATUSES.DELETE_FEEDBACK,
-                          {
-                            feedbackId: feedback._id
-                          }
+                          FEEDBACK_ITEM_STATUSES.DELETE_FEEDBACK
                         )
                       }
                       className="btn btn-default btn-danger mr-1"

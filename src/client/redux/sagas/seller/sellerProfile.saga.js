@@ -68,10 +68,35 @@ function* addFeedback(data) {
     }
   }
 }
+function* deleteFeedback(data) {
+  try {
+    const res = yield call(lib.deleteFeedback, data.payload);
+
+    yield put({
+      type: SELLER_PROFILE_ACTION.DELETED_FEEDBACK,
+      payload: res.data
+    });
+    yield put(
+      ALERT_ACTION.setAlert({
+        msg: "Success delete feedback",
+        alertType: "success"
+      })
+    );
+  } catch (err) {
+    yield put({ type: SELLER_PROFILE_ACTION.DELETE_FEEDBACK_ERROR });
+    const errors = yield err.response.data.errors;
+    for (let i in errors) {
+      yield put(
+        ALERT_ACTION.setAlert({ msg: errors[i].msg, alertType: "danger" })
+      );
+    }
+  }
+}
 export default function* rootSaga() {
   yield all([
     takeLatest(SELLER_PROFILE_ACTION.CREATE, createSellerProfile),
     takeLatest(SELLER_PROFILE_ACTION.LOAD, loadProfile),
-    takeLatest(SELLER_PROFILE_ACTION.ADD_FEEDBACK, addFeedback)
+    takeLatest(SELLER_PROFILE_ACTION.ADD_FEEDBACK, addFeedback),
+    takeEvery(SELLER_PROFILE_ACTION.DELETE_FEEDBACK, deleteFeedback)
   ]);
 }

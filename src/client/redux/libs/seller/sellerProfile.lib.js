@@ -18,6 +18,11 @@ const lib = {
     const path = `/seller/feedback/${sellerId}`;
     const res = await axios.put(path, data);
     return res;
+  },
+  async deleteFeedback(sellerId) {
+    const path = `/seller/removefeedback/${sellerId}`;
+    const res = await axios.put(path);
+    return res;
   }
 };
 

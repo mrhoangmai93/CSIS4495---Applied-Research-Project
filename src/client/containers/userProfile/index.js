@@ -18,6 +18,7 @@ import SettingContent from "../../components/UserProfile/SettingContent";
 import isEmpty from "../../../validation/is-empty";
 import ButtonDefault from "../../components/utilities/buttons/ButtonDefault";
 import { VIEW_STATUSES } from "../../components/UserProfile/PaymentContent/PaymentCard";
+import { loadSellerProfile } from "../../redux/actions/seller/sellerProfile.action";
 import "./index.scss";
 
 class UserProfile extends Component {
@@ -32,6 +33,9 @@ class UserProfile extends Component {
     };
     this.props.loadProfile();
     this.props.loadOrders();
+    if (this.props.user) {
+      this.props.loadSellerProfile(this.props.user._id);
+    }
 
     // this.onChange = this.onChange.bind(this);
     // this.onSubmit = this.onSubmit.bind(this);
@@ -51,11 +55,10 @@ class UserProfile extends Component {
   };
 
   render() {
-    const { user } = this.props;
+    const { user, sellerProfile } = this.props;
     const { profile } = this.props;
     const address = profile.get("address");
     const payments = profile.get("payments");
-
     const orders = this.props.orders.get("list");
 
     const loading = false;
@@ -241,11 +244,22 @@ class UserProfile extends Component {
         </div>
       );
     }
-
     return (
       <section className="profile">
         <div className="container">
           <div className="row">
+            {user && user.role === "seller" ? (
+              <Link
+                to={{
+                  pathname: "/seller/create-profile",
+                  profile: sellerProfile
+                }}
+              >
+                <ButtonDefault> Edit Profile</ButtonDefault>
+              </Link>
+            ) : null}
+
+            <div style={{ marginBottom: "3rem" }} />
             <div className="col-12">{profileContent}</div>
           </div>
           <div className="row">
@@ -265,23 +279,26 @@ class UserProfile extends Component {
 }
 
 UserProfile.propTypes = {
+  loadSellerProfile: PropTypes.func.isRequired,
   loadOrders: PropTypes.func.isRequired,
   deletePayment: PropTypes.func.isRequired,
   loadProfile: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
-  orders: PropTypes.object.isRequired
+  orders: PropTypes.object.isRequired,
+  sellerProfile: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   user: state.auth.get("user"),
   profile: state.userProfile,
-  orders: state.orders
+  orders: state.orders,
+  sellerProfile: state.sellerProfile
 });
 
 export default withRouter(
   connect(
     mapStateToProps,
-    { loadProfile, deletePayment, loadOrders }
+    { loadProfile, deletePayment, loadOrders, loadSellerProfile }
   )(withAuth(withLayout(UserProfile)))
 );

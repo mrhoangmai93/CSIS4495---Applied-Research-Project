@@ -129,7 +129,7 @@ router.put(
 
     const { user, text, name, avatar } = req.body;
 
-    //build userInfo object
+    //build sellerProfile object
     const newFeedback = {
       user,
       text,
@@ -171,46 +171,45 @@ router.put(
     }
   }
 );
-// @route   PUT api/userinfo/removepayment/:payment_id
+// @route   PUT api/seller/removefeedback/:sellerId
 // @desc    Delete a Payment
 // @access  Private
-router.put("/removepayment/:payment_id", [auth], async (req, res) => {
+router.put("/removefeedback/:sellerId", [auth], async (req, res) => {
   try {
-    let userinfo = await UserInfo.findOne({ user: req.user.id }).populate(
-      "user",
-      ["name", "avatar"]
-    );
+    let sellerProfile = await SellerProfile.findOne({
+      user: req.params.sellerId
+    }).populate("user", ["name", "avatar", "email", "role"]);
 
-    if (userinfo) {
+    if (sellerProfile) {
       // Get remove index
-      const removeIndex = userinfo.feedbacks
-        .map(fb => fb._id.toString())
-        .indexOf(req.params.payment_id);
+      const removeIndex = sellerProfile.feedbacks
+        .map(fb => fb.user.toString())
+        .indexOf(req.user.id);
       if (removeIndex != -1) {
         // Splice out of array
-        userinfo.payments.splice(removeIndex, 1);
+        sellerProfile.feedbacks.splice(removeIndex, 1);
       } else {
-        return res.status(404).json({ msg: "Payment not found" });
+        return res.status(404).json({ msg: "feedback not found" });
       }
     } else {
       return res.status(400).json({ msg: "No information for this user" });
     }
 
-    await userinfo.save();
+    await sellerProfile.save();
 
-    res.json(userinfo);
+    res.json(sellerProfile);
   } catch (err) {
     console.log(err.message);
 
     if (err.kind === "ObjectId") {
-      return res.status(404).json({ msg: "Payment not found" });
+      return res.status(404).json({ msg: "Seller not found" });
     }
     res.status(500).send("Server Error!");
   }
 });
 
-// @route       DELETE api/userinfo
-// @Desc        Delete user and userinfo
+// @route       DELETE api/sellerProfile
+// @Desc        Delete user and sellerProfile
 // @Access      Private
 
 module.exports = router;
