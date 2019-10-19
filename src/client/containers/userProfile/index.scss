@@ -15,13 +15,19 @@ $color-grey-light-1: #f7f7f7;
   border: #999 1px solid;
   border-radius: 10px;
   margin: 20px;
-  background: #e8fdd4;
+  background-image: linear-gradient(
+    rgba(198, 249, 148, 0.7),
+    rgba(62, 119, 6, 0.7)
+  );
 }
 .account-setting a {
   color: black;
 }
 .account-setting:hover {
-  background: #ffe7db;
+  background-image: linear-gradient(
+    rgba(62, 119, 6, 0.7),
+    rgba(198, 249, 148, 0.7)
+  );
 }
 .special-color {
   color: #44cc00;

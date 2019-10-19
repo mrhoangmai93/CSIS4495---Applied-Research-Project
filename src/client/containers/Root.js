@@ -115,7 +115,7 @@ const routes = [
   },
   {
     title: "Your Profile",
-    path: "/seller/your-page",
+    path: "/seller/:id",
     exact: true,
     component: SellerPage
   }

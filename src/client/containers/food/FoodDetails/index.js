@@ -89,7 +89,8 @@ class FoodDetails extends Component {
                 </ButtonDefault>
               </span>
               <p>
-                <b>Seller:</b> {food.owner.name}
+                <b>Seller:</b>{" "}
+                <Link to={"/seller/" + food.owner._id}>{food.owner.name}</Link>
               </p>
               <p>
                 <b>Description:</b> {food.description}

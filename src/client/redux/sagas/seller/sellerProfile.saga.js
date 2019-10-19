@@ -15,15 +15,15 @@ import lib from "../../libs/seller/sellerProfile.lib";
 /**
  * Load Profile
  */
-function* loadProfile() {
+function* loadProfile(data) {
   try {
-    const res = yield call(lib.loadProfile);
+    const res = yield call(lib.loadProfile, data.payload);
 
     yield put({ type: SELLER_PROFILE_ACTION.LOADED, payload: res.data });
   } catch (err) {
-    // yield put({ type: SELLER_PROFILE_ACTION.LOAD_ERROR });
-    // const error = yield err.response.data;
-    // yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
+    yield put({ type: SELLER_PROFILE_ACTION.LOAD_ERROR });
+    const error = yield err.response.data;
+    yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
   }
 }
 /**
@@ -47,46 +47,31 @@ function* createSellerProfile(data) {
   }
 }
 /**
- * Edit user Address
+ * ADD Feedback
+ * @param {*} data
  */
-function* editPayment(data) {
+function* addFeedback(data) {
   try {
-    const res = yield call(lib.editPayment, data.payload);
+    const res = yield call(lib.addFeedback, data.payload);
 
     yield put({
-      type: SELLER_PROFILE_ACTION.EDITED_PAYMENT,
-      payload: res.data
-    });
-    yield data.history.push("/account");
-  } catch (err) {
-    yield put({ type: SELLER_PROFILE_ACTION.EDIT_PAYMENT_ERROR });
-    const error = yield err.response.data;
-
-    yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
-  }
-}
-/**
- * Delete a Payment
- * @param {paymentId} data
- */
-function* deletePayment(data) {
-  try {
-    const res = yield call(lib.deletePayment, data.payload);
-
-    yield put({
-      type: SELLER_PROFILE_ACTION.DELETED_PAYMENT,
+      type: SELLER_PROFILE_ACTION.ADDED_FEEDBACK,
       payload: res.data
     });
   } catch (err) {
-    yield put({ type: SELLER_PROFILE_ACTION.DELETE_PAYMENT_ERROR });
-    const error = yield err.response.data;
-
-    yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
+    yield put({ type: SELLER_PROFILE_ACTION.ADD_FEEDBACK_ERROR });
+    const errors = yield err.response.data.errors;
+    for (let i in errors) {
+      yield put(
+        ALERT_ACTION.setAlert({ msg: errors[i].msg, alertType: "danger" })
+      );
+    }
   }
 }
 export default function* rootSaga() {
   yield all([
     takeLatest(SELLER_PROFILE_ACTION.CREATE, createSellerProfile),
-    takeLatest(SELLER_PROFILE_ACTION.LOAD, loadProfile)
+    takeLatest(SELLER_PROFILE_ACTION.LOAD, loadProfile),
+    takeLatest(SELLER_PROFILE_ACTION.ADD_FEEDBACK, addFeedback)
   ]);
 }

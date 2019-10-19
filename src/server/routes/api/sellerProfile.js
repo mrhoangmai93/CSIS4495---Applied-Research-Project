@@ -3,19 +3,19 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
-
+//const isEmpty = require("../../../validation/is-empty");
 // Load Info Model
 const SellerProfile = require("../../models/SellerProfile");
 // Load user Model
 const User = require("../../models/User");
 
-// @route   GET api/seller
+// @route   GET api/seller/:sellerId
 // @desc    Get current users profile
 // @access  Private
-router.get("/", auth, async (req, res) => {
+router.get("/:sellerId", async (req, res) => {
   try {
     const sellerInfo = await SellerProfile.findOne({
-      user: req.user.id
+      user: req.params.sellerId
     }).populate("user", ["name", "avatar", "role", "email"]);
     if (!sellerInfo) {
       return res
@@ -105,24 +105,15 @@ router.post(
     }
   }
 );
-// @route   PUT api/userinfo/payment
-// @desc    Add/update payment method
+// @route   PUT api/seller/feedback/:sellerId"
+// @desc    Add/update feedback
 // @access  Private
 router.put(
-  "/payment",
+  "/feedback/:sellerId",
   [
     auth,
     [
-      check("cardNumber", "Card Number is required")
-        .not()
-        .isEmpty(),
-      check("nameOnCard", "Name on card is required")
-        .not()
-        .isEmpty(),
-      check("expireDate", "Expire date is required")
-        .not()
-        .isEmpty(),
-      check("securityNumber", "Sercurity Number code is required")
+      check("text", "Feedback Content is required")
         .not()
         .isEmpty()
     ]
@@ -136,59 +127,46 @@ router.put(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const {
-      _id,
-      cardNumber,
-      nameOnCard,
-      expireDate,
-      securityNumber
-    } = req.body;
+    const { user, text, name, avatar } = req.body;
+
     //build userInfo object
-    const newPayment = {
-      cardNumber,
-      nameOnCard,
-      expireDate,
-      securityNumber
+    const newFeedback = {
+      user,
+      text,
+      name,
+      avatar
     };
     try {
-      let userinfo = await UserInfo.findOne({ user: req.user.id }).populate(
-        "user",
-        ["name", "avatar"]
-      );
+      let sellerProfile = await SellerProfile.findOne({
+        user: req.params.sellerId
+      }).populate("user", ["name", "avatar", "email", "role"]);
 
-      if (userinfo) {
-        //check if there is payment
-        if (userinfo.payments) {
-          //check if there is payment id passing in the body
-          // yes => update the existing payment
-          if (_id) {
-            const updateIndex = userinfo.payments
-              .map(pm => pm._id.toString())
-              .indexOf(_id);
-            if (updateIndex >= 0) {
-              userinfo.payments[updateIndex] = newPayment;
-            }
+      if (sellerProfile) {
+        //check if there is feedbacks
+        if (sellerProfile.feedbacks) {
+          const updateIndex = sellerProfile.feedbacks
+            .map(fb => fb.user.toString())
+            .indexOf(req.user.id);
+          if (updateIndex >= 0) {
+            sellerProfile.feedbacks[updateIndex] = newFeedback;
           } else {
-            //add a new payment to array
-            userinfo.payments.unshift(newPayment);
+            sellerProfile.feedbacks.push(newFeedback);
           }
         } else {
           //no previous payment added
-          userinfo.payments = [];
-          userinfo.payments.push(newPayment);
+          sellerProfile.feedbacks = [];
+          sellerProfile.feedbacks.push(newFeedback);
         }
       } else {
         return res.status(400).json({ msg: "No information for this user" });
       }
 
-      await userinfo.save();
+      await sellerProfile.save();
 
-      res.json(userinfo);
+      res.json(sellerProfile);
     } catch (err) {
       console.log(err.message);
-      if (err.kind === "ObjectId") {
-        return res.status(404).json({ msg: "Payment not found" });
-      }
+
       res.status(500).send("Server Error!");
     }
   }
@@ -205,8 +183,8 @@ router.put("/removepayment/:payment_id", [auth], async (req, res) => {
 
     if (userinfo) {
       // Get remove index
-      const removeIndex = userinfo.payments
-        .map(pm => pm._id.toString())
+      const removeIndex = userinfo.feedbacks
+        .map(fb => fb._id.toString())
         .indexOf(req.params.payment_id);
       if (removeIndex != -1) {
         // Splice out of array

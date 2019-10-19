@@ -9,21 +9,19 @@ export const CREATE = `${DOCUMENT}CREATE`;
 export const CREATED = `${DOCUMENT}CREATED`;
 export const CREATE_ERROR = `${DOCUMENT}CREATE_ERROR`;
 
-// Edit Address
-export const EDIT_ADDRESS = `${DOCUMENT}EDIT_ADDRESS`;
-export const EDITED_ADDRESS = `${DOCUMENT}EDITED_ADDRESS`;
-export const EDIT_ADDRESS_ERROR = `${DOCUMENT}EDIT_ADDRESS_ERROR`;
-// Edit Payment
-export const EDIT_PAYMENT = `${DOCUMENT}EDIT_PAYMENT`;
-export const EDITED_PAYMENT = `${DOCUMENT}EDITED_PAYMENT`;
-export const EDIT_PAYMENT_ERROR = `${DOCUMENT}EDIT_PAYMENT_ERROR`;
-// delete Payment
-export const DELETE_PAYMENT = `${DOCUMENT}DELETE_PAYMENT`;
-export const DELETED_PAYMENT = `${DOCUMENT}DELETED_PAYMENT`;
-export const DELETE_PAYMENT_ERROR = `${DOCUMENT}DELETE_PAYMENT_ERROR`;
+// Edit Feedback
+export const ADD_FEEDBACK = `${DOCUMENT}ADD_FEEDBACK`;
+export const ADDED_FEEDBACK = `${DOCUMENT}ADDED_FEEDBACK`;
+export const ADD_FEEDBACK_ERROR = `${DOCUMENT}ADD_FEEDBACK_ERROR`;
+
+// delete Feedback
+export const DELETE_FEEDBACK = `${DOCUMENT}DELETE_FEEDBACK`;
+export const DELETED_FEEDBACK = `${DOCUMENT}DELETED_FEEDBACK`;
+export const DELETE_FEEDBACK_ERROR = `${DOCUMENT}DELETE_FEEDBACK_ERROR`;
 //Load cart
-export const loadSellerProfile = () => ({
-  type: LOAD
+export const loadSellerProfile = payload => ({
+  type: LOAD,
+  payload
 });
 
 //
@@ -32,12 +30,11 @@ export const createSellerProfile = (payload, history) => ({
   payload,
   history
 });
-export const editPayment = (payload, history) => ({
-  type: EDIT_PAYMENT,
-  payload,
-  history
+export const addFeedback = payload => ({
+  type: ADD_FEEDBACK,
+  payload
 });
-export const deletePayment = payload => ({
-  type: DELETE_PAYMENT,
+export const deleteFeedback = payload => ({
+  type: DELETE_FEEDBACK,
   payload
 });

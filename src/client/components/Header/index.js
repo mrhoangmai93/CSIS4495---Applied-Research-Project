@@ -11,14 +11,14 @@ const Header = ({ auth, cart, logout }) => {
   const loading = auth.get("loading");
   const userName = auth.getIn(["user", "name"]);
   const foods = cart.get("foods") ? cart.get("foods") : [];
-
+  const user = auth.get("user");
   let numberItem = 0;
   foods.forEach(food => (numberItem += food.quantity));
   let sellerLink;
-  if (auth.get("user") && auth.get("user").role === "seller") {
+  if (user && user.role === "seller") {
     sellerLink = (
       <li className="header__icon__item">
-        <Link className="header__icon__link" to="/seller/your-page">
+        <Link className="header__icon__link" to={"/seller/" + user._id}>
           My Profile
         </Link>
       </li>
