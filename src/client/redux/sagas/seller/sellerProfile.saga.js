@@ -58,6 +58,12 @@ function* addFeedback(data) {
       type: SELLER_PROFILE_ACTION.ADDED_FEEDBACK,
       payload: res.data
     });
+    yield put(
+      ALERT_ACTION.setAlert({
+        msg: "You have Successful Leave a Feedback",
+        alertType: "success"
+      })
+    );
   } catch (err) {
     yield put({ type: SELLER_PROFILE_ACTION.ADD_FEEDBACK_ERROR });
     const errors = yield err.response.data.errors;

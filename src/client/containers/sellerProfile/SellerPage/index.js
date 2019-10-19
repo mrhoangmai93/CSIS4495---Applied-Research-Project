@@ -9,7 +9,7 @@ import {
   deleteFeedback
 } from "../../../redux/actions/seller/sellerProfile.action";
 import Spinner from "../../../components/utilities/Spinner";
-// import ProfileActions from "./ProfileActions";
+import Rating from "react-rating";
 import ProfileHeader from "../../../components/SellerProfile/ProfileHeader";
 import ProfileBio from "../../../components/SellerProfile/ProfileBio";
 import DefaultButton from "../../../components/utilities/buttons/ButtonDefault";
@@ -20,6 +20,8 @@ import FeedbackItem, {
   FEEDBACK_ITEM_STATUSES
 } from "../../../components/Feedback/FeedbackItem";
 import NoResults from "../../../components/utilities/empty-states/Noresults";
+import Alert from "../../../components/utilities/Alert";
+import "./index.scss";
 class SellerPage extends Component {
   constructor(props) {
     super(props);
@@ -48,6 +50,13 @@ class SellerPage extends Component {
     const { profile } = this.props;
     const loading = profile.get("loading");
     const feedbacks = profile.get("feedbacks");
+    let totalRating = 0;
+    let sellerRating = 0;
+    feedbacks.forEach(fb => (totalRating += fb.rating));
+
+    if (feedbacks.length > 0) {
+      sellerRating = (totalRating / feedbacks.length).toFixed(1);
+    }
     let pageContent;
     let feedbackContent;
 
@@ -72,15 +81,42 @@ class SellerPage extends Component {
           <div>
             <p className="lead text-muted"></p>
             <ProfileHeader profile={profile} />
+            <div className="row">
+              <div className="seller-rating">
+                <b>Rating:</b> &nbsp;
+                <Rating
+                  initialRating={sellerRating}
+                  readonly
+                  emptySymbol={
+                    <img
+                      src="/images/ratings/star-grey.png"
+                      alt="rating star"
+                    />
+                  }
+                  fullSymbol={
+                    <img
+                      src="/images/ratings/star-yellow.png"
+                      alt="rating star"
+                    />
+                  }
+                  className="profile-star mr-1"
+                />{" "}
+                &nbsp;
+                {"(" + feedbacks.length + ")" + " Feedbacks"}
+              </div>
+            </div>
             <ProfileBio profile={profile} />
             <div style={{ marginBottom: "60px" }} />
 
             {user && user._id ? (
-              <FeedbackForm
-                user={user}
-                sellerId={sellerId}
-                callbackHandler={this.callbackHandler}
-              />
+              <div>
+                <Alert />
+                <FeedbackForm
+                  user={user}
+                  sellerId={sellerId}
+                  callbackHandler={this.callbackHandler}
+                />
+              </div>
             ) : null}
             {feedbackContent}
           </div>

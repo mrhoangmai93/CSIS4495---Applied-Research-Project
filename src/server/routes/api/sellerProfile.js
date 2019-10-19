@@ -127,14 +127,15 @@ router.put(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { user, text, name, avatar } = req.body;
+    const { user, text, name, avatar, rating } = req.body;
 
     //build sellerProfile object
     const newFeedback = {
       user,
       text,
       name,
-      avatar
+      avatar,
+      rating
     };
     try {
       let sellerProfile = await SellerProfile.findOne({

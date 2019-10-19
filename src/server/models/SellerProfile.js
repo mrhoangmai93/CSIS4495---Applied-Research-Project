@@ -49,27 +49,19 @@ const SellerProfileSchema = new Schema({
       avatar: {
         type: String
       },
-      date: {
-        type: Date,
-        default: Date.now
-      }
-    }
-  ],
-  ratings: [
-    {
-      point: {
+      rating: {
         type: Number,
         require: true
       },
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: "user"
+      date: {
+        type: Date,
+        default: Date.now
       }
     }
   ]
 });
 
 module.exports = SellerProfile = mongoose.model(
-  "sellerProfile",
+  "sellerprofile",
   SellerProfileSchema
 );
