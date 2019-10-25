@@ -28,6 +28,8 @@ class SellerPage extends Component {
     this.callbackHandler.bind(this);
   }
   componentDidMount() {
+    console.log("y44y4");
+
     this.props.loadSellerProfile(this.props.match.params.id);
   }
 

@@ -14,48 +14,61 @@ const Header = ({ auth, cart, logout }) => {
   const user = auth.get("user");
   let numberItem = 0;
   foods.forEach(food => (numberItem += food.quantity));
-  let sellerLink;
+  let authLink;
   if (user && user.role === "seller") {
-    sellerLink = (
-      <li className="header__icon__item">
-        <Link className="header__icon__link" to={"/seller/" + user._id}>
-          My Profile
-        </Link>
-      </li>
-      // <li className="header__icon__item">
-      //   <Link className="header__icon__link" to="/dashboard">
-      //     Dashboard
-      //   </Link>
-      // </li>
+    authLink = (
+      <ul className="header__icon__list ">
+        <li className="header__icon__item">
+          <Link className="header__icon__link" to={"/seller/" + user._id}>
+            My Profile
+          </Link>
+        </li>
+        <li className="header__icon__item">
+          <Link className="header__icon__link" to="/dashboard">
+            Dashboard
+          </Link>
+        </li>
+        <li className="header__icon__item">
+          <Link className="header__icon__link" to="/account">
+            <i className="fa fa-user" /> {userName}
+          </Link>
+        </li>
+        <li className="header__icon__item">
+          <Link to="/cart" className="header__icon__link">
+            <i className="fa fa-shopping-cart" /> Cart ({numberItem})
+          </Link>
+        </li>
+        <li className="header__icon__item">
+          <a onClick={logout} href="#!" className="header__icon__link">
+            <i className="fas fa-sign-out-alt"></i>{" "}
+            <span className="hide-sm">Logout</span>
+          </a>
+        </li>
+      </ul>
+    );
+  } else {
+    //const user = auth
+    authLink = (
+      <ul className="header__icon__list ">
+        <li className="header__icon__item">
+          <Link className="header__icon__link" to="/account">
+            <i className="fa fa-user" /> {userName}
+          </Link>
+        </li>
+        <li className="header__icon__item">
+          <Link to="/cart" className="header__icon__link">
+            <i className="fa fa-shopping-cart" /> Cart ({numberItem})
+          </Link>
+        </li>
+        <li className="header__icon__item">
+          <a onClick={logout} href="#!" className="header__icon__link">
+            <i className="fas fa-sign-out-alt"></i>{" "}
+            <span className="hide-sm">Logout</span>
+          </a>
+        </li>
+      </ul>
     );
   }
-  //const user = auth
-  const authLink = (
-    <ul className="header__icon__list ">
-      {sellerLink}
-      <li className="header__icon__item">
-        <Link className="header__icon__link" to="/account">
-          <i className="fa fa-user" /> {userName}
-        </Link>
-      </li>
-      <li className="header__icon__item">
-        <Link
-          to="/cart"
-          className="header__icon__link"
-          // onClick={this.handleCart.bind(this)}
-        >
-          <i className="fa fa-shopping-cart" /> Cart ({numberItem})
-        </Link>
-      </li>
-      <li className="header__icon__item">
-        <a onClick={logout} href="#!" className="header__icon__link">
-          <i className="fas fa-sign-out-alt"></i>{" "}
-          <span className="hide-sm">Logout</span>
-        </a>
-      </li>
-    </ul>
-  );
-
   const guestLink = (
     <ul className="nav pull-xs-right">
       <li className="nav-item">

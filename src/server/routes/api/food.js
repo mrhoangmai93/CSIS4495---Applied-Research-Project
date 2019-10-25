@@ -3,7 +3,8 @@ const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator/check");
 const auth = require("../../middleware/auth");
-
+const Promise = require("bluebird");
+const SellerProfile = require("../../models/SellerProfile");
 // Load models
 const Food = require("../../models/Food");
 
@@ -18,6 +19,14 @@ router.get("/", async (req, res) => {
       "avatar",
       "email"
     ]);
+    const foodWithSellers = Promise.all(
+      foods.map(async food => {
+        const sellerProfile = await SellerProfile.findOne({
+          user: food.owner
+        }).exec();
+        return { ...food, sellerFb: sellerProfile.feedbacks };
+      })
+    );
     res.json(foods);
   } catch (err) {
     console.log(err.message);
