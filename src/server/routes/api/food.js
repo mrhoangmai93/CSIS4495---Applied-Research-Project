@@ -14,19 +14,35 @@ const Food = require("../../models/Food");
 router.get("/", async (req, res) => {
   try {
     // TODO: sort to the closet location
-    const foods = await Food.find().populate("owner", [
+    const foods = await Food.find({ active: true }).populate("owner", [
       "name",
       "avatar",
       "email"
     ]);
-    const foodWithSellers = Promise.all(
-      foods.map(async food => {
-        const sellerProfile = await SellerProfile.findOne({
-          user: food.owner
-        }).exec();
-        return { ...food, sellerFb: sellerProfile.feedbacks };
-      })
-    );
+    // const foodWithSellers = Promise.all(
+    //   foods.map(async food => {
+    //     const sellerProfile = await SellerProfile.findOne({
+    //       user: food.owner
+    //     }).exec();
+    //     return { ...food, sellerFb: sellerProfile.feedbacks };
+    //   })
+    // );
+    res.json(foods);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server Error!");
+  }
+});
+// @route   GET api/foods/seller
+// @desc    Get all foods
+// @access  private
+router.get("/seller", auth, async (req, res) => {
+  try {
+    const foods = await Food.find({ owner: req.user.id }).populate("owner", [
+      "name",
+      "avatar",
+      "email"
+    ]);
     res.json(foods);
   } catch (err) {
     console.log(err.message);
@@ -42,7 +58,7 @@ router.get("/:food_id", async (req, res) => {
   try {
     // TODO: sort to the closet location
     const food = await Food.findById(req.params.food_id);
-    if (!food) {
+    if (!food || food.active === false) {
       return res.status(404).json({ msg: "Food not found" });
     }
 
@@ -80,7 +96,8 @@ router.post(
         .isEmpty(),
       check("pickingUpAddress", "pickingUpAddress cannot be empty")
         .not()
-        .isEmpty()
+        .isEmpty(),
+      check("activate", "activate must be boolean").isBoolean()
     ]
   ],
   async (req, res) => {
@@ -89,12 +106,13 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     const {
-      food_id,
+      _id,
       title,
       description,
       price,
       quantity,
       images,
+      active,
       tags,
       pickingUpAddress
     } = req.body;
@@ -108,7 +126,7 @@ router.post(
         categories = categoryList.split(',');
       } */
 
-      if (food_id) {
+      if (_id) {
         // update the old one
         let food = await Food.findById(food_id);
 
@@ -122,6 +140,7 @@ router.post(
             quantity,
             images,
             tags,
+            active,
             pickingUpAddress
           };
           food = await Food.findByIdAndUpdate(
@@ -141,6 +160,7 @@ router.post(
         price,
         quantity,
         images,
+        active,
         tags,
         pickingUpAddress
       });

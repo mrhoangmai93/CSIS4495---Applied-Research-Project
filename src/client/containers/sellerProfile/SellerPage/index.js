@@ -28,8 +28,6 @@ class SellerPage extends Component {
     this.callbackHandler.bind(this);
   }
   componentDidMount() {
-    console.log("y44y4");
-
     this.props.loadSellerProfile(this.props.match.params.id);
   }
 
@@ -54,7 +52,7 @@ class SellerPage extends Component {
     const feedbacks = profile.get("feedbacks");
     let totalRating = 0;
     let sellerRating = 0;
-    feedbacks.forEach(fb => (totalRating += fb.rating));
+    feedbacks.map(fb => (totalRating += fb.rating));
 
     if (feedbacks.length > 0) {
       sellerRating = (totalRating / feedbacks.length).toFixed(1);

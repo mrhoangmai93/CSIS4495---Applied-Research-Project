@@ -1,4 +1,5 @@
 import axios from "../../../config/initializers/axios";
+import { loadSellerFood } from "../../actions/seller/sellerProfile.action";
 
 const lib = {
   async loadProfile(sellerId) {
@@ -22,6 +23,16 @@ const lib = {
   async deleteFeedback(sellerId) {
     const path = `/seller/removefeedback/${sellerId}`;
     const res = await axios.put(path);
+    return res;
+  },
+  async loadSellerFood(sellerId) {
+    let path = `/foods/seller`;
+    //if there is seller Id => other user load
+    //if not this seller load
+    if (sellerId) {
+      path = `/foods/seller/${sellerId}`;
+    }
+    const res = await axios.get(path);
     return res;
   }
 };

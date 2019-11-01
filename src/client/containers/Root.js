@@ -22,6 +22,7 @@ import FoodDetails from "./food/FoodDetails";
 import Checkout from "./checkout";
 import CreateSellerProfile from "./sellerProfile/CreateSellerProfile";
 import SellerPage from "./sellerProfile/SellerPage";
+import Dashboard from "./dashboard";
 //helpers
 import setAuthToken from "../helpers/setAuthToken";
 //actions
@@ -118,6 +119,12 @@ const routes = [
     path: "/seller/:id",
     exact: true,
     component: SellerPage
+  },
+  {
+    title: "Your Dashboard",
+    path: "/dashboard",
+    exact: true,
+    component: Dashboard
   }
 ];
 

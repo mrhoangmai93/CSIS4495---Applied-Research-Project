@@ -23,6 +23,7 @@
   "homepage": "https://github.com/mrhoangmai93/CSIS4495---Applied-Research-Project#readme",
   "dependencies": {
     "@google-cloud/storage": "^4.0.0",
+    "@yazanaabed/react-tabs": "^2.3.6",
     "add": "^2.0.6",
     "axios": "^0.19.0",
     "bcryptjs": "^2.4.3",
@@ -57,6 +58,7 @@
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
+    "react-switch": "^5.0.1",
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
     "redux-saga": "^1.0.5",

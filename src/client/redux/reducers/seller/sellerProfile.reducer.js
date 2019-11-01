@@ -5,7 +5,8 @@ import * as ACTION from "../../actions/seller/sellerProfile.action";
 const initialState = Immutable.fromJS({
   loading: true,
   socials: [],
-  feedbacks: []
+  feedbacks: [],
+  foodList: []
 });
 export default function(state = initialState, action) {
   const { type, payload } = action;
@@ -16,7 +17,8 @@ export default function(state = initialState, action) {
     case ACTION.DELETED_FEEDBACK:
       payload.loading = false;
       return state.merge(payload);
-
+    case ACTION.FOOD_LOADED:
+      return state.set("foodList", payload);
     case ACTION.LOAD_ERROR:
       return state.set("loading", false);
 

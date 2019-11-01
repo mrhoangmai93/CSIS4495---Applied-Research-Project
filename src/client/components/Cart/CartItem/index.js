@@ -30,13 +30,13 @@ class CartItem extends Component {
     return (
       <tr>
         <td className="cart_product">
-          <a href="/">
+          <Link to={`/food/${item._id}`} className="default_link">
             <img
               className="food_item-img"
               src="/images/placeholders/food.jpg"
               alt={item.title}
             />
-          </a>
+          </Link>
         </td>
         <td className="cart_description" colspan="5">
           <h4>

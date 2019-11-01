@@ -1,0 +1,18 @@
+$color-grey-dark: #777;
+$color-grey-dark-2: #999;
+$color-grey-dark-3: #333;
+$color-grey-light-1: #f7f7f7;
+$color-grey-light-2: #eee;
+$color-white: #fff;
+.dashboard_tab {
+  margin: 3rem auto;
+  background-color: $color-white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+.dashboard_summary {
+  margin: 3rem auto;
+  background-color: $color-white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}

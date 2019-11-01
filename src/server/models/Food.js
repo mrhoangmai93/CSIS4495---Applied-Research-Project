@@ -30,6 +30,10 @@ const FoodSchema = new Schema({
   tags: {
     type: [String]
   },
+  active: {
+    type: Boolean,
+    required: true
+  },
   date: {
     type: Date,
     default: Date.now

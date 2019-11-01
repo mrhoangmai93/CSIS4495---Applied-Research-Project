@@ -1,5 +1,6 @@
 import React from "react";
 import "./index.scss";
+import { Link } from "react-router-dom";
 import Logo from "../Logo";
 
 const Footer = props => (
@@ -11,19 +12,19 @@ const Footer = props => (
             <Logo theme="white" />
             <ul className="footer__list mt-3 pl-0">
               <li className="footer__item">
-                <a href="#" className="footer__link">
+                <Link to="/about" className="footer__link">
                   About Project
-                </a>
+                </Link>
               </li>
               <li className="footer__item">
-                <a href="#" className="footer__link">
+                <Link to="/contact" className="footer__link">
                   Contact us
-                </a>
+                </Link>
               </li>
               <li className="footer__item">
-                <a href="#" className="footer__link">
+                <Link to="#" className="footer__link">
                   Privacy policy
-                </a>
+                </Link>
               </li>
             </ul>
             {/*            <span className="footer__list mt-4 footer__copyright">

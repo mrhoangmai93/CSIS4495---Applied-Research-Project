@@ -1,0 +1,16 @@
+$color-grey-light-2: #eee;
+$color-grey-dark: rgb(194, 194, 194);
+
+.food_item {
+  margin: 0.3rem;
+  border-bottom: 1px solid $color-grey-light-2;
+}
+.food_price_row {
+  margin: 3px;
+}
+.food_item_edit_icon {
+  color: $color-grey-dark;
+  :hover {
+    cursor: pointer;
+  }
+}
