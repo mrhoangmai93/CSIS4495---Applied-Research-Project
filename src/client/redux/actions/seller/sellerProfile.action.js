@@ -26,6 +26,10 @@ export const DELETE_FEEDBACK_ERROR = `${DOCUMENT}DELETE_FEEDBACK_ERROR`;
 export const CREATE_FOOD = `${DOCUMENT}CREATE_FOOD`;
 export const CREATED_FOOD = `${DOCUMENT}CREATED_FOOD`;
 export const CREATE_FOOD_ERROR = `${DOCUMENT}CREATE_FOOD_ERROR`;
+//create Food
+export const UPDATE_FOOD = `${DOCUMENT}UPDATE_FOOD`;
+export const UPDATED_FOOD = `${DOCUMENT}UPDATED_FOOD`;
+export const UPDATE_FOOD_ERROR = `${DOCUMENT}CREATE_FOOD_ERROR`;
 //Load seller profile
 export const loadSellerProfile = payload => ({
   type: LOAD,
@@ -51,8 +55,15 @@ export const deleteFeedback = payload => ({
   type: DELETE_FEEDBACK,
   payload
 });
-//update / create Food
-export const createFood = payload => ({
+// create Food
+export const createFood = (payload, history) => ({
   type: CREATE_FOOD,
-  payload
+  payload,
+  history
+});
+// create Food
+export const updateFood = (payload, history) => ({
+  type: UPDATE_FOOD,
+  payload,
+  history
 });

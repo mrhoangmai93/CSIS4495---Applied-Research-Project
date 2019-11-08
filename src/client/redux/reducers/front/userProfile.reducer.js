@@ -4,7 +4,8 @@ import * as ACTION from "../../actions/userProfile.action";
 
 const initialState = Immutable.fromJS({
   loading: true,
-  payments: []
+  payments: [],
+  pendingOrders: []
 });
 export default function(state = initialState, action) {
   const { type, payload } = action;

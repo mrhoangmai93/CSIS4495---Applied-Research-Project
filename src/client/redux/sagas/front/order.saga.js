@@ -27,7 +27,76 @@ function* loadOrders() {
     yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
   }
 }
+/**
+ * Load all pending orders for seller
+ */
+function* loadPendingSellerOrders() {
+  try {
+    const res = yield call(lib.loadPendingSellerOrders);
 
+    yield put({ type: ORDER_ACTION.SELLER_PENDING_LOADED, payload: res.data });
+  } catch (err) {
+    yield put({ type: ORDER_ACTION.SELLER_PENDING_LOAD_ERROR });
+    const error = yield err.response.data;
+
+    yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
+  }
+}
+/**
+ * Load all pending orders for seller
+ */
+function* loadCompletedSellerOrders() {
+  try {
+    const res = yield call(lib.loadCompletedSellerOrders);
+
+    yield put({ type: ORDER_ACTION.SELLER_COMPLETE_LOADED, payload: res.data });
+  } catch (err) {
+    yield put({ type: ORDER_ACTION.SELLER_COMPLETE_LOAD_ERROR });
+    const error = yield err.response.data;
+
+    yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
+  }
+}
+/**
+ * Load all orders for seller
+ */
+function* loadAllSellerOrders() {
+  try {
+    const res = yield call(lib.loadAllSellerOrders);
+
+    yield put({ type: ORDER_ACTION.SELLER_LOADED, payload: res.data });
+  } catch (err) {
+    yield put({ type: ORDER_ACTION.SELLER_LOAD_ERROR });
+    const error = yield err.response.data;
+
+    yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
+  }
+}
+/**
+ * complete orders for seller
+ */
+function* sellerCompleteOrder(data) {
+  const order = {
+    orderStatus: "completed"
+  };
+  try {
+    const res = yield call(lib.sellerEditOrder({ id: data.id, order }));
+    console.log(res);
+    yield put({ type: ORDER_ACTION.SELLER_COMPLETED, payload: res.data });
+  } catch (err) {
+    console.log(err.response.data);
+    yield put({ type: ORDER_ACTION.SELLER_COMPLETE_ERROR });
+    const error = yield err.response.data;
+
+    yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
+  }
+}
 export default function* rootSaga() {
-  yield all([takeEvery(ORDER_ACTION.LOAD, loadOrders)]);
+  yield all([
+    takeEvery(ORDER_ACTION.LOAD, loadOrders),
+    takeLatest(ORDER_ACTION.SELLER_PENDING_LOAD, loadPendingSellerOrders),
+    takeLatest(ORDER_ACTION.SELLER_COMPLETE, sellerCompleteOrder),
+    takeLatest(ORDER_ACTION.SELLER_COMPLETE_LOAD, loadCompletedSellerOrders),
+    takeLatest(ORDER_ACTION.SELLER_LOAD, loadAllSellerOrders)
+  ]);
 }

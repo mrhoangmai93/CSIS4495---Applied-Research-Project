@@ -12,6 +12,7 @@ import { setAlert } from "../../../redux/actions/alert.action";
 
 import isEmpty from "../../../../validation/is-empty";
 import Alert from "../../../components/utilities/Alert";
+import PaymentForm from "../../../components/Form/PaymentForm";
 
 class EditPayment extends Component {
   constructor(props) {
@@ -29,41 +30,6 @@ class EditPayment extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.errors) {
-  //     this.setState({ errors: nextProps.errors });
-  //   }
-  //   if (nextProps.profile.profile.payment) {
-  //     const payment = nextProps.profile.profile.payment;
-
-  //     // If profile field doesnt exist, make empty string
-  //     payment.cardNumber = !isEmpty(payment.cardNumber)
-  //       ? payment.cardNumber
-  //       : "";
-  //     payment.nameOnCard = !isEmpty(payment.nameOnCard)
-  //       ? payment.nameOnCard
-  //       : "";
-  //     payment.expireDate = !isEmpty(payment.expireDate)
-  //       ? payment.expireDate
-  //       : "";
-  //     payment.month = !isEmpty(payment.month) ? payment.month : "";
-  //     payment.year = !isEmpty(payment.year) ? payment.year : "";
-  //     payment.securityNumber = !isEmpty(payment.securityNumber)
-  //       ? payment.securityNumber
-  //       : "";
-
-  //     // Set component fields state
-  //     this.setState({
-  //       cardNumber: payment.cardNumber,
-  //       nameOnCard: payment.nameOnCard,
-  //       month: payment.expireDate.split("/")[0],
-  //       year: payment.expireDate.split("/")[1],
-  //       expireDate: payment.expireDate,
-  //       securityNumber: payment.securityNumber
-  //     });
-  //   }
-  // }
 
   onSubmit(e) {
     e.preventDefault();
@@ -100,34 +66,6 @@ class EditPayment extends Component {
   }
 
   render() {
-    const months = [
-      { label: "01", value: "01" },
-      { label: "02", value: "02" },
-      { label: "03", value: "03" },
-      { label: "04", value: "04" },
-      { label: "05", value: "05" },
-      { label: "06", value: "06" },
-      { label: "07", value: "07" },
-      { label: "08", value: "08" },
-      { label: "09", value: "09" },
-      { label: "10", value: "10" },
-      { label: "11", value: "11" },
-      { label: "12", value: "12" }
-    ];
-    const years = [
-      { label: "2019", value: "2019" },
-      { label: "2020", value: "2020" },
-      { label: "2021", value: "2021" },
-      { label: "2022", value: "2022" },
-      { label: "2023", value: "2023" },
-      { label: "2024", value: "2024" },
-      { label: "2025", value: "2025" },
-      { label: "2026", value: "2026" },
-      { label: "2027", value: "2027" },
-      { label: "2028", value: "2028" },
-      { label: "2029", value: "2029" },
-      { label: "2030", value: "2030" }
-    ];
     return (
       <div className="edit-payment">
         <div className="container">
@@ -143,7 +81,7 @@ class EditPayment extends Component {
                 <h5 className="display-5 text-center">Edit/Add Payment</h5>
 
                 <form onSubmit={this.onSubmit}>
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-12">
                       <InputWithHintEffect
                         placeholder="Card Number"
@@ -190,11 +128,10 @@ class EditPayment extends Component {
                         onChange={this.onChange}
                       />
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-12">
-                      <ButtonDefault>Submit</ButtonDefault>
-                    </div>
+                  </div> */}
+                  <PaymentForm data={this.state} onChange={this.onChange} />
+                  <div className="form-row">
+                    <ButtonDefault>Submit</ButtonDefault>
                   </div>
                 </form>
               </div>

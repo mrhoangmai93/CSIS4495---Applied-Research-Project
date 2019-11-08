@@ -10,7 +10,15 @@ $color-grey-dark: rgb(194, 194, 194);
 }
 .food_item_edit_icon {
   color: $color-grey-dark;
-  :hover {
+  &:link,
+  &:visited {
+    color: $color-grey-dark;
+    transition: all 0.3s;
+  }
+  &:hover,
+  &:active {
+    text-decoration: none;
     cursor: pointer;
+    color: #ff8442;
   }
 }

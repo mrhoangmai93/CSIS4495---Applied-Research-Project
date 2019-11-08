@@ -27,6 +27,7 @@ import Dashboard from "./dashboard";
 import setAuthToken from "../helpers/setAuthToken";
 //actions
 import { loadUser } from "../redux/actions/auth.action";
+import CreateFood from "./food/CreateFood";
 // import { loadCart } from "../redux/actions/cart.action";
 
 const routes = [
@@ -116,7 +117,7 @@ const routes = [
   },
   {
     title: "Your Profile",
-    path: "/seller/:id",
+    path: "/seller/profile/:id",
     exact: true,
     component: SellerPage
   },
@@ -125,6 +126,12 @@ const routes = [
     path: "/dashboard",
     exact: true,
     component: Dashboard
+  },
+  {
+    title: "Create/Update Food",
+    path: "/seller/createfood",
+    exact: true,
+    component: CreateFood
   }
 ];
 

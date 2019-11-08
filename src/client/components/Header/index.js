@@ -19,7 +19,10 @@ const Header = ({ auth, cart, logout }) => {
     authLink = (
       <ul className="header__icon__list ">
         <li className="header__icon__item">
-          <Link className="header__icon__link" to={"/seller/" + user._id}>
+          <Link
+            className="header__icon__link"
+            to={"/seller/profile/" + user._id}
+          >
             My Profile
           </Link>
         </li>

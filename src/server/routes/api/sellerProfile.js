@@ -12,6 +12,7 @@ const User = require("../../models/User");
 // @route   GET api/seller/:sellerId
 // @desc    Get current users profile
 // @access  Private
+
 router.get("/:sellerId", async (req, res) => {
   try {
     const sellerInfo = await SellerProfile.findOne({

@@ -31,6 +31,11 @@ class SellerPage extends Component {
     this.props.loadSellerProfile(this.props.match.params.id);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.match.params.id !== this.props.match.params.id) {
+      this.props.loadSellerProfile(this.props.match.params.id);
+    }
+  }
   callbackHandler = (type, data) => {
     switch (type) {
       case FEEDBACK_FORM_STATUSES.FEEDBACK_SUBMIT:

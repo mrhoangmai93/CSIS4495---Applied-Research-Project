@@ -5,55 +5,69 @@ import { connect } from "react-redux";
 import Switch from "react-switch";
 import "./index.scss";
 const FOOD_ITEM_STATUSES = {
-  COMPLETE_ITEM: "COMPLETE_ITEM",
+  EDIT_ITEM: "EDIT_ITEM",
   SWITCH_CHANGE: "SWITCH_CHANGE"
 };
 class FoodItem extends Component {
   constructor(props) {
     super(props);
-    //console.log(props);
-    this.state = {
-      switchChecked: this.props.food.active
-    };
+
     this.handleSwitchChange = this.handleSwitchChange.bind(this);
+    this.onEditHandler = this.onEditHandler.bind(this);
   }
-  onDeleteHandler = (itemId, event) => {
-    this.props.callbackHandler(FOOD_ITEM_STATUSES.SWITCH_CHANGE, { itemId });
+  onEditHandler = () => {
+    this.props.callbackHandler(FOOD_ITEM_STATUSES.EDIT_ITEM, this.props.food);
   };
 
   handleSwitchChange(checked) {
-    //this.setState({ switchChecked: checked });
-    this.props.callbackHandler(FOOD_ITEM_STATUSES.SWITCH_CHANGE, {
-      itemId: this.props.food._id,
-      checked
-    });
+    let {
+      _id,
+      title,
+      description,
+      price,
+      quantity,
+      images,
+      tags,
+      pickingUpAddress
+    } = this.props.food;
+    const newFood = {
+      title,
+      description,
+      price,
+      quantity,
+      images,
+      tags,
+      pickingUpAddress,
+      active: checked,
+      food_id: _id
+    };
+    this.props.callbackHandler(FOOD_ITEM_STATUSES.SWITCH_CHANGE, newFood);
   }
   render() {
     const { food } = this.props;
+    const checked = food.active;
     return (
       <div className="food_item">
         <div className="row">
           <div className="col-2">
             <div className="cart_product">
-              <Link to={`/food/${food._id}`} className="default_link">
-                <img
-                  className="food_item-img"
-                  src="/images/placeholders/food.jpg"
-                  alt={food.title}
-                />
-              </Link>
+              <img
+                className="food_item-img"
+                src="/images/placeholders/food.jpg"
+                alt={food.title}
+              />
             </div>
           </div>
           <div className="col-5">
             <div className="cart_description">
-              <h4>
-                {" "}
-                <Link to={`/food/${food._id}`} className="default_link">
-                  {food.title}
-                </Link>{" "}
-              </h4>
-              <div className="food_item_edit_icon">
-                <i class="fas fa-edit"></i>
+              <h4 className="default_link"> {food.title}</h4>
+              <div>
+                <Link
+                  to={{ pathname: "/seller/createfood", food }}
+                  className={"food_item_edit_icon"}
+                >
+                  <i class="fas fa-edit"></i>
+                </Link>
               </div>
 
               <p>{food.description}</p>
@@ -76,10 +90,7 @@ class FoodItem extends Component {
               <i class="fas fa-check"></i>
             </button> */}
             <div>Active</div>
-            <Switch
-              onChange={this.handleSwitchChange}
-              checked={this.state.switchChecked}
-            />
+            <Switch onChange={this.handleSwitchChange} checked={checked} />
           </div>
         </div>
       </div>

@@ -34,6 +34,12 @@ const lib = {
     }
     const res = await axios.get(path);
     return res;
+  },
+  async createFood(data) {
+    //console.log(data);
+    const path = `/foods/addfood`;
+    const res = await axios.post(path, data);
+    return res;
   }
 };
 

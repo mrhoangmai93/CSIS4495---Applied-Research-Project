@@ -32,7 +32,7 @@ const ProductCard = props => {
         <ul className="pc-list-tags list-inline mb-2">{tagList}</ul>
         <div className="pc-seller">
           <SellerLinkWithReviews
-            sellerLink={"/seller/" + food.owner._id}
+            sellerLink={"/seller/profile/" + food.owner._id}
             sellerName={food.owner.name}
             sellerRating="3.5"
             sellerRatingCount="35"

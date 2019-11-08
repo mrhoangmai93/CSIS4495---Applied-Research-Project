@@ -6,18 +6,27 @@ import { connect } from "react-redux";
 import withLayout from "../../hocs/front/Layout";
 import withAuth from "../../hocs/withAuth";
 
-import { loadProfile } from "../../redux/actions/userProfile.action";
+import {
+  loadProfile,
+  editAddress
+} from "../../redux/actions/userProfile.action";
 import { placeOrder } from "../../redux/actions/currentOrder.action";
 import { clearCart } from "../../redux/actions/cart.action";
+import { editPayment } from "../../redux/actions/userProfile.action";
 import CheckShippingInfo from "../../components/Checkout/CheckShippingInfo";
 import CheckoutCardInfo from "../../components/Checkout/CheckoutCardInfo";
 import CheckOrderTotal, {
   CHECK_OUT_TOTAL_STATUSES
 } from "../../components/Checkout/CheckOrderTotal";
+
 import CheckoutItems from "../../components/Checkout/CheckoutItems";
 import Spinner from "../../components/utilities/Spinner";
 import isEmpty from "../../../validation/is-empty";
+import ButtonDefault from "../../components/utilities/buttons/ButtonDefault";
+import AddressForm from "../../components/Form/AddressForm";
 import "./index.scss";
+import { Alert } from "react-bootstrap";
+import PaymentForm from "../../components/Form/PaymentForm";
 class Checkout extends Component {
   constructor(props) {
     super(props);
@@ -28,20 +37,24 @@ class Checkout extends Component {
         items: [],
         total: ""
       },
-      paymentMethod: isEmpty(this.props.profile.profile)
+      paymentMethod: isEmpty(this.props.userProfile.profile)
         ? {}
-        : this.props.profile.profile.payment.shift(),
-      shippingAddress: isEmpty(this.props.profile.profile)
+        : this.props.userProfile.profile.payment.shift(),
+      shippingAddress: isEmpty(this.props.userProfile.profile)
         ? {}
-        : this.props.profile.profile.address,
-      orderStatus: this.props.currentOrder.get("orderStatus")
+        : this.props.userProfile.profile.address,
+      orderStatus: this.props.currentOrder.get("orderStatus"),
+      month: "01",
+      year: "2019"
     };
+    this.onChange = this.onChange.bind(this);
+    //this.onSubmit = this.onSubmit.bind(this);
   }
   callbackHandler = (type, data) => {
     switch (type) {
       case CHECK_OUT_TOTAL_STATUSES.PLACE_ORDER:
-        const paymentMethod = this.props.profile.get("payments")[0];
-        const shippingAddress = this.props.profile.get("address");
+        const paymentMethod = this.props.userProfile.get("payments")[0];
+        const shippingAddress = this.props.userProfile.get("address");
         const foods = this.props.currentOrder.get("foods").map(food => {
           return { foodId: food.foodId._id, quantity: food.quantity };
         });
@@ -60,42 +73,96 @@ class Checkout extends Component {
     }
   };
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
     this.setState({ orderStatus: nextProps.currentOrder.get("orderStatus") });
   }
-
-  render() {
-    const { user, profile, currentOrder } = this.props;
-    let orderStatus = this.state.orderStatus;
-
-    const address = profile.get("address");
-    const payments = profile.get("payments");
-
-    const foods = currentOrder.get("foods");
-    const loading = profile.get("loading");
-    if (!user || !foods) {
-      return <Redirect to="/" />;
+  onSubmit(form, e) {
+    e.preventDefault();
+    if (form === "address") {
+      const profileData = {
+        address1: this.state.address1,
+        address2: this.state.address2,
+        city: this.state.city,
+        zipCode: this.state.zipCode,
+        state: this.state.state,
+        phone: this.state.phone
+      };
+      this.props.editAddress(profileData);
+    } else if (form === "payment") {
+      const paymentData = {
+        cardNumber: this.state.cardNumber,
+        nameOnCard: this.state.nameOnCard,
+        expireDate: this.state.month + "/" + this.state.year,
+        securityNumber: this.state.securityNumber
+      };
+      if (this.state.cardNumber.length !== 16) {
+        this.props.setAlert({
+          msg: "This is not a credit card",
+          alertType: "danger"
+        });
+      } else {
+        this.props.editPayment(paymentData);
+      }
     }
+  }
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+  render() {
+    const { user, userProfile, currentOrder } = this.props;
+    let orderStatus = this.state.orderStatus;
+    // create vairalbes for contents
+    let showContent;
+    let paymentContent;
     let itemContent;
 
-    itemContent = isEmpty(foods)
-      ? ""
-      : foods.map(item => (
-          <CheckoutItems
-            key={item._id}
-            food={item.foodId}
-            quantity={item.quantity}
-          />
-        ));
-    let paymentContent;
-    paymentContent = isEmpty(payments) ? (
-      "No card Found"
-    ) : (
-      <CheckoutCardInfo payments={payments} />
-    );
-    let showContent;
-    if (loading || !profile) {
+    //get data from props
+    const address = userProfile.get("address");
+    const payments = userProfile.get("payments");
+    const foods = currentOrder.get("foods");
+    const loading = userProfile.get("loading");
+
+    if (!user || !foods || isEmpty(foods)) {
+      return <Redirect to="/" />;
+    }
+
+    if (loading || !userProfile) {
       showContent = <Spinner />;
+    } else if (isEmpty(address)) {
+      showContent = (
+        <div className="row">
+          <div className="col-sm-3" />
+          <div className="col-sm-6">
+            <h3>Enter Shipping Information</h3>
+            <form onSubmit={this.onSubmit.bind(this, "address")}>
+              <AddressForm data={this.state} onChange={this.onChange} />
+              <ButtonDefault>Next</ButtonDefault>
+            </form>
+          </div>
+        </div>
+      );
+    } else if (isEmpty(payments)) {
+      showContent = (
+        <div className="row">
+          <div className="col-sm-3" />
+          <div className="col-sm-6">
+            <h3>Enter Payment Information</h3>
+            <form onSubmit={this.onSubmit.bind(this, "payment")}>
+              <PaymentForm data={this.state} onChange={this.onChange} />
+              <ButtonDefault>Next</ButtonDefault>
+            </form>
+          </div>
+        </div>
+      );
     } else {
+      itemContent = foods.map(item => (
+        <CheckoutItems
+          key={item._id}
+          food={item.foodId}
+          quantity={item.quantity}
+        />
+      ));
+      paymentContent = <CheckoutCardInfo payments={payments} />;
       if (orderStatus) {
         // call clear cart action
         this.props.clearCart();
@@ -137,10 +204,20 @@ class Checkout extends Component {
         );
       }
     }
-    return <div className="checkout">{showContent}</div>;
+
+    return (
+      <div className="checkout">
+        <div className="container">
+          <Alert />
+          {showContent}
+        </div>
+      </div>
+    );
   }
 }
 Checkout.propTypes = {
+  editPayment: PropTypes.func.isRequired,
+  editAddress: PropTypes.func.isRequired,
   clearCart: PropTypes.func.isRequired,
   placeOrder: PropTypes.func.isRequired,
   loadProfile: PropTypes.func.isRequired,
@@ -152,12 +229,12 @@ Checkout.propTypes = {
 const mapStateToProps = state => ({
   user: state.auth.get("user"),
   currentOrder: state.currentOrder,
-  profile: state.userProfile
+  userProfile: state.userProfile
 });
 
 export default withRouter(
   connect(
     mapStateToProps,
-    { loadProfile, placeOrder, clearCart }
+    { loadProfile, placeOrder, clearCart, editAddress, editPayment }
   )(withAuth(withLayout(Checkout)))
 );

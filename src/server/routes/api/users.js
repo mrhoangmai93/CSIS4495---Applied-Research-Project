@@ -10,6 +10,9 @@ const { check, validationResult } = require("express-validator");
 const auth = require("../../middleware/auth");
 // Load User model
 const User = require("../../models/User");
+const SellerProfile = require("../../models/SellerProfile");
+const UserInfo = require("../../models/UserInfo");
+const Cart = require("../../models/Cart");
 
 // @route   POST api/users/register
 // @desc    Register user
@@ -66,10 +69,25 @@ router.post(
       user.password = await bcrypt.hash(password, salt);
 
       await user.save();
+      const newCart = new Cart({ user: user.id });
+      await newCart.save();
 
+      const userinfo = new UserInfo({ user: user.id });
+
+      await userinfo.save();
+
+      if (role === "seller") {
+        const sellerProfile = new SellerProfile({
+          user: user.id,
+          userName: name,
+          bio: ""
+        });
+        await sellerProfile.save();
+      }
       const payload = {
         user: {
-          id: user.id
+          id: user.id,
+          role
         }
       };
 

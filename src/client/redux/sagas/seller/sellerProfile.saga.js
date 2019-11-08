@@ -11,6 +11,7 @@ import * as SELLER_PROFILE_ACTION from "../../actions/seller/sellerProfile.actio
 import * as ALERT_ACTION from "../../actions/alert.action";
 
 import lib from "../../libs/seller/sellerProfile.lib";
+import orderLib from "../../libs/order.lib";
 
 /**
  * Load Profile
@@ -41,6 +42,59 @@ function* loadSellerFood(data) {
     yield put({ type: SELLER_PROFILE_ACTION.LOAD_ERROR });
     const error = yield err.response.data;
     yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
+  }
+}
+/**
+ * Create / update a food
+ * @param {*} data new food Data
+ */
+function* createFood(data) {
+  let res;
+  try {
+    res = yield call(lib.createFood, data.payload);
+
+    yield put({ type: SELLER_PROFILE_ACTION.CREATED_FOOD, payload: res.data });
+    yield data.history.push({
+      pathname: "/dashboard",
+      activeTab: "inventory"
+    });
+    yield put(
+      ALERT_ACTION.setAlert({
+        msg: "You have successfully update food",
+        alertType: "success"
+      })
+    );
+  } catch (err) {
+    yield put({ type: SELLER_PROFILE_ACTION.CREATE_ERROR });
+    const errors = yield err.response.data.errors;
+    for (let i in errors) {
+      yield put(
+        ALERT_ACTION.setAlert({ msg: errors[i].msg, alertType: "danger" })
+      );
+    }
+  }
+}
+function* updateFood(data) {
+  let res;
+  try {
+    res = yield call(lib.createFood, data.payload);
+
+    yield put({ type: SELLER_PROFILE_ACTION.UPDATED_FOOD, payload: res.data });
+
+    yield put(
+      ALERT_ACTION.setAlert({
+        msg: "You have successfully update food",
+        alertType: "success"
+      })
+    );
+  } catch (err) {
+    yield put({ type: SELLER_PROFILE_ACTION.UPDATE_FOOD_ERROR });
+    const errors = yield err.response.data.errors;
+    for (let i in errors) {
+      yield put(
+        ALERT_ACTION.setAlert({ msg: errors[i].msg, alertType: "danger" })
+      );
+    }
   }
 }
 /**
@@ -125,6 +179,8 @@ export default function* rootSaga() {
     takeLatest(SELLER_PROFILE_ACTION.FOOD_LOAD, loadSellerFood),
     takeLatest(SELLER_PROFILE_ACTION.LOAD, loadProfile),
     takeLatest(SELLER_PROFILE_ACTION.ADD_FEEDBACK, addFeedback),
-    takeEvery(SELLER_PROFILE_ACTION.DELETE_FEEDBACK, deleteFeedback)
+    takeEvery(SELLER_PROFILE_ACTION.DELETE_FEEDBACK, deleteFeedback),
+    takeEvery(SELLER_PROFILE_ACTION.CREATE_FOOD, createFood),
+    takeEvery(SELLER_PROFILE_ACTION.UPDATE_FOOD, updateFood)
   ]);
 }

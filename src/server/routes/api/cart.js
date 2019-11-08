@@ -16,7 +16,7 @@ router.get("/", auth, async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user.id }).populate(
       "foods.foodId",
-      ["name", "title", "price", "images", "tags", "description"]
+      ["name", "title", "price", "images", "tags", "description", "owner"]
     );
     if (!cart) {
       // Create a new one
@@ -70,7 +70,7 @@ router.post("/add/:foodId/:quantity", auth, async (req, res) => {
     }
     const cart = await Cart.findOne({ user: req.user.id }).populate(
       "foods.foodId",
-      ["name", "title", "price", "images", "tags", "description"]
+      ["name", "title", "price", "images", "tags", "description", "owner"]
     );
     if (!cart) {
       return res.status(404).json({ msg: "Cart not found" });
@@ -92,7 +92,7 @@ router.post("/add/:foodId/:quantity", auth, async (req, res) => {
       await cart.save();
       const newCart = await Cart.findOne({ user: req.user.id }).populate(
         "foods.foodId",
-        ["name", "title", "price", "images", "tags", "description"]
+        ["name", "title", "price", "images", "tags", "description", "owner"]
       );
       newCart.subTotal = Helper.calculateSubTotal(newCart.foods);
 
@@ -138,7 +138,7 @@ router.post("/update/:foodId/:quantity", auth, async (req, res) => {
     }
     const cart = await Cart.findOne({ user: req.user.id }).populate(
       "foods.foodId",
-      ["name", "title", "price", "images", "tags", "description"]
+      ["name", "title", "price", "images", "tags", "description", "owner"]
     );
     if (!cart) {
       return res.status(404).json({ errors: [{ msg: "Cart not found" }] });
@@ -211,7 +211,7 @@ router.delete("/delete/:foodId", auth, async (req, res) => {
     //const food = await Food.findOne({ _id: req.params.foodId });
     const cart = await Cart.findOne({ user: req.user.id }).populate(
       "foods.foodId",
-      ["name", "title", "price", "images", "tags", "description"]
+      ["name", "title", "price", "images", "tags", "description", "owner"]
     );
     if (!cart) {
       return res.status(404).json({ msg: "No cart found" });

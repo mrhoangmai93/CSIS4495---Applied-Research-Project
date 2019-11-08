@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter, Redirect, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import withLayout from "../../hocs/front/Layout";
 import withAuth from "../../hocs/withAuth";
 import { Tabs } from "@yazanaabed/react-tabs";
-import { loadSellerFood } from "../../redux/actions/seller/sellerProfile.action";
-import { createOrder } from "../../redux/actions/currentOrder.action";
+import {
+  loadSellerFood,
+  createFood,
+  updateFood
+} from "../../redux/actions/seller/sellerProfile.action";
 import "./index.scss";
 
 import SellerSummary, {
@@ -19,57 +22,52 @@ import FoodItem, {
 } from "../../components/Dashboard/FoodItem";
 import ButtonDefault from "../../components/utilities/buttons/ButtonDefault";
 import Alert from "../../components/utilities/Alert";
+import { loadAllSellerOrders } from "../../redux/actions/order.action";
 import { setAlert } from "../../redux/actions/alert.action";
+import PendingOrder, {
+  PENDING_ORDER_STATUSES
+} from "../../components/Dashboard/PendingOrder";
+import {
+  sellerCompleteOrder,
+  sellerCancelOrder
+} from "../../redux/actions/order.action";
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   foods: this.props.foods,
-    //   cart: this.props.cart
-    // };
+    this.state = {
+      activeTab: this.props.location.activeTab
+        ? this.props.location.activeTab
+        : "pendingOrders"
+    };
     //this.props.loadCart();
   }
   componentDidMount() {
-    if (!this.props.foods.size > 0) {
+    if (!this.props.foods || this.props.foods.size === 0) {
       this.props.loadSellerFood();
+    }
+    if (!this.props.pendingOrders || this.props.pendingOrders.size === 0) {
+      this.props.loadAllSellerOrders();
     }
   }
   callbackHandler = (type, data) => {
     switch (type) {
       case FOOD_ITEM_STATUSES.SWITCH_CHANGE:
-        let newQuantity;
-        if (data.qty === "") {
-          newQuantity = 0;
-        } else {
-          newQuantity = parseInt(data.qty);
-        }
-        this.props.updateCart({ foodId: data.itemId, quantity: newQuantity });
+        this.props.updateFood(data);
         break;
-      //   case FOOD_ITEM_STATUSES.DELETE_ITEM:
-      //     this.props.deleteFromCart({ foodId: data.itemId });
-      //     break;
-      //   case CART_SUMMARY_STATUSES.CHECK_OUT:
-      //     if (!isEmpty(this.props.foods)) {
-      //       this.props.createOrder({
-      //         foods: this.props.foods,
-      //         orderSummary: data.orderSummary
-      //       });
-      //       return <Redirect to="/checkout" />;
-      //     } else {
-      //       this.props.setAlert({
-      //         msg: "Cart is Empty!",
-      //         alertType: "danger"
-      //       });
-      //     }
-
-      // break;
+      case PENDING_ORDER_STATUSES.COMPLETE_ORDER:
+        this.props.sellerCompleteOrder(data);
+        break;
       default:
         break;
     }
   };
   render() {
-    const { foods } = this.props;
-    let pendingOrders;
+    const { foods, pendingOrders, completedOrders } = this.props;
+    let totalPending = 0;
+    let totalOrder = 0;
+    let totalEarn = 0;
+
+    let pendingOrdersContent;
     let inventory;
     if (!isEmpty(foods)) {
       inventory = foods.map(food => (
@@ -84,29 +82,51 @@ class Dashboard extends Component {
         </div>
       );
     }
-    // let subTotal = cart.get("subTotal");
-    if (!isEmpty(foods)) {
-      pendingOrders = (
+    if (!isEmpty(pendingOrders)) {
+      totalPending = pendingOrders.length;
+      pendingOrdersContent = pendingOrders.map(order => (
         <div className="table-responsive cart_info">
-          <table className="table table-condensed">
-            <tbody>
-              {foods.map(item => {
-                return (
-                  <FoodItem
-                  // key={item._id}
-                  // item={item.foodId}
-                  // quantity={item.quantity}
-                  // callbackHandler={this.callbackHandler}
-                  />
-                );
-              })}
-            </tbody>
-          </table>
+          <PendingOrder
+            shippingAddress={order.shippingAddress}
+            foods={order.orderDetails.foods}
+            user={order.user}
+            id={order._id}
+            callbackHandler={this.callbackHandler}
+          />
+        </div>
+      ));
+    } else {
+      pendingOrdersContent = (
+        <div>
+          <h4>You have no pending order</h4>
         </div>
       );
-    } else {
-      pendingOrders = <h4>No products found...</h4>;
     }
+    let completedContent = completedOrders ? (
+      completedOrders.map(order => {
+        const thisEarn = order.orderDetails.foods
+          .map(f => f.foodId.price * f.quantity)
+          .reduce((a, b) => a + b, 0);
+        totalEarn = totalEarn + thisEarn;
+        return (
+          <div className="table-responsive cart_info">
+            <PendingOrder
+              shippingAddress={order.shippingAddress}
+              foods={order.orderDetails.foods}
+              user={order.user}
+              id={order._id}
+              thisEarn={thisEarn}
+            />
+          </div>
+        );
+      })
+    ) : (
+      <div>
+        <h4>You have no Completed order</h4>
+      </div>
+    );
+    totalOrder = totalPending + completedOrders ? completedOrders.length : 0;
+    // let subTotal = cart.get("subTotal");
 
     return (
       <section className="cart-section">
@@ -117,14 +137,14 @@ class Dashboard extends Component {
               <div className="dashboard_tab">
                 <Tabs
                   activeTab={{
-                    id: "pendingOrders"
+                    id: this.state.activeTab
                   }}
                 >
                   <Tabs.Tab id="pendingOrders" title="Pending Orders">
-                    <div style={{ padding: 10 }}>This is Pending Orders</div>
+                    <div style={{ padding: 10 }}>{pendingOrdersContent}</div>
                   </Tabs.Tab>
                   <Tabs.Tab id="completedOrders" title="Completed Orders">
-                    <div style={{ padding: 10 }}>This is Completed Orders</div>
+                    <div style={{ padding: 10 }}>{completedContent}</div>
                   </Tabs.Tab>
                   <Tabs.Tab id="inventory" title="Inventory">
                     <div style={{ padding: 10 }}>{inventory}</div>
@@ -134,7 +154,16 @@ class Dashboard extends Component {
             </div>
             <div className="col-12 col-lg-4">
               <div className="dashboard_summary">
-                <SellerSummary />
+                <SellerSummary
+                  totalPending={totalPending}
+                  totalEarn={totalEarn}
+                  totalOrder={totalOrder}
+                />
+              </div>
+              <div>
+                <Link to={"/seller/createfood"}>
+                  <ButtonDefault>Create new Food</ButtonDefault>
+                </Link>
               </div>
             </div>
           </div>
@@ -145,16 +174,30 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-  loadSellerFood: PropTypes.func.isRequired
+  loadAllSellerOrders: PropTypes.func.isRequired,
+  sellerCompleteOrder: PropTypes.func.isRequired,
+  sellerCancelOrder: PropTypes.func.isRequired,
+  loadSellerFood: PropTypes.func.isRequired,
+  createFood: PropTypes.func.isRequired,
+  updateFood: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  foods: state.sellerProfile.get("foodList")
+  foods: state.sellerProfile.get("foodList"),
+  pendingOrders: state.sellerProfile.get("orders").pendingOrders,
+  completedOrders: state.sellerProfile.get("orders").completedOrders
 });
 
 export default withRouter(
   connect(
     mapStateToProps,
-    { loadSellerFood }
+    {
+      loadSellerFood,
+      createFood,
+      updateFood,
+      loadAllSellerOrders,
+      sellerCompleteOrder,
+      sellerCancelOrder
+    }
   )(withAuth(withLayout(Dashboard)))
 );

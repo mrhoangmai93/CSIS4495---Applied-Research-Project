@@ -3,11 +3,13 @@ const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator/check");
 const auth = require("../../middleware/auth");
+const authSeller = require("../../middleware/authSeller");
+
 const Promise = require("bluebird");
 const SellerProfile = require("../../models/SellerProfile");
 // Load models
 const Food = require("../../models/Food");
-
+const User = require("../../models/User");
 // @route   GET api/foods/
 // @desc    Get all foods
 // @access  public
@@ -77,7 +79,7 @@ router.get("/:food_id", async (req, res) => {
 router.post(
   "/addfood",
   [
-    auth,
+    authSeller,
     [
       check("title", "Title is required")
         .not()
@@ -97,7 +99,7 @@ router.post(
       check("pickingUpAddress", "pickingUpAddress cannot be empty")
         .not()
         .isEmpty(),
-      check("activate", "activate must be boolean").isBoolean()
+      check("active", "active must be boolean").isBoolean()
     ]
   ],
   async (req, res) => {
@@ -106,7 +108,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
     const {
-      _id,
+      food_id,
       title,
       description,
       price,
@@ -125,8 +127,7 @@ router.post(
       if (typeof categoryList !== 'undefined') {
         categories = categoryList.split(',');
       } */
-
-      if (_id) {
+      if (food_id) {
         // update the old one
         let food = await Food.findById(food_id);
 

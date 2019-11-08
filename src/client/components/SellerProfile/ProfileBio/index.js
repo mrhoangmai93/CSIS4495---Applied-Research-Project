@@ -8,7 +8,10 @@ class ProfileBio extends Component {
     const bio = profile.get("bio");
     const user = profile.get("user");
     // Get first name
-    const firstName = user.name.trim().split(" ")[0];
+    let firstName = user.name.trim().split(" ")[0];
+    if (!firstName) {
+      firstName = user.name;
+    }
 
     return (
       <div className="row">

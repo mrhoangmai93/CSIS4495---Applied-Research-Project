@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import InputWithHintEffect from "../../../components/utilities/inputs/InputWithHintEffect";
 import {
   loadProfile,
   editAddress
@@ -11,6 +10,7 @@ import isEmpty from "../../../../validation/is-empty";
 import ButtonDefault from "../../../components/utilities/buttons/ButtonDefault";
 import withLayout from "../../../hocs/front/Layout";
 import withAuth from "../../../hocs/withAuth";
+import AddressForm from "../../../components/Form/AddressForm";
 
 class EditAddress extends Component {
   constructor(props) {
@@ -49,6 +49,15 @@ class EditAddress extends Component {
   }
 
   render() {
+    // destructure state
+    // const data = (({ address1, address2, city, zipCode, state, phone }) => ({
+    //   address1,
+    //   address2,
+    //   city,
+    //   zipCode,
+    //   state,
+    //   phone
+    // }))(this.state);
     return (
       <div className="edit-address">
         <div className="container">
@@ -64,42 +73,7 @@ class EditAddress extends Component {
                   * = required fields
                 </small>
                 <form onSubmit={this.onSubmit}>
-                  <InputWithHintEffect
-                    placeholder="* Address"
-                    name="address1"
-                    value={this.state.address1}
-                    onChange={this.onChange}
-                  />
-                  <InputWithHintEffect
-                    placeholder="Address 2"
-                    name="address2"
-                    value={this.state.address2}
-                    onChange={this.onChange}
-                  />
-                  <InputWithHintEffect
-                    placeholder="* City"
-                    name="city"
-                    value={this.state.city}
-                    onChange={this.onChange}
-                  />
-                  <InputWithHintEffect
-                    placeholder="* Zip Code"
-                    name="zipCode"
-                    value={this.state.zipCode}
-                    onChange={this.onChange}
-                  />
-                  <InputWithHintEffect
-                    placeholder="* State"
-                    name="state"
-                    value={this.state.state}
-                    onChange={this.onChange}
-                  />
-                  <InputWithHintEffect
-                    placeholder="* Phone Number"
-                    name="phone"
-                    value={this.state.phone}
-                    onChange={this.onChange}
-                  />
+                  <AddressForm data={this.state} onChange={this.onChange} />
                   <ButtonDefault>Submit</ButtonDefault>
                 </form>
               </div>

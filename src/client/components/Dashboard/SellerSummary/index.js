@@ -18,7 +18,7 @@ const SellerSummary = props => {
               <div className="pull-left">Pending Order</div>
             </div>
             <div>
-              <span className="pull-right ">10</span>
+              <span className="pull-right ">{props.totalPending}</span>
             </div>
           </div>
         </div>
@@ -28,7 +28,7 @@ const SellerSummary = props => {
               <div className="pull-left">Total orders This month</div>
             </div>
             <div>
-              <span className="pull-right">55</span>
+              <span className="pull-right">{props.totalOrder}</span>
             </div>
           </div>
         </div>
@@ -40,7 +40,7 @@ const SellerSummary = props => {
               <div className="pull-left">Total earn This month</div>
             </div>
             <div>
-              <span className="pull-right ">$1200</span>
+              <span className="pull-right ">${props.totalEarn}</span>
             </div>
           </div>
         </div>
