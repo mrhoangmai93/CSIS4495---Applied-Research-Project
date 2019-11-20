@@ -51,7 +51,22 @@ router.get("/seller", auth, async (req, res) => {
     res.status(500).send("Server Error!");
   }
 });
-
+// @route   GET api/foods/seller/:id
+// @desc    Get all foods
+// @access  private
+router.get("/seller/:id", async (req, res) => {
+  try {
+    const foods = await Food.find({ owner: req.params.id }).populate("owner", [
+      "name",
+      "avatar",
+      "email"
+    ]);
+    res.json(foods);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server Error!");
+  }
+});
 // @route   GET api/foods/:food_id
 // @desc    Get food by id
 // @access  public

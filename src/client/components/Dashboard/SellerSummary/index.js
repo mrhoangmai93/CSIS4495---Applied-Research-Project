@@ -25,7 +25,7 @@ const SellerSummary = props => {
         <div className="col-6">
           <div className="quick_summary_card total_order">
             <div>
-              <div className="pull-left">Total orders This month</div>
+              <div className="pull-left">Total orders:</div>
             </div>
             <div>
               <span className="pull-right">{props.totalOrder}</span>
@@ -37,7 +37,7 @@ const SellerSummary = props => {
         <div className="col-12">
           <div className="quick_summary_card total_earn">
             <div>
-              <div className="pull-left">Total earn This month</div>
+              <div className="pull-left">Total earn:</div>
             </div>
             <div>
               <span className="pull-right ">${props.totalEarn}</span>

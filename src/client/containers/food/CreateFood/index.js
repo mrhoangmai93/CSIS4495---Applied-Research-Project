@@ -16,6 +16,7 @@ import {
   createFood,
   updateFood
 } from "../../../redux/actions/seller/sellerProfile.action";
+import { uploadImage } from "../../../redux/actions/image.action";
 import "./index.scss";
 
 class CreateProduct extends Component {
@@ -36,12 +37,14 @@ class CreateProduct extends Component {
       address = { ...food.pickingUpAddress };
     }
     this.state = food
-      ? { ...food, ...address, tags }
+      ? { ...food, ...address, tags, imagePreviewUrl: food.images[0] }
       : {
+          imagePreviewUrl: "",
           tags: "",
           title: "",
           price: "",
           quantity: "",
+          images: [],
           description: "",
           active: true,
           ...address
@@ -53,11 +56,12 @@ class CreateProduct extends Component {
     this.handleSwitchChange = this.handleSwitchChange.bind(this);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.errors) {
-  //     this.setState({ errors: nextProps.errors });
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    // if (nextProps.errors) {
+    //   this.setState({ errors: nextProps.errors });
+    // }
+  }
 
   onSubmit(e) {
     e.preventDefault();
@@ -72,10 +76,14 @@ class CreateProduct extends Component {
     const newTags = this.state.tags
       .split(",")
       .filter(item => item.trim() !== "");
+    let images = [];
+    if (this.props.imageUrl) {
+      images.push(this.props.imageUrl);
+    } else {
+      images.push(this.state.imagePreviewUrl);
+    }
     const newFood = {
-      images: [
-        "https://github.com/mrhoangmai93/CSIS4495---Applied-Research-Project/blob/master/public/images/bg.jpg"
-      ],
+      images,
       tags: newTags,
       title: this.state.title,
       price: this.state.price,
@@ -101,13 +109,17 @@ class CreateProduct extends Component {
     let reader = new FileReader();
     let file = e.target.files[0];
 
+    reader.readAsDataURL(file);
+
+    const data = new FormData();
+    data.append("file", file);
+    this.props.uploadImage(data);
+
     reader.onloadend = () =>
       this.setState({
         file: file,
         imagePreviewUrl: reader.result
       });
-
-    reader.readAsDataURL(file);
   }
   handleSwitchChange(checked) {
     this.setState({ active: checked });
@@ -195,15 +207,18 @@ class CreateProduct extends Component {
 }
 
 CreateProduct.propTypes = {
+  uploadImage: PropTypes.func.isRequired,
   createFood: PropTypes.func.isRequired,
-  updateFood: PropTypes.func.isRequired
+  updateFood: PropTypes.func.isRequired,
+  imageUrl: PropTypes.string
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  imageUrl: state.image.get("url")
+});
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { createFood, updateFood }
-  )(withAuth(withLayout(CreateProduct)))
+  connect(mapStateToProps, { createFood, updateFood, uploadImage })(
+    withAuth(withLayout(CreateProduct))
+  )
 );

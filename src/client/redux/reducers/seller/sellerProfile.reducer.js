@@ -7,7 +7,10 @@ const initialState = Immutable.fromJS({
   socials: [],
   feedbacks: [],
   foodList: [],
-  orders: []
+  orders: {
+    completedOrders: [],
+    pendingOrders: []
+  }
 });
 export default function(state = initialState, action) {
   const { type, payload } = action;
@@ -35,20 +38,37 @@ export default function(state = initialState, action) {
     //return state.update("foodList", list => list.push(payload));
 
     case ORDER_ACTION.SELLER_PENDING_LOADED:
-      return state.setIn(["orders", "pendingOrders"], payload);
-    case ORDER_ACTION.SELLER_COMPLETE_LOADED:
-      return state.set(["orders", "completedOrders"], payload);
-
-    case ORDER_ACTION.SELLER_COMPLETED:
-      const orderindex = state.get("orders").pendingOrders.findIndex(item => {
-        return item._id.toString() === payload._id.toString();
+      //return state.mergeDeep(["orders", "pendingOrders"], payload);
+      return state.mergeDeep({
+        orders: {
+          pendingOrders: Immutable.fromJS(payload)
+        }
       });
-      console.log(orderindex);
-      console.log(payload);
-      return state.updateIn(
-        ["orders", "pendingOrders", orderindex],
-        order => (order.orderStatus = "completed")
-      );
+    case ORDER_ACTION.SELLER_COMPLETE_LOADED:
+      //return state.mergeDeep(["orders", "completedOrders"], payload);
+      return state.mergeDeep({
+        orders: {
+          completedOrders: Immutable.fromJS(payload)
+        }
+      });
+    case ORDER_ACTION.SELLER_COMPLETED:
+      const orderindex = state
+        .getIn(["orders", "pendingOrders"])
+        .findIndex(item => {
+          return item._id.toString() === payload._id.toString();
+        });
+      const newPen = state.getIn(["orders", "pendingOrders"]);
+      const newItem = newPen.splice(orderindex, 1).get(0);
+      newItem.orderStatus = "completed";
+      const newCom = state.getIn(["orders", "completedOrders"]);
+      newCom.push(newItem);
+      // state.setIn(["orders","completedOrders", newArray ]);
+      return state.merge({
+        orders: {
+          completedOrders: newCom,
+          pendingOrders: newPen
+        }
+      });
     case ORDER_ACTION.SELLER_LOADED:
       return state.set("orders", payload);
     case ACTION.LOAD_ERROR:

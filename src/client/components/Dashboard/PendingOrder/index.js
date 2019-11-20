@@ -37,8 +37,8 @@ const PendingOrder = props => {
       </div>
     </div>
   ) : (
-    <div className="col-3">
-      <div className="complete_order">Earn: $ {props.thisEarn}</div>
+    <div className="col-2">
+      <div className="complete_order">Earn: ${props.thisEarn}</div>
     </div>
   );
   return (
@@ -48,7 +48,7 @@ const PendingOrder = props => {
           <h5>{user.name}</h5>
           <AddressComponent address={shippingAddress} />
         </div>
-        <div className="col-4">
+        <div className="col-5">
           {foods.map(f => (
             <PendingFoodItem food={f} />
           ))}

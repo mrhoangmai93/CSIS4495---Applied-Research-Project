@@ -5,7 +5,19 @@ const app = express();
 var bodyParser = require("body-parser");
 const cors = require("cors");
 
-app.use(cors(), bodyParser.json(), bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 50000
+  })
+);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+app.use(cors());
 
 // connect to DB
 connectDB();
@@ -18,6 +30,7 @@ app.get("/api", function(req, res) {
   res.json("OK");
 });
 
+app.use("/api/upload", require("./routes/api/uploadImage"));
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/userinfo", require("./routes/api/usersinfo"));
 app.use("/api/products", require("./routes/api/products"));

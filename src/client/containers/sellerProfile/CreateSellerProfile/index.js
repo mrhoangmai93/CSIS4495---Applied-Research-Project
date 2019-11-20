@@ -12,6 +12,7 @@ import ImageUpload from "../../../components/ImageUpload";
 // import SelectListGroup from '../common/SelectListGroup';
 import { createSellerProfile } from "../../../redux/actions/seller/sellerProfile.action";
 import isEmpty from "../../../../validation/is-empty";
+import { uploadImage } from "../../../redux/actions/image.action";
 import "./index.scss";
 
 class CreateSellerProfile extends Component {
@@ -31,7 +32,7 @@ class CreateSellerProfile extends Component {
       facebook: socials && socials.facebook ? socials.facebook : "",
       youtube: socials && socials.youtube ? socials.youtube : "",
       instagram: socials && socials.instagram ? socials.instagram : "",
-      file: "",
+      file: null,
       imagePreviewUrl: ""
     };
 
@@ -71,13 +72,17 @@ class CreateSellerProfile extends Component {
     let reader = new FileReader();
     let file = e.target.files[0];
 
+    reader.readAsDataURL(file);
+
+    const data = new FormData();
+    data.append("file", file);
+    this.props.uploadImage(data);
+
     reader.onloadend = () =>
       this.setState({
         file: file,
         imagePreviewUrl: reader.result
       });
-
-    reader.readAsDataURL(file);
   }
   render() {
     const { displaySocialInputs } = this.state;
@@ -182,6 +187,7 @@ class CreateSellerProfile extends Component {
 }
 
 CreateSellerProfile.propTypes = {
+  uploadImage: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -192,8 +198,7 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { createSellerProfile }
-  )(withAuth(withLayout(CreateSellerProfile)))
+  connect(mapStateToProps, { createSellerProfile, uploadImage })(
+    withAuth(withLayout(CreateSellerProfile))
+  )
 );

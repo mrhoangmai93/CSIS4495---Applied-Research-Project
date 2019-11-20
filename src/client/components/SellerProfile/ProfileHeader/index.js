@@ -19,7 +19,7 @@ class ProfileHeader extends Component {
               </div>
             </div>
             <div className="text-center">
-              <h1 className="display-4 text-center">
+              <h1 className="display-4 text-center text-white">
                 {profile.get("user").name}
               </h1>
               <p>

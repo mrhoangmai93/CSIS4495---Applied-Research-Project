@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, Component } from "react";
 import PropTypes from "prop-types";
 import { withRouter, Redirect, Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -31,15 +31,27 @@ import {
   sellerCompleteOrder,
   sellerCancelOrder
 } from "../../redux/actions/order.action";
+
+import ModalDefault, {
+  MODAL_STATUSES
+} from "../../components/utilities/ModalDefault";
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       activeTab: this.props.location.activeTab
         ? this.props.location.activeTab
-        : "pendingOrders"
+        : "pendingOrders",
+      modalShow: false,
+      modalHeading: "",
+      modalBody: "",
+      modalType: "",
+      orderData: {},
+      positiveButton: ""
     };
     //this.props.loadCart();
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
   componentDidMount() {
     if (!this.props.foods || this.props.foods.size === 0) {
@@ -55,14 +67,62 @@ class Dashboard extends Component {
         this.props.updateFood(data);
         break;
       case PENDING_ORDER_STATUSES.COMPLETE_ORDER:
-        this.props.sellerCompleteOrder(data);
+        this.handleShow({
+          modalHeading: "Complete Order",
+          modalBody: "Do you want to complete this order?",
+          data,
+          modalType: "complete",
+          positiveButton: "Complete Order"
+        });
+        break;
+      case PENDING_ORDER_STATUSES.CANCEL_ORDER:
+        this.handleShow({
+          modalHeading: "Cancel Order",
+          modalBody: "Do you want to cancel this order?",
+          data,
+          modalType: "cancel",
+          positiveButton: "Cancel Order"
+        });
+        break;
+      case MODAL_STATUSES.COMPLETE:
+        if (data === "complete") {
+          this.props.sellerCompleteOrder(this.state.orderData);
+        } else if (data === "cancel") {
+        }
+
+      case MODAL_STATUSES.CLOSE:
+        this.handleClose();
         break;
       default:
         break;
     }
   };
+  handleShow = ({
+    modalHeading,
+    modalBody,
+    data,
+    modalType,
+    positiveButton
+  }) => {
+    this.setState({
+      modalShow: true,
+      modalBody,
+      modalHeading,
+      modalType,
+      orderData: data,
+      positiveButton
+    });
+  };
+  handleClose = () => {
+    this.setState({ modalShow: false });
+  };
   render() {
     const { foods, pendingOrders, completedOrders } = this.props;
+    // const [show, setShow] = useState(false);
+
+    // const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
+
     let totalPending = 0;
     let totalOrder = 0;
     let totalEarn = 0;
@@ -125,13 +185,22 @@ class Dashboard extends Component {
         <h4>You have no Completed order</h4>
       </div>
     );
-    totalOrder = totalPending + completedOrders ? completedOrders.length : 0;
-    // let subTotal = cart.get("subTotal");
+    if (completedOrders && pendingOrders) {
+      totalOrder = completedOrders.length + pendingOrders.length;
+    }
 
     return (
       <section className="cart-section">
         <div className="container">
           <Alert />
+          <ModalDefault
+            heading={this.state.modalHeading}
+            show={this.state.modalShow}
+            body={this.state.modalBody}
+            callbackHandler={this.callbackHandler}
+            type={this.state.modalType}
+            positiveButton={this.state.positiveButton}
+          />
           <div className="row">
             <div className="col-12 col-lg-8 ">
               <div className="dashboard_tab">
@@ -184,8 +253,8 @@ Dashboard.propTypes = {
 
 const mapStateToProps = state => ({
   foods: state.sellerProfile.get("foodList"),
-  pendingOrders: state.sellerProfile.get("orders").pendingOrders,
-  completedOrders: state.sellerProfile.get("orders").completedOrders
+  pendingOrders: state.sellerProfile.getIn(["orders", "pendingOrders"]),
+  completedOrders: state.sellerProfile.getIn(["orders", "completedOrders"])
 });
 
 export default withRouter(

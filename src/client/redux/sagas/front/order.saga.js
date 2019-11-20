@@ -80,11 +80,9 @@ function* sellerCompleteOrder(data) {
     orderStatus: "completed"
   };
   try {
-    const res = yield call(lib.sellerEditOrder({ id: data.id, order }));
-    console.log(res);
+    const res = yield call(lib.sellerEditOrder, { id: data.id, order });
     yield put({ type: ORDER_ACTION.SELLER_COMPLETED, payload: res.data });
   } catch (err) {
-    console.log(err.response.data);
     yield put({ type: ORDER_ACTION.SELLER_COMPLETE_ERROR });
     const error = yield err.response.data;
 

@@ -35,6 +35,17 @@ const lib = {
     const res = await axios.get(path);
     return res;
   },
+  async loadSellerFoodByUser(sellerId) {
+    let path = `/foods/seller`;
+    //if there is seller Id => other user load
+    //if not this seller load
+    if (sellerId) {
+      path = `/foods/seller/${sellerId}`;
+    }
+    const res = await axios.get(path);
+    return res;
+  },
+
   async createFood(data) {
     //console.log(data);
     const path = `/foods/addfood`;

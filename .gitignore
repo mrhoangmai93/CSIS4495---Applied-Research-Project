@@ -63,3 +63,5 @@ typings/
 
 build
 yarn.lock
+# google cloud file
+src/server/config/Csis4270-ba35b47de322.json

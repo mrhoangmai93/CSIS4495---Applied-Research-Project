@@ -33,7 +33,7 @@ class CartItem extends Component {
           <Link to={`/food/${item._id}`} className="default_link">
             <img
               className="food_item-img"
-              src="/images/placeholders/food.jpg"
+              src={item.images[0]}
               alt={item.title}
             />
           </Link>
@@ -86,8 +86,5 @@ CartItem.propTypes = {
   quantity: PropTypes.object.isRequired
 };
 
-export default connect(
-  null,
-  {}
-)(CartItem);
+export default connect(null, {})(CartItem);
 export { CART_ITEM_STATUSES };

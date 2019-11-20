@@ -53,7 +53,7 @@ class FoodItem extends Component {
             <div className="cart_product">
               <img
                 className="food_item-img"
-                src="/images/placeholders/food.jpg"
+                src={food.images[0]}
                 alt={food.title}
               />
             </div>
@@ -66,7 +66,7 @@ class FoodItem extends Component {
                   to={{ pathname: "/seller/createfood", food }}
                   className={"food_item_edit_icon"}
                 >
-                  <i class="fas fa-edit"></i>
+                  <i className="fas fa-edit"></i>
                 </Link>
               </div>
 
@@ -98,8 +98,5 @@ class FoodItem extends Component {
   }
 }
 
-export default connect(
-  null,
-  {}
-)(FoodItem);
+export default connect(null, {})(FoodItem);
 export { FOOD_ITEM_STATUSES };

@@ -12,11 +12,7 @@ const CheckoutItems = props => {
     <div className="order_food_item">
       <div className="row" key={food.name}>
         <div className="col-3">
-          <img
-            className="food-image"
-            src="/images/placeholders/food.jpg"
-            alt="food"
-          />
+          <img className="food-image" src={food.images[0]} alt="food" />
         </div>
         <div className="col-6">
           <div className="food-info">

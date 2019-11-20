@@ -6,8 +6,10 @@ import withLayout from "../../../hocs/front/Layout";
 import {
   loadSellerProfile,
   addFeedback,
-  deleteFeedback
+  deleteFeedback,
+  loadSellerFood
 } from "../../../redux/actions/seller/sellerProfile.action";
+
 import Spinner from "../../../components/utilities/Spinner";
 import Rating from "react-rating";
 import ProfileHeader from "../../../components/SellerProfile/ProfileHeader";
@@ -21,6 +23,7 @@ import FeedbackItem, {
 } from "../../../components/Feedback/FeedbackItem";
 import NoResults from "../../../components/utilities/empty-states/Noresults";
 import Alert from "../../../components/utilities/Alert";
+import CarouselDefault from "../../../components/CarouselDefault";
 import "./index.scss";
 class SellerPage extends Component {
   constructor(props) {
@@ -29,11 +32,13 @@ class SellerPage extends Component {
   }
   componentDidMount() {
     this.props.loadSellerProfile(this.props.match.params.id);
+    this.props.loadSellerFood(this.props.match.params.id);
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.match.params.id !== this.props.match.params.id) {
       this.props.loadSellerProfile(this.props.match.params.id);
+      this.props.loadSellerFood(this.props.match.params.id);
     }
   }
   callbackHandler = (type, data) => {
@@ -55,6 +60,8 @@ class SellerPage extends Component {
     const { profile } = this.props;
     const loading = profile.get("loading");
     const feedbacks = profile.get("feedbacks");
+    const foods = profile.get("foodList");
+
     let totalRating = 0;
     let sellerRating = 0;
     feedbacks.map(fb => (totalRating += fb.rating));
@@ -64,6 +71,11 @@ class SellerPage extends Component {
     }
     let pageContent;
     let feedbackContent;
+    let sellerFoodContent = foods ? (
+      <CarouselDefault foods={foods} />
+    ) : (
+      <div>This Seller Has no Food</div>
+    );
 
     if (profile === null || loading) {
       if (profile.get("user") && sellerId !== profile.get("user")._id) {
@@ -112,7 +124,10 @@ class SellerPage extends Component {
             </div>
             <ProfileBio profile={profile} />
             <div style={{ marginBottom: "60px" }} />
-
+            <div className="mb-5">
+              <h4 className="text-center">Seller's Foods</h4>
+              {sellerFoodContent}
+            </div>
             {user && user._id ? (
               <div>
                 <Alert />
@@ -140,6 +155,7 @@ class SellerPage extends Component {
 }
 
 SellerPage.propTypes = {
+  loadSellerFood: PropTypes.func.isRequired,
   deleteFeedback: PropTypes.func.isRequired,
   addFeedback: PropTypes.func.isRequired,
   loadSellerProfile: PropTypes.func.isRequired,
@@ -156,6 +172,6 @@ const mapStateToProps = state => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    { loadSellerProfile, addFeedback, deleteFeedback }
+    { loadSellerProfile, addFeedback, deleteFeedback, loadSellerFood }
   )(withLayout(SellerPage))
 );

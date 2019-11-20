@@ -45,6 +45,22 @@ function* loadSellerFood(data) {
   }
 }
 /**
+ * Load Seller food
+ * @param {sellerId} data
+ */
+function* loadSellerFoodByUser(data) {
+  let res;
+  try {
+    res = yield call(lib.loadSellerFoodByUser, data.payload);
+
+    yield put({ type: SELLER_PROFILE_ACTION.FOOD_LOADED, payload: res.data });
+  } catch (err) {
+    yield put({ type: SELLER_PROFILE_ACTION.LOAD_ERROR });
+    const error = yield err.response.data;
+    yield put(ALERT_ACTION.setAlert({ msg: error.msg, alertType: "danger" }));
+  }
+}
+/**
  * Create / update a food
  * @param {*} data new food Data
  */
@@ -177,6 +193,7 @@ export default function* rootSaga() {
   yield all([
     takeLatest(SELLER_PROFILE_ACTION.CREATE, createSellerProfile),
     takeLatest(SELLER_PROFILE_ACTION.FOOD_LOAD, loadSellerFood),
+    takeLatest(SELLER_PROFILE_ACTION.USER_FOOD_LOAD, loadSellerFoodByUser),
     takeLatest(SELLER_PROFILE_ACTION.LOAD, loadProfile),
     takeLatest(SELLER_PROFILE_ACTION.ADD_FEEDBACK, addFeedback),
     takeEvery(SELLER_PROFILE_ACTION.DELETE_FEEDBACK, deleteFeedback),

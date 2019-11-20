@@ -47,7 +47,11 @@ class Index extends React.Component {
     } else {
       displayProducts = foods.get("list").map(food => (
         <div className="col-lg-4 col-md-6">
-          <ProductCard food={food} callbackHandler={this.callbackHandler} />
+          <ProductCard
+            food={food}
+            key={food._id}
+            callbackHandler={this.callbackHandler}
+          />
         </div>
       ));
     }
@@ -78,8 +82,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { loadAllFoods, loadCart, addToCart }
-  )(withLayout(Index))
+  connect(mapStateToProps, { loadAllFoods, loadCart, addToCart })(
+    withLayout(Index)
+  )
 );

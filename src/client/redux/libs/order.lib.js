@@ -17,6 +17,7 @@ const lib = {
   },
   async sellerEditOrder(data) {
     const { id, order } = data;
+    console.log("hello", data);
     const path = `/orders/update/${id}`;
 
     const res = await axios.put(path, order);

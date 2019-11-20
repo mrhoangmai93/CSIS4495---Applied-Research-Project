@@ -1,10 +1,11 @@
 import React from "react";
 import "./index.scss";
+import ButtonDefault from "../utilities/buttons/ButtonDefault";
 class ImageUpload extends React.Component {
-  //   constructor(props) {
-  //     super(props);
-  //     this.state = { file: "", imagePreviewUrl: "" };
-  //   }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = { file: "", imagePreviewUrl: "" };
+  // }
 
   render() {
     let { imagePreviewUrl } = this.props;
@@ -16,13 +17,13 @@ class ImageUpload extends React.Component {
     }
 
     return (
-      <div className="previewComponent">
+      <div className="previewComponent mb-5">
         <input
           className="fileInput"
           type="file"
           onChange={e => this.props.handleImageChange(e)}
         />
-        <div className="imgPreview">{imagePreview}</div>
+        <div className="imgPreview mb-2">{imagePreview}</div>
       </div>
     );
   }

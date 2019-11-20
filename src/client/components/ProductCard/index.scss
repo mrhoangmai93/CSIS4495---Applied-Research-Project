@@ -1,4 +1,5 @@
 .product-card-container {
+  margin: 0.5rem;
   .pc-list-tags .list-inline-item {
     font-size: 0.8rem;
     &:before {
@@ -22,4 +23,7 @@
 
 .product-card-button {
   margin: 1rem auto;
+}
+.img-fluid {
+  object-fit: cover;
 }

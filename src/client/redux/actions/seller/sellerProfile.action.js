@@ -8,6 +8,10 @@ export const LOAD_ERROR = `${DOCUMENT}LOAD_ERROR`;
 export const FOOD_LOAD = `${DOCUMENT}FOOD_LOAD`;
 export const FOOD_LOADED = `${DOCUMENT}FOOD_LOADED`;
 export const FOOD_LOAD_ERROR = `${DOCUMENT}FOOD_LOAD_ERROR`;
+//Load profile Data
+export const USER_FOOD_LOAD = `${DOCUMENT}USER_FOOD_LOAD`;
+export const USER_FOOD_LOADED = `${DOCUMENT}USER_FOOD_LOADED`;
+export const USER_FOOD_LOAD_ERROR = `${DOCUMENT}USER_FOOD_LOAD_ERROR`;
 //add to
 export const CREATE = `${DOCUMENT}CREATE`;
 export const CREATED = `${DOCUMENT}CREATED`;
@@ -39,6 +43,11 @@ export const loadSellerProfile = payload => ({
 //Load seller foods
 export const loadSellerFood = payload => ({
   type: FOOD_LOAD,
+  payload
+});
+//Load seller foods
+export const loadSellerFoodByUser = payload => ({
+  type: USER_FOOD_LOAD,
   payload
 });
 //

@@ -3,6 +3,8 @@ import { BASE_URL, REQUEST_TIMEOUT } from "../constants/api";
 import Qs from "qs";
 axios.defaults.baseURL = BASE_URL;
 axios.defaults.headers.post["Content-Type"] = "application/json";
+axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
+
 axios.defaults.timeout = REQUEST_TIMEOUT;
 
 // Routing request interception
