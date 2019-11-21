@@ -258,15 +258,12 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    {
-      loadSellerFood,
-      createFood,
-      updateFood,
-      loadAllSellerOrders,
-      sellerCompleteOrder,
-      sellerCancelOrder
-    }
-  )(withAuth(withLayout(Dashboard)))
+  connect(mapStateToProps, {
+    loadSellerFood,
+    createFood,
+    updateFood,
+    loadAllSellerOrders,
+    sellerCompleteOrder,
+    sellerCancelOrder
+  })(withAuth(withLayout(Dashboard)))
 );
