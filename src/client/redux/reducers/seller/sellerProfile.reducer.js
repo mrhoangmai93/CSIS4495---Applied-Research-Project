@@ -58,17 +58,29 @@ export default function(state = initialState, action) {
           return item._id.toString() === payload._id.toString();
         });
       const newPen = state.getIn(["orders", "pendingOrders"]);
-      const newItem = newPen.splice(orderindex, 1).get(0);
+      const newItem = newPen.splice(orderindex, 1)[0];
       newItem.orderStatus = "completed";
       const newCom = state.getIn(["orders", "completedOrders"]);
       newCom.push(newItem);
-      // state.setIn(["orders","completedOrders", newArray ]);
-      return state.merge({
-        orders: {
+      // console.log(newCom);
+      // console.log(newPen);
+      //console.log("state", ...state);
+      // return state.merge({
+      //   orders: {
+      //     completedOrders: newCom,
+      //     pendingOrders: newPen
+      //   }
+      // });
+
+      return state.setIn([
+        "orders",
+        {
           completedOrders: newCom,
           pendingOrders: newPen
         }
-      });
+      ]);
+
+    //return state;
     case ORDER_ACTION.SELLER_LOADED:
       return state.set("orders", payload);
     case ACTION.LOAD_ERROR:
