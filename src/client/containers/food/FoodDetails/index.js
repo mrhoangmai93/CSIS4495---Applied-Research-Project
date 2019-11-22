@@ -67,11 +67,7 @@ class FoodDetails extends Component {
           <div className="col-7">
             <div className="product-information">
               <h2>{food.title}</h2>
-              <img
-                className="img-fluid"
-                src="/images/placeholders/food.jpg"
-                alt="product"
-              />
+              <img className="img-fluid" src={food.images[0]} alt="product" />
               <span>
                 <b>${food.price}</b>
                 <InputWithBorderEffect
@@ -136,8 +132,5 @@ const mapStateToProps = state => ({
 });
 
 export default withRouter(
-  connect(
-    mapStateToProps,
-    { addToCart, loadAllFoods }
-  )(withLayout(FoodDetails))
+  connect(mapStateToProps, { addToCart, loadAllFoods })(withLayout(FoodDetails))
 );
