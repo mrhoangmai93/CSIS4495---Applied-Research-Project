@@ -64,10 +64,10 @@ const Header = ({ auth, cart, logout }) => {
           </Link>
         </li>
         <li className="header__icon__item">
-          <a onClick={logout} href="#!" className="header__icon__link">
+          <Link onClick={logout} to="/" className="header__icon__link">
             <i className="fas fa-sign-out-alt"></i>{" "}
             <span className="hide-sm">Logout</span>
-          </a>
+          </Link>
         </li>
       </ul>
     );
@@ -117,7 +117,4 @@ const mapStateToProps = state => ({
   cart: state.cart
 });
 
-export default connect(
-  mapStateToProps,
-  { logout }
-)(Header);
+export default connect(mapStateToProps, { logout })(Header);
