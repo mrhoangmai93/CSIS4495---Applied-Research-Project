@@ -87,6 +87,7 @@ class Dashboard extends Component {
       case MODAL_STATUSES.COMPLETE:
         if (data === "complete") {
           this.props.sellerCompleteOrder(this.state.orderData);
+          window.location.reload();
         } else if (data === "cancel") {
         }
 
@@ -118,6 +119,7 @@ class Dashboard extends Component {
   };
   render() {
     const { foods, pendingOrders, completedOrders } = this.props;
+    console.log("cp", completedOrders);
     // const [show, setShow] = useState(false);
 
     // const handleClose = () => setShow(false);
@@ -130,8 +132,8 @@ class Dashboard extends Component {
     let pendingOrdersContent;
     let inventory;
     if (!isEmpty(foods)) {
-      inventory = foods.map(food => (
-        <div className="table-responsive cart_info">
+      inventory = foods.map((food, index) => (
+        <div key={"food-" + index} className="table-responsive cart_info">
           <FoodItem food={food} callbackHandler={this.callbackHandler} />
         </div>
       ));
@@ -145,7 +147,7 @@ class Dashboard extends Component {
     if (!isEmpty(pendingOrders)) {
       totalPending = pendingOrders.length;
       pendingOrdersContent = pendingOrders.map(order => (
-        <div className="table-responsive cart_info">
+        <div key={"pending" + order._id} className="table-responsive cart_info">
           <PendingOrder
             shippingAddress={order.shippingAddress}
             foods={order.orderDetails.foods}
@@ -169,7 +171,10 @@ class Dashboard extends Component {
           .reduce((a, b) => a + b, 0);
         totalEarn = totalEarn + thisEarn;
         return (
-          <div className="table-responsive cart_info">
+          <div
+            key={"complete" + order._id}
+            className="table-responsive cart_info"
+          >
             <PendingOrder
               shippingAddress={order.shippingAddress}
               foods={order.orderDetails.foods}

@@ -1,13 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-// import CheckShippingInfo from "../../checkout/CheckShippingInfo";
-// import CheckCardInfo from "../../checkout/CheckCardInfo";
-// import CheckOrderTotal from "../../checkout/CheckOrderTotal";
-// import CheckItems from "../../checkout/CheckItems";
 import isEmpty from "../../../../validation/is-empty";
-//import Spinner from "../../common/Spinner";
-//import pic from "../../../../../public/images/background/bg_testimonial.jpg";
+import "./index.scss";
 
 const OrderContent = props => {
   const { orders } = props;
@@ -15,32 +10,43 @@ const OrderContent = props => {
   orderContent = isEmpty(orders)
     ? ""
     : orders.map(order => (
-        <div className="chose_area">
-          <div className="row">Date: {order.date}</div>
-
+        <div key={"order-" + order._id} className="user_order_item">
           <div className="row">
-            Order Total :{" "}
-            <strong>&nbsp; {order.orderDetails.totalSummary.total}</strong>
+            <div className="col-8">
+              <div>Date: {order.date}</div>
+
+              <div>
+                Order Total :{" "}
+                <strong>&nbsp; {order.orderDetails.totalSummary.total}</strong>
+              </div>
+            </div>
+            <div className={`col-4 ${order.orderStatus}`}>
+              <b>{order.orderStatus}</b>
+            </div>
           </div>
+
           <table className="table">
             <tbody>
               {order.orderDetails.foods.map(item => (
-                <tr className="cart-item d-flex justify-content-around">
+                <tr
+                  key={"food-" + item._id}
+                  className="d-flex justify-content-around"
+                >
                   <td>
                     <img
-                      className="food-image"
-                      src="/images/placeholders/food.jpg"
+                      className="user_order_food-image"
+                      src={item.foodId.images[0]}
                       alt="food"
                     />
                   </td>
                   <td>
-                    <div className="food-info">
+                    <div>
                       <p className="food-name">{item.foodId.name}</p>
                       <p className="food-price">{item.foodId.price}</p>
                     </div>
                   </td>
                   <td>
-                    <div className="food-total">
+                    <div>
                       <p className="quantity">
                         Quantity: &nbsp;
                         {item.quantity}{" "}
@@ -54,7 +60,7 @@ const OrderContent = props => {
         </div>
       ));
 
-  return <tr>{orderContent}</tr>;
+  return <div>{orderContent}</div>;
 };
 OrderContent.propTypes = {
   orders: PropTypes.object.isRequired
