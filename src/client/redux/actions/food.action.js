@@ -13,6 +13,20 @@ export const UPDATE = `${DOCUMENT}UPDATE`;
 export const UPDATED = `${DOCUMENT}UPDATED`;
 export const UPDATE_ERROR = `${DOCUMENT}UPDATE_ERROR`;
 //Load user
+
+
+// SET SEARCH TERM
+export const SEARCH_FOOD = `${DOCUMENT}SEARCH_FOOD`;
+export const SEARCH_FOOD_SUCCESS = `${DOCUMENT}SEARCH_FOOD_SUCCESS`;
+
 export const loadAllFoods = () => ({
   type: LOAD_ALL
+});
+export const searchFoods = (term) => ({
+  type: SEARCH_FOOD,
+  payload: term
+});
+export const searchFoodSuccess = (payload) => ({
+  type: SEARCH_FOOD_SUCCESS,
+  payload
 });

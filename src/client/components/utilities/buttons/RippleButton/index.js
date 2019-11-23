@@ -4,6 +4,6 @@ import './index.scss';
 import { Button } from 'react-bootstrap';
 
 const RippleButton = (props) => (
-  <button className="button-ripple">{props.children}</button>
+  <button className="button-ripple" onClick={props.onClick}>{props.children}</button>
 );
 export default RippleButton;

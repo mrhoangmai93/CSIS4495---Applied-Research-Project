@@ -3,7 +3,7 @@ import "./index.scss";
 import InputWithBorderEffect from "../utilities/inputs/InputWithBorderEffect";
 import RippleButton from "../utilities/buttons/RippleButton";
 
-const Banner = ({ appName }) => (
+const Banner = ({ appName, onClick, setSearchTerm }) => (
   <div className="banner pt-5 pb-5 d-flex flex-column justify-content-center">
     <div className="container ">
       {/*      <h1 className="logo-font text-white mt-0">
@@ -15,9 +15,10 @@ const Banner = ({ appName }) => (
       <InputWithBorderEffect
         placeholder="Burger, Ramen, Spaghetti..."
         size="big"
+        onChange={setSearchTerm}
       />
       <div className="d-flex justify-content-center mt-3">
-        <RippleButton>Find food</RippleButton>
+        <RippleButton onClick={onClick}>Find food</RippleButton>
       </div>
     </div>
   </div>
