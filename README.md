@@ -12,7 +12,7 @@ Harmanjot Singh
 
 ### WEB APPLICATION ABOUT FOOD MARKETPLACE
 
-##Features
+## Features
 * JWT Authentication.
 * View Products
 * Search Products
@@ -22,7 +22,7 @@ Harmanjot Singh
 * Orders History
 * Leave Feedback for Cooks
 
-##Stacks
+## Stacks
 
 * React
 
