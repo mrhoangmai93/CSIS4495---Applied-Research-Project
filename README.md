@@ -10,4 +10,23 @@ Hoang Mai
 Cuong Thinh Dao 
 Harmanjot Singh 
 
-# COOL AWESOME WEB APPLICATION ABOUT FOOD MARKETPLACE
+### WEB APPLICATION ABOUT FOOD MARKETPLACE
+
+##Features
+* JWT Authentication.
+* View Products
+* Search Products
+* Review Products
+* Add Products to Cart
+* Checkout
+* Orders History
+* Leave Feedback for Cooks
+
+##Stacks
+
+* React
+
+* ExpressJS
+
+* Redux & Saga
+
